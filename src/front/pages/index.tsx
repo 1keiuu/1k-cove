@@ -4,57 +4,54 @@ import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Header from '../components/layouts/Header';
+import Career from '../components/sections/Career';
+import Contact from '../components/sections/Contact';
+import FirstView from '../components/sections/FirstView';
+import Links from '../components/sections/Links';
 
 const Home: NextPage = () => {
-  const _Main = styled('main')({
-    display: 'flex',
-  });
-  const _Left = styled('div')({
-    background: 'white',
-    width: '65%',
-    zIndex: 2,
-  });
-  const _Right = styled('div')({
-    background: 'white',
-    width: '35%',
-  });
-  const _Section = styled('div')({
-    height: '100vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  });
-  const _ImageWrapper = styled('div')({
-    height: '65vh',
-    width: '25vw',
-    background: 'transparent',
-    borderRadius: '110px',
-    overflowY: 'auto',
-    position: 'fixed',
-    top: '50%',
-    left: '65%',
-    transform: 'translateY(-50%)',
-    '-webkit-transform': 'translateY(-50%)',
-    '-ms-transform': 'translateY(-50%)',
-    margin: 'auto',
-    '::-webkit-scrollbar': {
-      display: 'none',
-    },
-  });
-  const _AnchorList = styled('ul')({});
-  const _AnchorListItem = styled('li')({});
-  const _Overlay = styled('div')({
-    width: '100%',
-    height: '100%',
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    background: 'transparent',
-    zIndex: 1,
-  });
-  const _Image = styled('img')({
-    height: '100vh',
-  });
+  const _Main = styled.main`
+    display: flex;
+  `;
+  const _Left = styled.div`
+    background: white;
+    width: 70%;
+    z-index: 2;
+  `;
+  const _Right = styled.div`
+    background: white;
+    width: 50%;
+  `;
+  const _ImageWrapper = styled.div`
+    height: 75vh;
+    width: 30vw;
+    background: transparent;
+    border-radius: 110px;
+    overflow-y: auto;
+    position: fixed;
+    top: 50%;
+    left: 60%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    margin: auto;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  `;
+  const _Overlay = styled.div`
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: transparent;
+    z-index: 1;
+  `;
+  const _Image = styled.img`
+    height: 100vh;
+    vertical-align: top;
+  `;
   let currentSectionIndex = 1;
 
   /**
@@ -70,27 +67,33 @@ const Home: NextPage = () => {
         bottomLeft: '110px',
       },
       2: {
-        topLeft: '340px',
-        topRight: '20px',
-        bottomRight: '90px',
-        bottomLeft: '210px',
-      },
-      3: {
-        topLeft: '10px',
+        topLeft: '60px',
         topRight: '250px',
         bottomRight: '100px',
         bottomLeft: '350px',
       },
+      3: {
+        topLeft: '460px',
+        topRight: '70px',
+        bottomRight: '260px',
+        bottomLeft: '50px',
+      },
+      4: {
+        topLeft: '100px',
+        topRight: '300px',
+        bottomRight: '150px',
+        bottomLeft: '310px',
+      },
     };
     const radius = radiusMap[sectionIndex];
     if (!ImageWrapperRef.current || !radius) return;
-    ImageWrapperRef.current.style.transition = 'border-radius 0.7s ease-in';
+    ImageWrapperRef.current.style.transition = 'border-radius 0.6s ease-in';
     ImageWrapperRef.current.style.borderTopLeftRadius = radius.topLeft;
     ImageWrapperRef.current.style.borderTopRightRadius = radius.topRight;
     ImageWrapperRef.current.style.borderBottomRightRadius = radius.bottomRight;
     ImageWrapperRef.current.style.borderBottomLeftRadius = radius.bottomLeft;
   }, []);
-
+  let prevOffset = 0;
   /**
    * scrollイベントが発火した際のhandler
    */
@@ -100,26 +103,31 @@ const Home: NextPage = () => {
     ImageWrapperRef.current?.scrollTo(0, offset);
     // windowの縦幅=sectionの縦幅
     const windowHeight = window.innerHeight;
-    // sectionを跨いでいない時はスキップ
     const bottom = windowHeight * currentSectionIndex;
     const top = windowHeight * (currentSectionIndex - 1);
-    if (bottom > offset && top < offset) return;
     // sectionを跨いだ際にImageWrapperのborder-radiusを変化させる
-    // 下方向に跨いだ際
-    if (offset > bottom) {
-      currentSectionIndex++;
-      transformImageWrapper(currentSectionIndex);
-      return;
-    }
-    // // 上方向に跨いだ際
-    // 上方向に跨いだ際(currentSectionIndex=1の時は発火させない)
-    if (currentSectionIndex > 1) {
-      if (windowHeight * (currentSectionIndex - 1) >= offset) {
-        currentSectionIndex--;
+    // スクロール位置が変わっていない場合はスキップ
+    if (offset === prevOffset) return;
+    // 下方向へのスクロール
+    if (offset > prevOffset) {
+      // セクションを跨いだ際
+      if (offset + windowHeight / 4 > bottom) {
+        currentSectionIndex++;
         transformImageWrapper(currentSectionIndex);
         return;
       }
+    } else {
+      // 上方向へのスクロール
+      // セクションを跨いだ際(currentSectionIndex=1の時は発火させない)
+      if (currentSectionIndex > 1) {
+        if (top + windowHeight / 4 > offset) {
+          currentSectionIndex--;
+          transformImageWrapper(currentSectionIndex);
+          return;
+        }
+      }
     }
+    prevOffset = offset;
   };
 
   /**
@@ -130,8 +138,8 @@ const Home: NextPage = () => {
     const offset =
       (document.querySelector(selector) as HTMLElement).offsetTop + 10;
     if (!offset) return;
-    window.scrollTo(0, offset);
     currentSectionIndex = sectionIndex;
+    window.scrollTo(0, offset);
   };
 
   useEffect(() => {
@@ -159,41 +167,17 @@ const Home: NextPage = () => {
       <_Main>
         <_Overlay></_Overlay>
         <_Left>
-          <_Section>
-            <p>Hi Im Ikkei Harashima</p>
-            <_AnchorList>
-              <_AnchorListItem>
-                <a
-                  onClick={() => {
-                    scrollTo(2, '#about');
-                  }}
-                >
-                  ABOUT
-                </a>
-              </_AnchorListItem>
-              <_AnchorListItem>
-                <a
-                  onClick={() => {
-                    scrollTo(3, '#career');
-                  }}
-                >
-                  CAREER
-                </a>
-              </_AnchorListItem>
-            </_AnchorList>
-          </_Section>
-          <_Section id="about">
-            <p>Hi Im Ikkei Harashima</p>
-          </_Section>
-          <_Section id="career">
-            <p>Hi Im Ikkei Harashima</p>
-          </_Section>
+          <FirstView></FirstView>
+          <Career></Career>
+          <Links></Links>
+          <Contact></Contact>
         </_Left>
         <_Right>
           <_ImageWrapper ref={ImageWrapperRef}>
-            <_Image src="https://1k-cove.com/_nuxt/img/1.108e26d.webp"></_Image>
-            <_Image src="https://1k-cove.com/_nuxt/img/2.05ea9ce.webp"></_Image>
-            <_Image src="https://1k-cove.com/_nuxt/img/1.108e26d.webp"></_Image>
+            <_Image src="/bg1.jpg"></_Image>
+            <_Image src="/bg2.jpg"></_Image>
+            <_Image src="/bg3.jpg"></_Image>
+            <_Image src="/bg4.jpg"></_Image>
           </_ImageWrapper>
         </_Right>
       </_Main>

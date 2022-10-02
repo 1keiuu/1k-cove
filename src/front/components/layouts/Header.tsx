@@ -7,22 +7,22 @@ const _Header = styled.header<{ isShow: boolean }>`
   height: 60px;
   z-index: 3;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   top: ${(props) => (props.isShow ? 0 : '-60px')};
   transition: all 0.4s ease;
   border-bottom: 1px solid #ebebeb;
   background: #fff;
 `;
-const _AnchorList = styled('ul')({
-  display: 'flex',
-});
-const _AnchorListItem = styled('li')({
-  listStyle: 'none',
-  marginRight: '16px',
-});
-const _Anchor = styled('a')({
-  cursor: 'pointer',
-});
+const _AnchorList = styled.ul`
+  display: flex;
+`;
+const _AnchorListItem = styled.li`
+  list-style: none;
+  margin-right: 16px;
+`;
+const _Anchor = styled.a`
+  cursor: pointer;
+`;
 
 type HeaderProps = {
   handleItemClick: (sectionIndex: number, selector: string) => void;
@@ -45,28 +45,45 @@ const Header: React.FC<HeaderProps> = (props) => {
       window.removeEventListener('scroll', onScroll);
     };
   });
+  const items = [
+    {
+      index: 1,
+      selector: '#top',
+      text: 'TOP',
+    },
+    {
+      index: 2,
+      selector: '#career',
+      text: 'CAREER',
+    },
+    {
+      index: 3,
+      selector: '#links',
+      text: 'LINKS',
+    },
+    {
+      index: 4,
+      selector: '#contact',
+      text: 'CONTACTS',
+    },
+  ];
   return (
     <_Header isShow={isShow}>
       <nav>
         <_AnchorList>
-          <_AnchorListItem>
-            <_Anchor
-              onClick={() => {
-                props.handleItemClick(2, '#about');
-              }}
-            >
-              ABOUT
-            </_Anchor>
-          </_AnchorListItem>
-          <_AnchorListItem>
-            <_Anchor
-              onClick={() => {
-                props.handleItemClick(3, '#career');
-              }}
-            >
-              CAREER
-            </_Anchor>
-          </_AnchorListItem>
+          {items.map((item, i) => {
+            return (
+              <_AnchorListItem key={`item-${i}`}>
+                <_Anchor
+                  onClick={() => {
+                    props.handleItemClick(item.index, item.selector);
+                  }}
+                >
+                  {item.text}
+                </_Anchor>
+              </_AnchorListItem>
+            );
+          })}
         </_AnchorList>
       </nav>
     </_Header>
