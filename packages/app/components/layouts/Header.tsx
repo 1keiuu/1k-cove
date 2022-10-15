@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Text } from '../shared/Typography';
 
 const _Header = styled.header<{ isShow: boolean }>`
   position: fixed;
   width: 100%;
-  height: 60px;
+  height: 45px;
   z-index: 3;
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
+  align-items: center;
   top: ${(props) => (props.isShow ? 0 : '-60px')};
   transition: all 0.4s ease;
   border-bottom: 1px solid #ebebeb;
-  background: #fff;
+  background: rgb(244, 241, 239); ;
 `;
 const _AnchorList = styled.ul`
   display: flex;
@@ -49,22 +51,22 @@ const Header: React.FC<HeaderProps> = (props) => {
     {
       index: 1,
       selector: '#top',
-      text: 'TOP',
+      text: 'Top',
     },
     {
       index: 2,
       selector: '#career',
-      text: 'CAREER',
+      text: 'Career',
     },
     {
       index: 3,
       selector: '#links',
-      text: 'LINKS',
+      text: 'Links',
     },
     {
       index: 4,
       selector: '#contact',
-      text: 'CONTACTS',
+      text: 'Contacts',
     },
   ];
   return (
@@ -79,7 +81,7 @@ const Header: React.FC<HeaderProps> = (props) => {
                     props.handleItemClick(item.index, item.selector);
                   }}
                 >
-                  {item.text}
+                  <Text>{item.text}</Text>
                 </_Anchor>
               </_AnchorListItem>
             );
