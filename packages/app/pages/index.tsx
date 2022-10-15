@@ -4,32 +4,36 @@ import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Header from '../components/layouts/Header';
-import Career from '../components/sections/Career';
-import Contact from '../components/sections/Contact';
-import FirstView from '../components/sections/FirstView';
-import Links from '../components/sections/Links';
+import Career from '../components/sections/career/Career';
+import Contact from '../components/sections/contact/Contact';
+import FirstView from '../components/sections/firstView/FirstView';
+import Links from '../components/sections/links/Links';
+import colors from '../constants/colors';
 
 const Home: NextPage = () => {
   const _Main = styled.div`
     display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   `;
   const _Left = styled.div`
-    background: rgb(244, 241, 239);
-    width: 70%;
+    background: ${colors.background.main};
+    width: 60vw;
     z-index: 2;
   `;
   const _Right = styled.div`
-    background: rgb(244, 241, 239);
+    background: ${colors.background.main};
     width: 50%;
   `;
   const _ImageWrapper = styled.div`
-    height: 75vh;
+    height: 100vh;
     width: 30vw;
     background: transparent;
     border-radius: 110px;
     overflow-y: auto;
     position: fixed;
-    top: 50%;
+    top: 70%;
     left: 60%;
     transform: translateY(-50%);
     -webkit-transform: translateY(-50%);
@@ -165,21 +169,24 @@ const Home: NextPage = () => {
       </Head>
       <Header handleItemClick={scrollTo}></Header>
       <_Main>
-        <_Overlay></_Overlay>
-        <_Left>
+        <FirstView></FirstView>
+        <Career></Career>
+        <Links></Links>
+        <Contact></Contact>
+        {/* <_ImageWrapper ref={ImageWrapperRef}>
           <FirstView></FirstView>
           <Career></Career>
           <Links></Links>
           <Contact></Contact>
-        </_Left>
-        <_Right>
+        </_ImageWrapper> */}
+        {/* <_Right>
           <_ImageWrapper ref={ImageWrapperRef}>
             <_Image src="/bg1.jpg"></_Image>
             <_Image src="/bg2.jpg"></_Image>
             <_Image src="/bg3.jpg"></_Image>
             <_Image src="/bg4.jpg"></_Image>
           </_ImageWrapper>
-        </_Right>
+        </_Right> */}
       </_Main>
 
       <footer>

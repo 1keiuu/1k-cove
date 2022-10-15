@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Title, Text } from '../shared/Typography';
+import { Title, Text } from '../../shared/Typography';
 
 const _Section = styled.div`
   height: 100vh;
