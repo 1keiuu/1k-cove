@@ -4,5 +4,4 @@
 
 <br/>
 
-front: Next.js
-hosting: firebase hosting
+**front**: Next.js / **hosting**: firebase hosting
