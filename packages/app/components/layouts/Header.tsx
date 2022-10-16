@@ -46,18 +46,18 @@ const _OuterLink = styled(_Anchor)`
   padding: 8px 56px;
 `;
 type HeaderProps = {
-  handleItemClick: (sectionIndex: number, selector: string) => void;
+  handleItemClick: (selector: string) => void;
 };
 
 const Header: React.FC<HeaderProps> = (props) => {
-  const [isShow, setIsShow] = useState(false);
+  const [isShow, setIsShow] = useState(true);
   const onScroll = () => {
     const offset = window.pageYOffset;
 
-    if (offset < 200) {
-      setIsShow(true);
-    } else {
+    if (offset > 200) {
       setIsShow(false);
+    } else {
+      setIsShow(true);
     }
   };
   useEffect(() => {
@@ -68,17 +68,17 @@ const Header: React.FC<HeaderProps> = (props) => {
   });
   const items = [
     {
-      index: 2,
+      index: 1,
       selector: '#career',
       text: 'Career',
     },
     {
-      index: 3,
+      index: 2,
       selector: '#links',
       text: 'Links',
     },
     {
-      index: 4,
+      index: 3,
       selector: '#contact',
       text: 'Contact',
     },
@@ -111,7 +111,7 @@ const Header: React.FC<HeaderProps> = (props) => {
               <_AnchorListItem key={`item-${i}`}>
                 <_Anchor
                   onClick={() => {
-                    props.handleItemClick(item.index, item.selector);
+                    props.handleItemClick(item.selector);
                   }}
                 >
                   <Text size={15} weight="bold">
