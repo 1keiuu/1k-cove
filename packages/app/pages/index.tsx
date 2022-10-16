@@ -1,7 +1,5 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Footer from '../components/layouts/Footer';
 import Header from '../components/layouts/Header';
@@ -9,7 +7,6 @@ import Career from '../components/sections/career/Career';
 import Contact from '../components/sections/contact/Contact';
 import FirstView from '../components/sections/firstView/FirstView';
 import Links from '../components/sections/links/Links';
-import colors from '../constants/colors';
 
 const Home: NextPage = () => {
   const _Main = styled.div`
@@ -23,9 +20,9 @@ const Home: NextPage = () => {
    */
   const scrollTo = (selector: string) => {
     const offset =
-      (document.querySelector(selector) as HTMLElement).offsetTop + 10;
+      (document.querySelector(selector) as HTMLElement).offsetTop - 130;
     if (!offset) return;
-    window.scrollTo(0, offset - 140);
+    window.scrollTo(0, offset);
   };
   return (
     <main>

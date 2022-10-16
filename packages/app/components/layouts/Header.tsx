@@ -96,7 +96,7 @@ const Header: React.FC<HeaderProps> = (props) => {
               return (
                 <_OuterLinkListItem key={`item-${i}`}>
                   <_OuterLink
-                    href="https://1k-cove.com/articles"
+                    href="https://cove.1keiuu.com/articles"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
