@@ -13,7 +13,7 @@ const _Header = styled.header<{ isShow: boolean }>`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  top: ${(props) => (props.isShow ? 0 : '-80px')};
+  opacity: ${(props) => (props.isShow ? 1 : 0)};
   transition: all 0.4s ease;
   background: transparent;
 `;
@@ -54,7 +54,7 @@ const Header: React.FC<HeaderProps> = (props) => {
   const onScroll = () => {
     const offset = window.pageYOffset;
 
-    if (offset > 120) {
+    if (offset < 200) {
       setIsShow(true);
     } else {
       setIsShow(false);
@@ -67,11 +67,6 @@ const Header: React.FC<HeaderProps> = (props) => {
     };
   });
   const items = [
-    {
-      index: 1,
-      selector: '#top',
-      text: 'Top',
-    },
     {
       index: 2,
       selector: '#career',

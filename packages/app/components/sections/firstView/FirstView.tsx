@@ -8,37 +8,16 @@ const _Section = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-// const _AnchorListItem = styled.li``;
-// const _Anchor = styled.a`
-//   cursor: pointer;
-// `;
+const _Title = styled(Title)`
+  text-align: center;
+  margin-bottom: 8px;
+`;
 
 const FirstView = () => {
   return (
     <_Section id="top">
-      <Title>“Hi. I’m Ikkei Harashima.“</Title>
+      <_Title>“Hi. I’m Ikkei Harashima.“</_Title>
       <Text>Web Frontend Engineer</Text>
-      {/* <_AnchorList>
-        <_AnchorListItem>
-          <_Anchor
-            onClick={() => {
-              scrollTo(2, '#about');
-            }}
-          >
-            ABOUT
-          </_Anchor>
-        </_AnchorListItem>
-        <_AnchorListItem>
-          <_Anchor
-            onClick={() => {
-              scrollTo(3, '#career');
-            }}
-          >
-            CAREER
-          </_Anchor>
-        </_AnchorListItem>
-      </_AnchorList> */}
     </_Section>
   );
 };

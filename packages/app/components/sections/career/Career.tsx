@@ -14,7 +14,7 @@ const _Title = styled(Title)`
 `;
 const _Inner = styled.div`
   margin-bottom: 56px;
-  width: 35vw;
+  width: 40vw;
 `;
 const _Text = styled(Text)`
   line-height: 2.5;
@@ -27,7 +27,7 @@ const Career = () => {
       <_Inner>
         <_Text size={16}>
           都内在住のwebフロントエンドエンジニア。学生時代にwebに出会い、独学で勉強を開始。
-          複数社でインターンを経験した後に2022年より株式会社サイバーエージェントにて内定者アルバイトを開始。
+          複数社でインターンを経験した後に2022年より株式会社サイバーエージェントにて内定者アルバイトとしてコードを書いています。
           副業のスタートアップではフロントエンドに加えてバックエンドを書くこともあります。
         </_Text>
       </_Inner>

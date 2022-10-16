@@ -4,6 +4,7 @@ import { Text } from '../../shared/Typography';
 
 const _List = styled.ul`
   padding: 0;
+  max-width: 50vw;
 `;
 const _SubTitle = styled(Text)`
   margin-bottom: 8px;
@@ -35,7 +36,7 @@ const qiitaLinks = [
 ];
 const wantedlyLinks = [
   {
-    date: '2021.1',
+    date: '2021.01',
     url: 'https://www.wantedly.com/companies/forstartups/post_articles/304328',
     text: '【フォースタ テックブログ】フォースタートアップスでWebエンジニアインターンで働くということ',
   },
@@ -45,6 +46,13 @@ const noteLinks = [
     date: '2020.11',
     url: 'https://note.com/1keiu/n/n95a20ee12d54',
     text: '学生エンジニアが初めてハッカソンに参加してみたら学びが多かった話',
+  },
+];
+const blogLinks = [
+  {
+    date: '2022.02',
+    url: 'https://1k-cove.com/articles/10',
+    text: 'monorepo構成のアプリをcloud build経由でvercelへデプロイする',
   },
 ];
 
@@ -60,9 +68,9 @@ const LinkListItemGroup: React.FC<LinkItemProps> = (props) => {
       <_SubTitle>{props.title}</_SubTitle>
       {props.items.map((item, i) => {
         return (
-          <_ListItem key={`career-item-${i}`}>
+          <_ListItem key={`link-item-${i}`}>
             <Text
-              color={colors.text.black}
+              color={colors.text.primary}
               style={{ marginRight: '8px' }}
               size={16}
             >
@@ -89,6 +97,7 @@ const LinkList = () => {
       ></LinkListItemGroup>
       <LinkListItemGroup title="note" items={noteLinks}></LinkListItemGroup>
       <LinkListItemGroup title="Qiita" items={qiitaLinks}></LinkListItemGroup>
+      <LinkListItemGroup title="Blog" items={blogLinks}></LinkListItemGroup>
     </_List>
   );
 };

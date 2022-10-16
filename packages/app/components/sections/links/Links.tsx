@@ -3,7 +3,7 @@ import { Title } from '../../shared/Typography';
 import LinkList from './LinkList';
 
 const _Section = styled.div`
-  padding: 160px 0;
+  padding-bottom: 320px;
   display: flex;
   flex-direction: column;
   justify-content: center;
