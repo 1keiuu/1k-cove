@@ -3,18 +3,20 @@ import { Title, Text } from '../../shared/Typography';
 import CareerList from './CareerList';
 
 const _Section = styled.div`
-  padding-bottom: 160px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-bottom: 160px;
 `;
 const _Title = styled(Title)`
   margin-bottom: 32px;
 `;
 const _Inner = styled.div`
   margin-bottom: 56px;
-  width: 40vw;
+  @media screen and (max-width: 599px) {
+    width: 100%;
+  }
 `;
 const _Text = styled(Text)`
   line-height: 2.5;

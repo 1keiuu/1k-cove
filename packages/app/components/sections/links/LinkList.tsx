@@ -4,7 +4,6 @@ import { Text } from '../../shared/Typography';
 
 const _List = styled.ul`
   padding: 0;
-  max-width: 50vw;
 `;
 const _SubTitle = styled(Text)`
   margin-bottom: 8px;
@@ -17,6 +16,9 @@ const _ListItem = styled.li`
   align-items: flex-start;
   padding-left: 32px;
   margin-bottom: 16px;
+  @media screen and (max-width: 599px) {
+    padding-left: 16px;
+  }
 `;
 const _Anchor = styled.a`
   text-decoration: underline;
