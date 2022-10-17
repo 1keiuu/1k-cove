@@ -2,13 +2,15 @@ import styled from 'styled-components';
 import colors from '../../../constants/colors';
 import { Text } from '../../shared/Typography';
 
-const _List = styled.ul``;
+const _List = styled.ul`
+  padding: 0;
+`;
 const _ListItem = styled.li`
   list-style: none;
   padding: 0;
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 16px;
 `;
 
