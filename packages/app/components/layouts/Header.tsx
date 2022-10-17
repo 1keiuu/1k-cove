@@ -14,6 +14,7 @@ const _Header = styled.header<{ isShow: boolean }>`
   justify-content: flex-end;
   align-items: center;
   opacity: ${(props) => (props.isShow ? 1 : 0)};
+  pointer-events: ${(props) => (props.isShow ? 'unset' : 'none')};
   transition: all 0.4s ease;
   background: transparent;
 `;
@@ -45,27 +46,30 @@ const _OuterLink = styled(_Anchor)`
   height: 100%;
   padding: 8px 56px;
 `;
+
 type HeaderProps = {
   handleItemClick: (selector: string) => void;
 };
 
 const Header: React.FC<HeaderProps> = (props) => {
   const [isShow, setIsShow] = useState(true);
+
   const onScroll = () => {
     const offset = window.pageYOffset;
-
     if (offset > 200) {
       setIsShow(false);
     } else {
       setIsShow(true);
     }
   };
+
   useEffect(() => {
     window.addEventListener('scroll', onScroll);
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
   });
+
   const items = [
     {
       index: 1,
