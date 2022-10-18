@@ -7,7 +7,13 @@ const _Section = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-bottom: 160px;
+  padding: 0 25vw 160px;
+  @media screen and (max-width: 1024px) {
+    padding: 0 20vw 160px;
+  }
+  @media screen and (max-width: 599px) {
+    padding: 0 46px 160px;
+  }
 `;
 const _Title = styled(Title)`
   margin-bottom: 32px;

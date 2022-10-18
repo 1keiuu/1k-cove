@@ -14,13 +14,6 @@ const Home: NextPage = () => {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 0 25vw;
-    @media screen and (max-width: 1024px) {
-      padding: 0 20vw 160px;
-    }
-    @media screen and (max-width: 599px) {
-      padding: 0 46px 160px;
-    }
   `;
   /**
    * 指定したselectorに合致するElementまでscrollする

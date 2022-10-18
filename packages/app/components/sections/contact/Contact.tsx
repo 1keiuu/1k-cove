@@ -4,12 +4,18 @@ import { Title, Text } from '../../shared/Typography';
 import ContactList from './ContactList';
 
 const _Section = styled.div`
-  padding: 0 0 240px;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 0 25vw 240px;
+  @media screen and (max-width: 1024px) {
+    padding: 0 20vw 160px;
+  }
+  @media screen and (max-width: 599px) {
+    padding: 0 46px 160px;
+  }
 `;
 const _Title = styled(Title)`
   margin-bottom: 56px;

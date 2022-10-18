@@ -3,11 +3,17 @@ import { Title } from '../../shared/Typography';
 import LinkList from './LinkList';
 
 const _Section = styled.div`
-  padding-bottom: 320px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 0 25vw 320px;
+  @media screen and (max-width: 1024px) {
+    padding: 0 20vw 160px;
+  }
+  @media screen and (max-width: 599px) {
+    padding: 0 46px 160px;
+  }
 `;
 const _Title = styled(Title)`
   margin-bottom: 32px;
