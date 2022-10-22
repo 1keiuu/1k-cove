@@ -1,0 +1,8 @@
+.app {
+  display: flex;
+}
+.wrapper {
+  width: 50vw;
+  height: 100vh;
+  padding: 8px;
+}
