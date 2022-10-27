@@ -53,7 +53,7 @@ const noteLinks = [
 const blogLinks = [
   {
     date: '2022.02',
-    url: 'https://cove.1keiuu.com/articles/10',
+    url: 'https://blog.1keiuu.com/articles/10',
     text: 'monorepo構成のアプリをcloud build経由でvercelへデプロイする',
   },
 ];

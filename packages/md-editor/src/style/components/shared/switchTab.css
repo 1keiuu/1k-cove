@@ -1,0 +1,18 @@
+.switch-tab {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  border: 1px solid grey;
+  width: 100%;
+}
+.switch-tab-item {
+  list-style: none;
+  margin-right: 24px;
+  cursor: pointer;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+.switch-tab-item.--active {
+  color: red;
+}

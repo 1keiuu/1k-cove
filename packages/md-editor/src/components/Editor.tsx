@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import '../style/editor.css';
 
 type EditorProps = {
+  content: string;
   onContentChange: (text: string) => void;
 };
 export function getNodeFromIndexes(indexes: number[], rootNode: Node): Node {
@@ -40,21 +41,24 @@ const Editor: React.FC<EditorProps> = (props) => {
     props.onContentChange(DOM);
   };
 
+  useEffect(() => {
+    const target = textAreaRef.current;
+    if (!target) return;
+    target.value = props.content;
+    window.addEventListener('insertContent', handleInsertContent);
+    return () => {
+      return window.removeEventListener('insertContent', handleInsertContent);
+    };
+  });
+
   return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <button onClick={handleInsertContent}>insert</button>
-          </li>
-        </ul>
-      </nav>
+    <>
       <textarea
         className="editor"
         onChange={handleContentChange}
         ref={textAreaRef}
       ></textarea>
-    </div>
+    </>
   );
 };
 
