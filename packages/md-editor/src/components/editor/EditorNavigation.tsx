@@ -1,4 +1,8 @@
-const EditorNavigation = () => {
+type EditorNavigationProps = {
+  onSubmit: () => void;
+};
+
+const EditorNavigation: React.FC<EditorNavigationProps> = (props) => {
   return (
     <nav>
       <ul>
@@ -9,6 +13,15 @@ const EditorNavigation = () => {
             }}
           >
             insert
+          </button>
+        </li>
+        <li>
+          <button
+            onClick={() => {
+              props.onSubmit();
+            }}
+          >
+            保存
           </button>
         </li>
       </ul>

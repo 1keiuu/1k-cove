@@ -23,9 +23,11 @@ function App() {
       value: 'Preview',
     },
   ];
+  const handleSubmit = () => {
+    console.log(content);
+  };
   return (
     <div className="app">
-      <EditorNavigation></EditorNavigation>
       <div className="wrapper">
         <SwitchTab
           items={tabItems}
@@ -45,6 +47,7 @@ function App() {
           )}
         </div>
       </div>
+      <EditorNavigation onSubmit={handleSubmit}></EditorNavigation>
     </div>
   );
 }
