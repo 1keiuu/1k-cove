@@ -16,9 +16,8 @@ const Editor: React.FC<EditorProps> = (props) => {
     props.onContentChange(target.value);
   };
 
-  const handleInsertContent:
-    | React.MouseEventHandler<HTMLButtonElement>
-    | undefined = () => {
+  const handleInsertImage = (p, s) => {
+    console.log(p, s);
     const target = textAreaRef.current;
     if (!target) return;
 
@@ -38,11 +37,14 @@ const Editor: React.FC<EditorProps> = (props) => {
   };
 
   useEffect(() => {
-    window.addEventListener('insertContent' as any, handleInsertContent);
+    window.addEventListener(
+      'insertImage',
+      handleInsertImage as EventListenerOrEventListenerObject
+    );
     return () => {
       return window.removeEventListener(
-        'insertContent' as any,
-        handleInsertContent
+        'insertImage',
+        handleInsertImage as EventListenerOrEventListenerObject
       );
     };
   }, []);

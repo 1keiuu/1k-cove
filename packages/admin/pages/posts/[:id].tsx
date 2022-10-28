@@ -63,7 +63,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const watchedContent = watch('content');
 
   return (
-    <div className={styles.page}>
+    <>
       <Loading loading={isLoading}></Loading>
       <form className={styles.form}>
         <div className={styles.formInner}>
@@ -85,7 +85,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
         </div>
         <EditorNavigation onSubmit={handleSubmit(onSubmit)}></EditorNavigation>
       </form>
-    </div>
+    </>
   );
 };
 

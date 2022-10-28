@@ -14,7 +14,13 @@ const EditorNavigation: React.FC<EditorNavigationProps> = (props) => {
             type="button"
             onClick={(e) => {
               e.preventDefault();
-              dispatchEvent(new Event('insertContent'));
+              dispatchEvent(
+                new CustomEvent('insertImage', {
+                  detail: {
+                    url: 'https://avatars.githubusercontent.com/u/46051957?v=4',
+                  },
+                })
+              );
             }}
           >
             insert
