@@ -14,6 +14,7 @@ import styles from '../../styles/pages/posts/Id.module.css';
 import { useForm } from 'react-hook-form';
 import { Firestore } from 'firebase/firestore';
 import { FirebaseConfig } from '../../@types/firebase';
+import Loading from '../../components/organisms/shared/loading/Loading';
 
 type PostIdPageProps = {
   post: string;
@@ -43,6 +44,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const [displayMode, setDisplayMode] = useState<'editor' | 'preview'>(
     'editor'
   );
+  const [isLoading, setIsLoading] = useState(false);
   const defaultValues = {
     slug: post.slug,
     title: post.title,
@@ -57,13 +59,17 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   };
 
   const onSubmit = (data: Post) => {
-    postApiClient.updatePost(data).then(() => {});
+    setIsLoading(true);
+    postApiClient.updatePost(data).then(() => {
+      setIsLoading(false);
+    });
   };
 
   const watchedContent = watch('content');
 
   return (
     <div className={styles.page}>
+      <Loading loading={isLoading}></Loading>
       <form className={styles.form}>
         <div className={styles.formInner}>
           <SwitchTab

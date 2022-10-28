@@ -1,0 +1,28 @@
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.notActive {
+  display: none;
+}
+.overlay {
+  width: 100%;
+  height: 100%;
+  background: gray;
+  opacity: 0.3;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.loadingImage {
+  border-radius: 8px;
+  opacity: 0.9;
+  border: 0;
+}
