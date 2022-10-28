@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
-import '../style/preview.css';
+import './preview.css';
 import { marked } from 'marked';
 
 type PreviewProps = {

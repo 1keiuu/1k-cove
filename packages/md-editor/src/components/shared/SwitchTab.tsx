@@ -1,4 +1,4 @@
-import '../../style/components/shared/switchTab.css';
+import './switchTab.css';
 
 type SwitchTabProps = {
   items: { value: string; name: string }[];

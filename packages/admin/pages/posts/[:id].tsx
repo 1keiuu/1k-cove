@@ -3,18 +3,13 @@ import PostApiClient from '../../api/posts';
 import { initFirebase } from '../../utils/firebase';
 import superjson from 'superjson';
 import { Post } from '../../@types/post';
-import {
-  SwitchTab,
-  Editor,
-  Preview,
-  EditorNavigation,
-} from '@1k-cove/md-editor';
+import { SwitchTab, Editor, Preview } from '@1k-cove/md-editor';
 import { useCallback, useState } from 'react';
 import styles from '../../styles/pages/posts/Id.module.css';
 import { useForm } from 'react-hook-form';
-import { Firestore } from 'firebase/firestore';
 import { FirebaseConfig } from '../../@types/firebase';
-import Loading from '../../components/organisms/shared/loading/Loading';
+import Loading from '../../components/organisms/shared/Loading/Loading';
+import EditorNavigation from '../../components/organisms/posts/EditorNavigation/EditorNavigation';
 
 type PostIdPageProps = {
   post: string;

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import '../style/editor.css';
+import './editor.css';
 
 type EditorProps = {
   defaultContent: string;
@@ -22,11 +22,17 @@ const Editor: React.FC<EditorProps> = (props) => {
     const target = textAreaRef.current;
     if (!target) return;
 
+    const url = 'https://avatars.githubusercontent.com/u/46051957?v=4';
+    const anchor = document.createElement('a');
+    anchor.target = '_blank';
+    anchor.rel = 'noopener';
+    anchor.href = url;
     const img = document.createElement('img');
-    img.src = 'https://avatars.githubusercontent.com/u/46051957?v=4';
+    img.src = url;
+    anchor.appendChild(img);
     const beforeInsertTarget = target.value.slice(0, target.selectionStart);
     const afterInsertTarget = target.value.slice(target.selectionStart);
-    const DOM = `${beforeInsertTarget}${`<br/>${img.outerHTML}<br/>`}${afterInsertTarget}`;
+    const DOM = `${beforeInsertTarget}${`\r\n<br/>\r\n${anchor.outerHTML}\r\n<br/>\r\n`}${afterInsertTarget}`;
     target.value = DOM;
     props.onContentChange(DOM);
   };
