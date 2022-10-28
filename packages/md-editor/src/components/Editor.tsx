@@ -2,21 +2,10 @@ import { useEffect, useRef } from 'react';
 import '../style/editor.css';
 
 type EditorProps = {
-  content: string;
+  defaultContent: string;
   onContentChange: (text: string) => void;
 };
-export function getNodeFromIndexes(indexes: number[], rootNode: Node): Node {
-  let targetNode = rootNode;
 
-  for (const index of indexes) {
-    const node = targetNode.childNodes[index];
-    if (node) {
-      targetNode = node;
-    }
-  }
-
-  return targetNode;
-}
 const Editor: React.FC<EditorProps> = (props) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const handleContentChange:
@@ -26,6 +15,7 @@ const Editor: React.FC<EditorProps> = (props) => {
     if (!target) return;
     props.onContentChange(target.value);
   };
+
   const handleInsertContent:
     | React.MouseEventHandler<HTMLButtonElement>
     | undefined = () => {
@@ -42,9 +32,6 @@ const Editor: React.FC<EditorProps> = (props) => {
   };
 
   useEffect(() => {
-    const target = textAreaRef.current;
-    if (!target) return;
-    target.value = props.content;
     window.addEventListener('insertContent' as any, handleInsertContent);
     return () => {
       return window.removeEventListener(
@@ -52,7 +39,13 @@ const Editor: React.FC<EditorProps> = (props) => {
         handleInsertContent
       );
     };
-  });
+  }, []);
+
+  useEffect(() => {
+    const target = textAreaRef.current;
+    if (!target) return;
+    target.value = props.defaultContent;
+  }, []);
 
   return (
     <>

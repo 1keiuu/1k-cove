@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { listPosts } from '../api/posts';
+import PostApiClient from '../api/posts';
 import { initFirebase } from '../utils/firebase';
 import superjson from 'superjson';
 import { Post } from '../@types/post';
@@ -33,7 +33,8 @@ const PostIndexPage: NextPage<PostIndexPageProps> = (props) => {
 
 export const getServerSideProps = async () => {
   const { db } = initFirebase();
-  const res = await listPosts(db);
+  const client = new PostApiClient(db);
+  const res = await client.listPosts();
   const posts = superjson.stringify(res);
 
   return {

@@ -11,6 +11,7 @@ const SwitchTab: React.FC<SwitchTabProps> = (props) => {
       {props.items.map((item) => {
         return (
           <li
+            key={`switch-tab-item-${item.name}`}
             className={`switch-tab-item ${
               props.activeItemName === item.name ? '--active' : ''
             }`}

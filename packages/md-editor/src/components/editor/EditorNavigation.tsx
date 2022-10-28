@@ -8,7 +8,9 @@ const EditorNavigation: React.FC<EditorNavigationProps> = (props) => {
       <ul>
         <li>
           <button
-            onClick={() => {
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
               dispatchEvent(new Event('insertContent'));
             }}
           >
@@ -17,7 +19,9 @@ const EditorNavigation: React.FC<EditorNavigationProps> = (props) => {
         </li>
         <li>
           <button
-            onClick={() => {
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
               props.onSubmit();
             }}
           >
