@@ -4,6 +4,7 @@
   border: 1px solid grey;
   width: 100%;
   padding: 0;
+  margin: 0;
 }
 .switch-tab-item {
   list-style: none;

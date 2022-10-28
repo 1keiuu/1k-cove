@@ -6,4 +6,6 @@
   border: none;
   cursor: unset;
   min-height: 90vh;
+  border: 1px solid grey;
+  border-top: 0;
 }
