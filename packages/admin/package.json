@@ -9,9 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@1k-cove/md-editor": "0.0.1",
+    "@1k-cove/md-editor": "*",
     "firebase": "^9.12.1",
     "next": "13.0.0",
+    "next-transpile-modules": "^9.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "superjson": "^1.11.0"

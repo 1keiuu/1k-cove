@@ -45,9 +45,12 @@ const Editor: React.FC<EditorProps> = (props) => {
     const target = textAreaRef.current;
     if (!target) return;
     target.value = props.content;
-    window.addEventListener('insertContent', handleInsertContent);
+    window.addEventListener('insertContent' as any, handleInsertContent);
     return () => {
-      return window.removeEventListener('insertContent', handleInsertContent);
+      return window.removeEventListener(
+        'insertContent' as any,
+        handleInsertContent
+      );
     };
   });
 
