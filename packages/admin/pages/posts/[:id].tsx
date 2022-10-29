@@ -48,6 +48,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [ogpImageUrl, setOgpImageUrl] = useState(post.ogpUrl ?? '');
+  const [imageUrls, setImageUrls] = useState(post.imageUrls ?? []);
   const defaultValues = post;
   const { handleSubmit, setValue, getValues, watch, register } = useForm<Post>({
     defaultValues,
@@ -91,7 +92,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
       return;
     }
     storageClient
-      .upload(files[0], post.docId)
+      .upload(files[0], `_ogp/${post.docId}`)
       .then((url) => {
         setOgpImageUrl(url);
         setValue('ogpUrl', url);
@@ -107,7 +108,30 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
         setIsLoading(false);
       });
   };
-
+  const handleImageInputChange = (files: FileList | null) => {
+    setIsLoading(true);
+    if (!files) {
+      setIsLoading(false);
+      return;
+    }
+    storageClient
+      .upload(files[0], `posts/${post.docId}/${files[0].name}`)
+      .then((url) => {
+        const urls = [...imageUrls, url];
+        setImageUrls(urls);
+        setValue('imageUrls', urls);
+        const data = getValues();
+        postApiClient.updatePost(data).catch((e) => {
+          throw new Error(e);
+        });
+      })
+      .catch((e) => {
+        throw new Error(e);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   const watchedContent = watch('content');
 
   return (
@@ -155,6 +179,8 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
           onDeleteButtonClick={handleDeleteButtonClick}
           onOGPInputChange={handleOGPInputChange}
           ogpImageUrl={ogpImageUrl}
+          imageUrls={imageUrls}
+          onImageInputChange={handleImageInputChange}
         ></EditorPalette>
       </form>
     </div>

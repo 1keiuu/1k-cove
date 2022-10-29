@@ -8,6 +8,8 @@ type EditorPaletteProps = {
   onDeleteButtonClick: () => void;
   onOGPInputChange: (files: FileList | null) => void;
   ogpImageUrl: string;
+  imageUrls: string[];
+  onImageInputChange: (files: FileList | null) => void;
 };
 
 const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
@@ -73,6 +75,34 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
             width={300}
             height={300}
           />
+        </li>
+
+        <li className={styles['list-item']}>
+          <CustomLabel>
+            画像
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                e.preventDefault();
+                props.onImageInputChange(e.target.files);
+              }}
+            />
+          </CustomLabel>
+          <div className={styles['image-group']}>
+            {props.imageUrls.map((image, i) => {
+              return (
+                <Image
+                  key={`image-${i}`}
+                  className={styles.image}
+                  src={image}
+                  alt="image"
+                  width={150}
+                  height={150}
+                />
+              );
+            })}
+          </div>
         </li>
       </ul>
     </nav>

@@ -12,11 +12,11 @@ export default class StorageApi {
     this.storage = storage;
   }
 
-  upload(file: File, docId: string) {
-    const storageRef = ref(this.storage, `_ogp/${docId}`);
+  upload(file: File, key: string) {
+    const storageRef = ref(this.storage, key);
 
-    return uploadBytes(storageRef, file).then((snapshot) => {
-      return getDownloadURL(ref(this.storage, `_ogp/${docId}`));
+    return uploadBytes(storageRef, file).then(() => {
+      return getDownloadURL(ref(this.storage, key));
     });
   }
 }

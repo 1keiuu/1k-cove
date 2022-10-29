@@ -4,5 +4,6 @@ export type Post = {
   slug: string;
   content: string;
   date: string;
-  ogpUrl: ogpUrl;
+  ogpUrl: string;
+  imageUrls: string[];
 };

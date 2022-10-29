@@ -8,3 +8,8 @@
   object-fit: contain;
   height: auto;
 }
+
+.image-group {
+  display: flex;
+  flex-wrap: wrap;
+}
