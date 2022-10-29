@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import { FirebaseConfig } from '../../@types/firebase';
 import Loading from '../../components/organisms/shared/Loading/Loading';
 import EditorNavigation from '../../components/organisms/posts/EditorNavigation/EditorNavigation';
+import CustomTitleInput from '../../components/organisms/shared/CustomTitleInput/CustomTitleInput';
 
 type PostIdPageProps = {
   post: string;
@@ -45,7 +46,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
     title: post.title,
     content: post.content,
   };
-  const { handleSubmit, setValue, watch } = useForm<Post>({
+  const { handleSubmit, setValue, watch, register } = useForm<Post>({
     defaultValues,
   });
 
@@ -67,6 +68,9 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
       <Loading loading={isLoading}></Loading>
       <form className={styles.form}>
         <div className={styles.formInner}>
+          <div className={styles['title-wrapper']}>
+            <CustomTitleInput register={register} name="title" />
+          </div>
           <SwitchTab
             items={tabItems}
             activeItemName={displayMode}
