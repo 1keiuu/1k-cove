@@ -15,6 +15,7 @@ import PageNavigation from '../../components/organisms/shared/PageNavigation/Pag
 import Router from 'next/router';
 import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
 import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';
+import StorageApi from '../../api/storage';
 
 type PostIdPageProps = {
   post: string;
@@ -38,15 +39,17 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
     props.firebaseConfig
   ) as FirebaseConfig;
 
-  const { db } = initFirebase(firebaseConfig);
+  const { db, storage } = initFirebase(firebaseConfig);
   const postApiClient = new PostApiClient(db);
+  const storageClient = new StorageApi(storage);
 
   const [displayMode, setDisplayMode] = useState<'editor' | 'preview'>(
     'editor'
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [ogpImageUrl, setOgpImageUrl] = useState(post.ogpUrl ?? '');
   const defaultValues = post;
-  const { handleSubmit, setValue, watch, register } = useForm<Post>({
+  const { handleSubmit, setValue, getValues, watch, register } = useForm<Post>({
     defaultValues,
   });
 
@@ -79,6 +82,30 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
           throw new Error(e);
         });
     }
+  };
+
+  const handleOGPInputChange = (files: FileList | null) => {
+    setIsLoading(true);
+    if (!files) {
+      setIsLoading(false);
+      return;
+    }
+    storageClient
+      .upload(files[0], post.docId)
+      .then((url) => {
+        setOgpImageUrl(url);
+        setValue('ogpUrl', url);
+        const data = getValues();
+        postApiClient.updatePost(data).catch((e) => {
+          throw new Error(e);
+        });
+      })
+      .catch((e) => {
+        throw new Error(e);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const watchedContent = watch('content');
@@ -126,6 +153,8 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
         <EditorPalette
           onSubmit={handleSubmit(onSubmit)}
           onDeleteButtonClick={handleDeleteButtonClick}
+          onOGPInputChange={handleOGPInputChange}
+          ogpImageUrl={ogpImageUrl}
         ></EditorPalette>
       </form>
     </div>

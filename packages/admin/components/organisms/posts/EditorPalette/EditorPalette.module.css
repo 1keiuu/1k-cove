@@ -2,3 +2,9 @@
   list-style: none;
   margin-bottom: 8px;
 }
+
+.image {
+  margin-top: 16px;
+  object-fit: contain;
+  height: auto;
+}

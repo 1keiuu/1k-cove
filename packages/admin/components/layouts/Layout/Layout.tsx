@@ -3,7 +3,7 @@ import Footer from '../Footer/Footer';
 import styles from './Layout.module.css';
 
 type LayoutProps = {
-  children: ReactNode[];
+  children: ReactNode;
 };
 const Layout: React.FC<LayoutProps> = (props) => {
   return (

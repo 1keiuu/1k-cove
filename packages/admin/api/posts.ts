@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import {
   collection,
   DocumentData,
@@ -51,7 +50,7 @@ export default class PostApiClient {
   getPostBySlug = async (slug: string) => {
     const res = await this._getDocBySlug(slug);
     if (!res) return null;
-    return res.data();
+    return Object.assign({ docId: res.id }, res.data());
   };
 
   createPost = async (post: Post) => {
