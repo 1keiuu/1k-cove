@@ -132,6 +132,21 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
         setIsLoading(false);
       });
   };
+  const handleImageDeleteButtonClick = (url: string) => {
+    setIsLoading(true);
+    imageUrls.splice(imageUrls.indexOf(url), 1);
+    post.imageUrls = imageUrls;
+
+    postApiClient
+      .updatePost(post)
+      .then(() => {
+        setIsLoading(false);
+        setImageUrls(post.imageUrls);
+      })
+      .catch((e) => {
+        throw new Error(e);
+      });
+  };
   const watchedContent = watch('content');
 
   return (
@@ -181,6 +196,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
           ogpImageUrl={ogpImageUrl}
           imageUrls={imageUrls}
           onImageInputChange={handleImageInputChange}
+          onImageDeleteButtonClick={handleImageDeleteButtonClick}
         ></EditorPalette>
       </form>
     </div>

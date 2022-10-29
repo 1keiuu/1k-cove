@@ -15,13 +15,12 @@ const Editor: React.FC<EditorProps> = (props) => {
     if (!target) return;
     props.onContentChange(target.value);
   };
+  type InsertImageEvent = CustomEvent<{ url: string }>;
 
-  const handleInsertImage = (p, s) => {
-    console.log(p, s);
+  const handleInsertImage = (e: InsertImageEvent) => {
     const target = textAreaRef.current;
     if (!target) return;
-
-    const url = 'https://avatars.githubusercontent.com/u/46051957?v=4';
+    const url = e.detail.url;
     const anchor = document.createElement('a');
     anchor.target = '_blank';
     anchor.rel = 'noopener';

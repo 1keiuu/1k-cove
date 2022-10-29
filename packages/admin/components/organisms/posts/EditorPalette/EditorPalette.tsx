@@ -10,29 +10,13 @@ type EditorPaletteProps = {
   ogpImageUrl: string;
   imageUrls: string[];
   onImageInputChange: (files: FileList | null) => void;
+  onImageDeleteButtonClick: (url: string) => void;
 };
 
 const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
   return (
     <nav>
       <ul>
-        <li className={styles['list-item']}>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              dispatchEvent(
-                new CustomEvent('insertImage', {
-                  detail: {
-                    url: 'https://avatars.githubusercontent.com/u/46051957?v=4',
-                  },
-                })
-              );
-            }}
-          >
-            insert
-          </button>
-        </li>
         <li className={styles['list-item']}>
           <Button
             type="button"
@@ -92,14 +76,37 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
           <div className={styles['image-group']}>
             {props.imageUrls.map((image, i) => {
               return (
-                <Image
+                <button
                   key={`image-${i}`}
-                  className={styles.image}
-                  src={image}
-                  alt="image"
-                  width={150}
-                  height={150}
-                />
+                  type="button"
+                  className={styles['image-wrapper']}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    dispatchEvent(
+                      new CustomEvent('insertImage', {
+                        detail: {
+                          url: image,
+                        },
+                      })
+                    );
+                  }}
+                >
+                  <Image
+                    className={styles.image}
+                    src={image}
+                    alt="image"
+                    width={150}
+                    height={150}
+                  />
+                  <button
+                    className={styles['image-delete-button']}
+                    onClick={() => {
+                      props.onImageDeleteButtonClick(image);
+                    }}
+                  >
+                    ×
+                  </button>
+                </button>
               );
             })}
           </div>
