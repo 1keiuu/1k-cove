@@ -5,6 +5,7 @@ import superjson from 'superjson';
 import { Post } from '../@types/post';
 import Link from 'next/link';
 import Head from 'next/head';
+import styles from '../styles/Index.module.css';
 
 type IndexPageProps = {
   posts: string;
@@ -19,14 +20,21 @@ const IndexPage: NextPage<IndexPageProps> = (props) => {
         <meta name="description" content="Harashima Ikkei’s Blog" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div className={styles['create-link-wrapper']}>
+        <Link href="/posts/new">create</Link>
+      </div>
       <ul>
-        {posts.map((post, i) => {
-          return (
-            <li key={`post-${i}-${post.slug}`}>
-              <Link href={`/posts/${post.slug}`}>{post.title}</Link>
-            </li>
-          );
-        })}
+        {posts.length === 0 ? (
+          <p>postがありません</p>
+        ) : (
+          posts.map((post, i) => {
+            return (
+              <li key={`post-${i}-${post.slug}`}>
+                <Link href={`/posts/${post.slug}`}>{post.title}</Link>
+              </li>
+            );
+          })
+        )}
       </ul>
     </>
   );

@@ -1,0 +1,13 @@
+.create-link-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin: 16px 0;
+}
+
+.create-link-wrapper a {
+  padding: 8px 16px;
+  background: var(--color-red);
+  border-radius: 4px;
+  color: white;
+}

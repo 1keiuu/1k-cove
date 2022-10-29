@@ -4,7 +4,7 @@ import { initFirebase } from '../../utils/firebase';
 import superjson from 'superjson';
 import { Post } from '../../@types/post';
 import { SwitchTab, Editor, Preview } from '@1k-cove/md-editor';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import styles from '../../styles/pages/posts/Id.module.css';
 import { useForm } from 'react-hook-form';
 import { FirebaseConfig } from '../../@types/firebase';
@@ -12,6 +12,7 @@ import Loading from '../../components/organisms/shared/Loading/Loading';
 import EditorPalette from '../../components/organisms/posts/EditorPalette/EditorPalette';
 import CustomTitleInput from '../../components/organisms/shared/CustomTitleInput/CustomTitleInput';
 import PageNavigation from '../../components/organisms/shared/PageNavigation/PageNavigation';
+import Router from 'next/router';
 
 type PostIdPageProps = {
   post: string;
@@ -57,9 +58,29 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
 
   const onSubmit = (data: Post) => {
     setIsLoading(true);
-    postApiClient.updatePost(data).then(() => {
-      setIsLoading(false);
-    });
+    postApiClient
+      .updatePost(data)
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        throw new Error(e);
+      });
+  };
+
+  const handleDeleteButtonClick = () => {
+    setIsLoading(true);
+    if (confirm('削除しますか?')) {
+      postApiClient
+        .deletePost(post.slug)
+        .then(() => {
+          setIsLoading(false);
+          Router.push('/');
+        })
+        .catch((e) => {
+          throw new Error(e);
+        });
+    }
   };
 
   const watchedContent = watch('content');
@@ -91,7 +112,10 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
             <Preview content={watchedContent}></Preview>
           )}
         </div>
-        <EditorPalette onSubmit={handleSubmit(onSubmit)}></EditorPalette>
+        <EditorPalette
+          onSubmit={handleSubmit(onSubmit)}
+          onDeleteButtonClick={handleDeleteButtonClick}
+        ></EditorPalette>
       </form>
     </div>
   );

@@ -1,7 +1,9 @@
+import Button from '../../shared/Button/Button';
 import styles from './EditorPalette.module.css';
 
 type EditorPaletteProps = {
   onSubmit: () => void;
+  onDeleteButtonClick: () => void;
 };
 
 const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
@@ -26,8 +28,7 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
           </button>
         </li>
         <li className={styles['list-item']}>
-          <button
-            className={`${styles['button-base']} ${styles['submit-button']}`}
+          <Button
             type="button"
             onClick={(e) => {
               e.preventDefault();
@@ -35,7 +36,19 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
             }}
           >
             保存
-          </button>
+          </Button>
+        </li>
+        <li className={styles['list-item']}>
+          <Button
+            type="button"
+            isOutlined
+            onClick={(e) => {
+              e.preventDefault();
+              props.onDeleteButtonClick();
+            }}
+          >
+            削除する
+          </Button>
         </li>
       </ul>
     </nav>

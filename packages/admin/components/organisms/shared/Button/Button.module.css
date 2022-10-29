@@ -1,0 +1,15 @@
+.button {
+  width: 300px;
+  background: var(--color-red);
+  color: white;
+}
+
+.--primary {
+  background: var(--color-red);
+}
+
+.--outlined {
+  background: white;
+  border: 1px solid var(--color-grey-deep);
+  color: var(--color-grey-deep);
+}
