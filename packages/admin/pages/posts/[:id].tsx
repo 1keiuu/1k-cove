@@ -13,6 +13,8 @@ import EditorPalette from '../../components/organisms/posts/EditorPalette/Editor
 import CustomTitleInput from '../../components/organisms/shared/CustomTitleInput/CustomTitleInput';
 import PageNavigation from '../../components/organisms/shared/PageNavigation/PageNavigation';
 import Router from 'next/router';
+import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
+import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';
 
 type PostIdPageProps = {
   post: string;
@@ -43,11 +45,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
     'editor'
   );
   const [isLoading, setIsLoading] = useState(false);
-  const defaultValues = {
-    slug: post.slug,
-    title: post.title,
-    content: post.content,
-  };
+  const defaultValues = post;
   const { handleSubmit, setValue, watch, register } = useForm<Post>({
     defaultValues,
   });
@@ -94,7 +92,20 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
       <form className={styles.form}>
         <div className={styles['form-inner']}>
           <div className={styles['title-wrapper']}>
-            <CustomTitleInput register={register} name="title" />
+            <CustomLabel>
+              title
+              <CustomTitleInput register={register} name="title" />
+            </CustomLabel>
+          </div>
+          <div className={styles['wrapper-row']}>
+            <CustomLabel>
+              slug
+              <CustomInput register={register} name="slug" />
+            </CustomLabel>
+            <CustomLabel>
+              date
+              <CustomInput register={register} name="date" />
+            </CustomLabel>
           </div>
           <SwitchTab
             items={tabItems}

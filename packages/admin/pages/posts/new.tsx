@@ -4,7 +4,7 @@ import { initFirebase } from '../../utils/firebase';
 import superjson from 'superjson';
 import { Post } from '../../@types/post';
 import { useState } from 'react';
-import styles from '../../styles/pages/posts/new.module.css';
+import styles from '../../styles/pages/posts/New.module.css';
 import { useForm } from 'react-hook-form';
 import { FirebaseConfig } from '../../@types/firebase';
 import Loading from '../../components/organisms/shared/Loading/Loading';
@@ -12,6 +12,7 @@ import CustomInput from '../../components/organisms/shared/CustomInput/CustomInp
 import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
 import Button from '../../components/organisms/shared/Button/Button';
 import Router from 'next/router';
+import PageNavigation from '../../components/organisms/shared/PageNavigation/PageNavigation';
 
 type PostsNewPageProps = {
   firebaseConfig: string;
@@ -26,8 +27,10 @@ const PostsNewPage: NextPage<PostsNewPageProps> = (props) => {
   const postApiClient = new PostApiClient(db);
 
   const [isLoading, setIsLoading] = useState(false);
+  const date = new Date();
   const defaultValues = {
     content: '',
+    date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
   };
   const { handleSubmit, register } = useForm<Post>({
     defaultValues,
@@ -44,6 +47,9 @@ const PostsNewPage: NextPage<PostsNewPageProps> = (props) => {
   return (
     <div className={styles.wrapper}>
       <Loading loading={isLoading}></Loading>
+      <div className={styles['navigation-wrapper']}>
+        <PageNavigation backPath="/"></PageNavigation>
+      </div>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <CustomLabel>
           タイトル
@@ -53,7 +59,11 @@ const PostsNewPage: NextPage<PostsNewPageProps> = (props) => {
           slug
           <CustomInput register={register} name="slug"></CustomInput>
         </CustomLabel>
-        <Button type='submit'>作成</Button>
+        <CustomLabel>
+          date
+          <CustomInput register={register} name="date"></CustomInput>
+        </CustomLabel>
+        <Button type="submit">作成</Button>
       </form>
     </div>
   );
