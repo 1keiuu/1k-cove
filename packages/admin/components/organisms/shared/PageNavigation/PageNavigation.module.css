@@ -1,0 +1,10 @@
+.list {
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+.list-item {
+  list-style: none;
+}
+.back-button {
+}

@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "index.ts", "../admin/components/organisms/posts/EditorNavigation", "event.ts"],
+  "include": ["src", "index.ts", "../admin/components/organisms/posts/EditorPalette", "event.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

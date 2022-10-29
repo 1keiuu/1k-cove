@@ -1,16 +1,15 @@
-import styles from './EditorNavigation.module.css';
+import styles from './EditorPalette.module.css';
 
-type EditorNavigationProps = {
+type EditorPaletteProps = {
   onSubmit: () => void;
 };
 
-const EditorNavigation: React.FC<EditorNavigationProps> = (props) => {
+const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
   return (
     <nav>
       <ul>
         <li className={styles['list-item']}>
           <button
-            className={styles['button-base']}
             type="button"
             onClick={(e) => {
               e.preventDefault();
@@ -43,4 +42,4 @@ const EditorNavigation: React.FC<EditorNavigationProps> = (props) => {
   );
 };
 
-export default EditorNavigation;
+export default EditorPalette;

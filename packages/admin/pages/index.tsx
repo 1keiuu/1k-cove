@@ -6,11 +6,11 @@ import { Post } from '../@types/post';
 import Link from 'next/link';
 import Head from 'next/head';
 
-type PostIndexPageProps = {
+type IndexPageProps = {
   posts: string;
 };
 
-const PostIndexPage: NextPage<PostIndexPageProps> = (props) => {
+const IndexPage: NextPage<IndexPageProps> = (props) => {
   const posts = superjson.parse(props.posts) as Post[];
   return (
     <>
@@ -19,14 +19,15 @@ const PostIndexPage: NextPage<PostIndexPageProps> = (props) => {
         <meta name="description" content="Harashima Ikkei’s Blog" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      ;
-      {posts.map((post, i) => {
-        return (
-          <Link href={`/posts/${post.slug}`} key={`post-${i}-${post.slug}`}>
-            {post.title}
-          </Link>
-        );
-      })}
+      <ul>
+        {posts.map((post, i) => {
+          return (
+            <li key={`post-${i}-${post.slug}`}>
+              <Link href={`/posts/${post.slug}`}>{post.title}</Link>
+            </li>
+          );
+        })}
+      </ul>
     </>
   );
 };
@@ -44,4 +45,4 @@ export const getServerSideProps = async () => {
   };
 };
 
-export default PostIndexPage;
+export default IndexPage;

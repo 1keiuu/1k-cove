@@ -9,8 +9,9 @@ import styles from '../../styles/pages/posts/Id.module.css';
 import { useForm } from 'react-hook-form';
 import { FirebaseConfig } from '../../@types/firebase';
 import Loading from '../../components/organisms/shared/Loading/Loading';
-import EditorNavigation from '../../components/organisms/posts/EditorNavigation/EditorNavigation';
+import EditorPalette from '../../components/organisms/posts/EditorPalette/EditorPalette';
 import CustomTitleInput from '../../components/organisms/shared/CustomTitleInput/CustomTitleInput';
+import PageNavigation from '../../components/organisms/shared/PageNavigation/PageNavigation';
 
 type PostIdPageProps = {
   post: string;
@@ -64,10 +65,13 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const watchedContent = watch('content');
 
   return (
-    <>
+    <div className={styles.wrapper}>
       <Loading loading={isLoading}></Loading>
+      <div className={styles['navigation-wrapper']}>
+        <PageNavigation backPath="/"></PageNavigation>
+      </div>
       <form className={styles.form}>
-        <div className={styles.formInner}>
+        <div className={styles['form-inner']}>
           <div className={styles['title-wrapper']}>
             <CustomTitleInput register={register} name="title" />
           </div>
@@ -87,9 +91,9 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
             <Preview content={watchedContent}></Preview>
           )}
         </div>
-        <EditorNavigation onSubmit={handleSubmit(onSubmit)}></EditorNavigation>
+        <EditorPalette onSubmit={handleSubmit(onSubmit)}></EditorPalette>
       </form>
-    </>
+    </div>
   );
 };
 
