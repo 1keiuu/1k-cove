@@ -98,14 +98,14 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
                     width={150}
                     height={150}
                   />
-                  <button
+                  <div
                     className={styles['image-delete-button']}
                     onClick={() => {
                       props.onImageDeleteButtonClick(image);
                     }}
                   >
                     ×
-                  </button>
+                  </div>
                 </button>
               );
             })}

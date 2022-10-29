@@ -27,6 +27,8 @@ const Editor: React.FC<EditorProps> = (props) => {
     anchor.href = url;
     const img = document.createElement('img');
     img.src = url;
+    img.style.width = '100%';
+    img.style.height = '100%';
     anchor.appendChild(img);
     const beforeInsertTarget = target.value.slice(0, target.selectionStart);
     const afterInsertTarget = target.value.slice(target.selectionStart);
