@@ -1,8 +1,6 @@
 import { NextPage } from 'next';
-import PostApiClient from '../api/posts';
-import { initFirebase } from '../utils/firebase';
+import { PostApiClient, initFirebase, Post } from '@1k-cove/common';
 import superjson from 'superjson';
-import { Post } from '../@types/post';
 import Link from 'next/link';
 import Head from 'next/head';
 import styles from '../styles/Index.module.css';
@@ -29,8 +27,13 @@ const IndexPage: NextPage<IndexPageProps> = (props) => {
         ) : (
           posts.map((post, i) => {
             return (
-              <li key={`post-${i}-${post.slug}`}>
-                <Link href={`/posts/${post.slug}`}>{post.title}</Link>
+              <li
+                key={`post-${i}-${post.slug}`}
+                className={styles['post-item']}
+              >
+                <Link href={`/posts/${post.slug}`}>
+                  {post.date} {post.title}
+                </Link>
               </li>
             );
           })

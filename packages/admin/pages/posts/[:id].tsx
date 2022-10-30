@@ -1,13 +1,16 @@
 import { GetServerSideProps, NextPage } from 'next';
-import PostApiClient from '../../api/posts';
-import { initFirebase } from '../../utils/firebase';
+import {
+  PostApiClient,
+  StorageApiClient,
+  initFirebase,
+  Post,
+  FirebaseConfig,
+} from '@1k-cove/common';
 import superjson from 'superjson';
-import { Post } from '../../@types/post';
 import { SwitchTab, Editor, Preview } from '@1k-cove/md-editor';
 import { useState } from 'react';
 import styles from '../../styles/pages/posts/Id.module.css';
 import { useForm } from 'react-hook-form';
-import { FirebaseConfig } from '../../@types/firebase';
 import Loading from '../../components/organisms/shared/Loading/Loading';
 import EditorPalette from '../../components/organisms/posts/EditorPalette/EditorPalette';
 import CustomTitleInput from '../../components/organisms/shared/CustomTitleInput/CustomTitleInput';
@@ -15,13 +18,13 @@ import PageNavigation from '../../components/organisms/shared/PageNavigation/Pag
 import Router from 'next/router';
 import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
 import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';
-import StorageApi from '../../api/storage';
 
 type PostIdPageProps = {
   post: string;
   apiClient: string;
   firebaseConfig: string;
 };
+
 const tabItems = [
   {
     name: 'editor',
@@ -41,7 +44,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
 
   const { db, storage } = initFirebase(firebaseConfig);
   const postApiClient = new PostApiClient(db);
-  const storageClient = new StorageApi(storage);
+  const storageClient = new StorageApiClient(storage);
 
   const [displayMode, setDisplayMode] = useState<'editor' | 'preview'>(
     'editor'
@@ -164,10 +167,6 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
             </CustomLabel>
           </div>
           <div className={styles['wrapper-row']}>
-            <CustomLabel>
-              slug
-              <CustomInput register={register} name="slug" />
-            </CustomLabel>
             <CustomLabel>
               date
               <CustomInput register={register} name="date" />

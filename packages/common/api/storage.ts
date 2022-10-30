@@ -5,7 +5,7 @@ import {
   getDownloadURL,
 } from 'firebase/storage';
 
-export default class StorageApi {
+export class StorageApiClient {
   storage: FirebaseStorage;
 
   constructor(storage: FirebaseStorage) {

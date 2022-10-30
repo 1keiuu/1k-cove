@@ -3,6 +3,7 @@ import {
   DocumentData,
   Firestore,
   getDocs,
+  orderBy,
   query,
   where,
   updateDoc,
@@ -16,7 +17,7 @@ import { Post } from '../@types/post';
 
 const POSTS_COLLECTION_NAME = 'posts';
 
-export default class PostApiClient {
+export class PostApiClient {
   db: Firestore;
   collectionRef: CollectionReference;
 
@@ -27,7 +28,9 @@ export default class PostApiClient {
 
   listPosts = async (): Promise<DocumentData[]> => {
     const res: DocumentData[] = [];
-    const querySnapshot = await getDocs(this.collectionRef);
+    const q = query(this.collectionRef, orderBy('date', 'desc'));
+    const querySnapshot = await getDocs(q);
+
     querySnapshot.forEach((doc) => {
       res.push(doc.data());
     });
@@ -35,7 +38,7 @@ export default class PostApiClient {
   };
 
   getPostRefBySlug = async (slug: string) => {
-    let res = null;
+    let res: DocumentSnapshot | null = null;
     const q = query(this.collectionRef, where('slug', '==', slug));
     const querySnapshot = await getDocs(q);
     let i = 0;
@@ -83,7 +86,7 @@ export default class PostApiClient {
   private _getDocBySlug = async (
     slug: string
   ): Promise<DocumentSnapshot | null> => {
-    let res = null;
+    let res: DocumentSnapshot | null = null;
     const q = query(this.collectionRef, where('slug', '==', slug));
     const querySnapshot = await getDocs(q);
     let i = 0;

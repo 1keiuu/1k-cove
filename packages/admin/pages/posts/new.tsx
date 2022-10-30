@@ -1,12 +1,14 @@
 import { GetServerSideProps, NextPage } from 'next';
-import PostApiClient from '../../api/posts';
-import { initFirebase } from '../../utils/firebase';
+import {
+  PostApiClient,
+  initFirebase,
+  Post,
+  FirebaseConfig,
+} from '@1k-cove/common';
 import superjson from 'superjson';
-import { Post } from '../../@types/post';
 import { useState } from 'react';
 import styles from '../../styles/pages/posts/New.module.css';
 import { useForm } from 'react-hook-form';
-import { FirebaseConfig } from '../../@types/firebase';
 import Loading from '../../components/organisms/shared/Loading/Loading';
 import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';
 import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
