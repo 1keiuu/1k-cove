@@ -4,6 +4,7 @@ import {
   initFirebase,
   Post,
   FirebaseConfig,
+  PageNavigation,
 } from '@1k-cove/common';
 import superjson from 'superjson';
 import { useState } from 'react';
@@ -14,7 +15,6 @@ import CustomInput from '../../components/organisms/shared/CustomInput/CustomInp
 import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
 import Button from '../../components/organisms/shared/Button/Button';
 import Router from 'next/router';
-import PageNavigation from '../../components/organisms/shared/PageNavigation/PageNavigation';
 
 type PostsNewPageProps = {
   firebaseConfig: string;

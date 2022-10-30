@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './Pagination.module.css';
+
 type PaginationProps = {
   path: string;
   page: number;

@@ -5,6 +5,7 @@ import {
   initFirebase,
   Post,
   FirebaseConfig,
+  PageNavigation,
 } from '@1k-cove/common';
 import superjson from 'superjson';
 import { SwitchTab, Editor, Preview } from '@1k-cove/md-editor';
@@ -14,7 +15,6 @@ import { useForm } from 'react-hook-form';
 import Loading from '../../components/organisms/shared/Loading/Loading';
 import EditorPalette from '../../components/organisms/posts/EditorPalette/EditorPalette';
 import CustomTitleInput from '../../components/organisms/shared/CustomTitleInput/CustomTitleInput';
-import PageNavigation from '../../components/organisms/shared/PageNavigation/PageNavigation';
 import Router from 'next/router';
 import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
 import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';

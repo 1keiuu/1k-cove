@@ -2,12 +2,12 @@ import Router from 'next/router';
 import styles from './PageNavigation.module.css';
 
 type PageNavigationProps = {
-  backPath: string;
+  backPath?: string;
 };
 
-const PageNavigation: React.FC<PageNavigationProps> = (props) => {
+export const PageNavigation: React.FC<PageNavigationProps> = (props) => {
   return (
-    <nav>
+    <nav className={styles['nav']}>
       <ul className={styles['list']}>
         <li className={styles['list-item']}>
           <button
@@ -27,5 +27,3 @@ const PageNavigation: React.FC<PageNavigationProps> = (props) => {
     </nav>
   );
 };
-
-export default PageNavigation;

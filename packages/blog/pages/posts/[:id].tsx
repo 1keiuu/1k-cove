@@ -1,6 +1,12 @@
 import { GetStaticProps, NextPage } from 'next';
-import { PostApiClient, initFirebase, Post } from '@1k-cove/common';
+import {
+  PostApiClient,
+  initFirebase,
+  Post,
+  PageNavigation,
+} from '@1k-cove/common';
 import superjson from 'superjson';
+import styles from '../../styles/pages/posts/Id.module.css';
 import Detail from '../../components/posts/Detail/Detail';
 
 type PostIdPageProps = {
@@ -11,8 +17,11 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const post = superjson.parse(props.post) as Post;
 
   return (
-    <div>
-      <Detail post={post}></Detail>
+    <div className={styles['wrapper']}>
+      <div className={styles['inner']}>
+        <PageNavigation></PageNavigation>
+        <Detail post={post}></Detail>
+      </div>
     </div>
   );
 };

@@ -30,7 +30,7 @@ const getPostsPerPage = async () => {
   const client = new PostApiClient(db);
   const posts = await client.listPosts();
   const postsPerPage = [];
-  const per = 2;
+  const per = 10;
 
   while (posts.length > 0) {
     postsPerPage.push(posts.splice(0, per));
