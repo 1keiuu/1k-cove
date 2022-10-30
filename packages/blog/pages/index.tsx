@@ -1,6 +1,8 @@
+import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
+import { initFirebase, PostApiClient } from '@1k-cove/common';
 
 export default function Home() {
   return (
@@ -38,4 +40,13 @@ export default function Home() {
       </footer>
     </div>
   );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  const { db } = initFirebase();
+  const postApiClient = new PostApiClient(db);
+  const posts = await postApiClient.listPosts();
+  return {
+    props: {},
+  };
 }
