@@ -3,9 +3,8 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { FirebaseConfig } from '../@types/firebase';
-import dotenv from 'dotenv';
+
 export const initFirebase = (config?: FirebaseConfig) => {
-  dotenv.config();
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 

@@ -1,7 +1,6 @@
 import { GetStaticProps, NextPage } from 'next';
 import { PostApiClient, initFirebase, Post } from '@1k-cove/common';
 import superjson from 'superjson';
-import styles from '../../styles/Home.module.css';
 import Detail from '../../components/posts/Detail/Detail';
 
 type PostIdPageProps = {
@@ -12,15 +11,22 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const post = superjson.parse(props.post) as Post;
 
   return (
-    <div className={styles.wrapper}>
+    <div>
       <Detail post={post}></Detail>
     </div>
   );
 };
 
 export const getStaticPaths = async () => {
+  const { db } = initFirebase();
+  const client = new PostApiClient(db);
+  const posts = await client.listPosts();
+
+  const paths = posts.map((post) => {
+    return { params: { ':id': post.slug } };
+  });
   return {
-    paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
+    paths: paths,
     fallback: false,
   };
 };
