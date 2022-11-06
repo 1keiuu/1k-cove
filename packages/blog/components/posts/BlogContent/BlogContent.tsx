@@ -1,14 +1,14 @@
 import { Post } from '@1k-cove/common';
 import { useEffect, useRef } from 'react';
-import styles from './Content.module.css';
+import styles from './BlogContent.module.css';
 import 'highlightjs/styles/github.css';
 
-type ContentProps = {
+type BlogContentProps = {
   post: Post;
   html: string;
 };
 
-const Content: React.FC<ContentProps> = (props) => {
+const BlogContent: React.FC<BlogContentProps> = (props) => {
   const articleRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!articleRef.current) return;
@@ -17,4 +17,4 @@ const Content: React.FC<ContentProps> = (props) => {
   return <article ref={articleRef} className={styles.content}></article>;
 };
 
-export default Content;
+export default BlogContent;
