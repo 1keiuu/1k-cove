@@ -1,10 +1,16 @@
 .nav {
   position: sticky;
   top: 40px;
+  padding: 8px;
+  min-width: 300px;
+  color: #333;
+}
+.list {
+  padding: 0;
 }
 .list-item {
   list-style: none;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 }
 .list-item-anchor {
   font-size: 1rem;

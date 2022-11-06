@@ -19,7 +19,7 @@ export const NestedAnchorList: React.FC<NestedAnchorListProps> = (props) => {
           return (
             <li className={styles['list-item']} key={`anchor-${i1}`}>
               <a href={item.to} className={styles['list-item-anchor']}>
-                {item.text}
+                <p>{item.text}</p>
               </a>
               {item.children && (
                 <ul className={styles['list-child']}>
@@ -33,7 +33,7 @@ export const NestedAnchorList: React.FC<NestedAnchorListProps> = (props) => {
                           href={child.to}
                           className={styles['list-child-anchor']}
                         >
-                          {child.text}
+                          <p>{child.text}</p>
                         </a>
                       </li>
                     );

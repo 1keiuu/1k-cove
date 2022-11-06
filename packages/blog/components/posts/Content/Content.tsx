@@ -9,12 +9,12 @@ type ContentProps = {
 };
 
 const Content: React.FC<ContentProps> = (props) => {
-  const divRef = useRef<HTMLDivElement>(null);
+  const articleRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (!divRef.current) return;
-    divRef.current.innerHTML = props.html;
+    if (!articleRef.current) return;
+    articleRef.current.innerHTML = props.html;
   }, [props.html]);
-  return <div ref={divRef} className={styles.content}></div>;
+  return <article ref={articleRef} className={styles.content}></article>;
 };
 
 export default Content;
