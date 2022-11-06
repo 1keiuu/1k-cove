@@ -18,16 +18,23 @@ export const NestedAnchorList: React.FC<NestedAnchorListProps> = (props) => {
         {props.items?.map((item, i1) => {
           return (
             <li className={styles['list-item']} key={`anchor-${i1}`}>
-              <a href={item.to}>{item.text}</a>
+              <a href={item.to} className={styles['list-item-anchor']}>
+                {item.text}
+              </a>
               {item.children && (
-                <ul>
+                <ul className={styles['list-child']}>
                   {item.children.map((child, i2) => {
                     return (
                       <li
-                        className={styles['list-child']}
+                        className={styles['list-child-item']}
                         key={`anchor-${i1}-${i2}`}
                       >
-                        <a href={child.to}>{child.text}</a>
+                        <a
+                          href={child.to}
+                          className={styles['list-child-anchor']}
+                        >
+                          {child.text}
+                        </a>
                       </li>
                     );
                   })}

@@ -1,0 +1,27 @@
+.nav {
+  position: sticky;
+  top: 40px;
+}
+.list-item {
+  list-style: none;
+  margin-bottom: 8px;
+}
+.list-item-anchor {
+  font-size: 1rem;
+  font-weight: bold;
+}
+.list-child {
+  padding-left: 16px;
+}
+
+.list-child-item {
+  list-style: none;
+  margin-bottom: 4px;
+}
+.list-child-item:first-child {
+  margin-top: 8px;
+}
+
+.list-child-item-anchor {
+  font-size: 1rem;
+}

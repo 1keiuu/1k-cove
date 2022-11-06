@@ -9,9 +9,7 @@ import {
 import superjson from 'superjson';
 import styles from '../../styles/pages/posts/Id.module.css';
 import Detail from '../../components/posts/Detail/Detail';
-import { marked } from 'marked';
-import hljs from 'highlightjs';
-import { JSDOM } from 'jsdom';
+import { DomParser } from '../../utils/domParser';
 
 type PostIdPageProps = {
   post: string;
@@ -26,7 +24,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   return (
     <div className={styles['wrapper']}>
       <div className={styles['inner']}>
-        <PageNavigation></PageNavigation>
+        <PageNavigation backPath="/"></PageNavigation>
         <Detail post={post} html={props.html} headings={headings}></Detail>
       </div>
     </div>
@@ -64,52 +62,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
     };
   }
   // parse md to html
-  const html = marked(post.content);
-  marked.setOptions({
-    highlight: function (code, lang) {
-      return hljs.highlightAuto(code, [lang]).value;
-    },
-  });
-  // extract headings from html
-  const jsdom = new JSDOM(html);
-  const h2List = jsdom.window.document.querySelectorAll('h2');
-  console.log();
-  const headingNames = ['H2', 'H3'];
-  // const headings = headingNames.map((heading) => {
-  //   const nodeList = jsdom.window.document.querySelectorAll(heading);
-  //   [...Array.from(nodeList)].map((node) => {
-  //     return node;
-  //   });
-  // });
-  const dom = jsdom.window.document;
-
-  const treeWalker = dom.createTreeWalker(dom, 1, function (node) {
-    if (headingNames.includes(node.nodeName)) {
-      return 1;
-    } else {
-      return 3;
-    }
-  });
-  let current;
-  const headings: AnchorListItem[] = [];
-  while ((current = treeWalker.nextNode())) {
-    if (current.nodeName === 'H2') {
-      headings.push({
-        to: `#${current.textContent}`,
-        text: current.textContent ?? '',
-        children: [],
-      });
-    } else if (current.nodeName === 'H3') {
-      const last = headings.at(headings.length - 1);
-      if (!last) continue;
-      last.children.push({
-        to: `#${current.textContent}`,
-        text: current.textContent ?? '',
-        children: [],
-      });
-    }
-  }
-
+  const parser = new DomParser(post.content);
+  const { html, headings } = parser.parse();
   return {
     props: {
       post: superjson.stringify(post),
