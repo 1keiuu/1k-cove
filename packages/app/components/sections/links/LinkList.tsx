@@ -50,13 +50,7 @@ const noteLinks = [
     text: '学生エンジニアが初めてハッカソンに参加してみたら学びが多かった話',
   },
 ];
-const blogLinks = [
-  {
-    date: '2022.02',
-    url: 'https://blog.1keiuu.com/articles/10',
-    text: 'monorepo構成のアプリをcloud build経由でvercelへデプロイする',
-  },
-];
+const blogLinks: { date: string; url: string; text: string }[] = [];
 
 type LinkItem = { date: string; url: string; text: string };
 type LinkItemProps = { title: string; items: LinkItem[] };
