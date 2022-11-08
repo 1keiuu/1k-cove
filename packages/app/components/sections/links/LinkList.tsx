@@ -59,6 +59,7 @@ const LinkListItemGroup: React.FC<LinkItemProps> = (props) => {
   const _LinkListItemGroupInner = styled.div`
     margin-bottom: 32px;
   `;
+  if (props.items.length === 0) return null;
   return (
     <_LinkListItemGroupInner>
       <_SubTitle>{props.title}</_SubTitle>
