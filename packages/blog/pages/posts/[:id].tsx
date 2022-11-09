@@ -24,7 +24,9 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   return (
     <div className={styles['wrapper']}>
       <div className={styles['inner']}>
-        <PageNavigation backPath="/"></PageNavigation>
+        <div className={styles['page-navigation-wrapper']}>
+          <PageNavigation backPath="/"></PageNavigation>
+        </div>
         <Detail post={post} html={props.html} headings={headings}></Detail>
       </div>
     </div>
