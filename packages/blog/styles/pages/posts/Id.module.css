@@ -7,6 +7,10 @@
 }
 
 .inner {
-  max-width: 1080px;
+  max-width: 1200px;
   width: 85vw;
+}
+
+.page-navigation-wrapper {
+  margin-bottom: 32px;
 }

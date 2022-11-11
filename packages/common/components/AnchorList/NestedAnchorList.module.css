@@ -1,9 +1,9 @@
 .nav {
   position: sticky;
-  top: 40px;
-  padding: 8px;
-  min-width: 300px;
+  top: 0;
+  padding: 40px 8px;
   color: #333;
+  width: 100%;
 }
 .list {
   padding: 0;
