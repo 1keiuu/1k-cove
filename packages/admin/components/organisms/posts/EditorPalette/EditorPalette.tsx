@@ -2,6 +2,8 @@ import Button from '../../shared/Button/Button';
 import CustomLabel from '../../shared/CustomLabel/CustomLabel';
 import styles from './EditorPalette.module.css';
 import Image from 'next/image';
+import { useRef } from 'react';
+import { LinkCard } from '../../../../@types/post';
 
 type EditorPaletteProps = {
   onSubmit: () => void;
@@ -9,11 +11,15 @@ type EditorPaletteProps = {
   onOGPInputChange: (files: FileList | null) => void;
   ogpImageUrl: string;
   imageUrls: string[];
+  linkCards: LinkCard[];
   onImageInputChange: (files: FileList | null) => void;
   onImageDeleteButtonClick: (url: string) => void;
+  onLinkCardSubmit: (src: string | null) => void;
 };
 
 const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
+  const linkCardInputRef = useRef<HTMLInputElement>(null);
+
   return (
     <nav>
       <ul>
@@ -42,7 +48,7 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
         </li>
         <li className={styles['list-item']}>
           <CustomLabel>
-            OGP
+            記事OGP
             <input
               type="file"
               accept="image/*"
@@ -60,7 +66,54 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
             height={300}
           />
         </li>
-
+        <li className={styles['list-item']}>
+          <CustomLabel>
+            <div>
+              Link Card
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  props.onLinkCardSubmit(
+                    linkCardInputRef?.current?.value || null
+                  );
+                }}
+              ></button>
+            </div>
+            <input type="text" ref={linkCardInputRef} />
+            <ul>
+              {props.linkCards.map((linkCard, i) => {
+                return (
+                  <li key={`${linkCard.src}-${i}`}>
+                    <a
+                      href={linkCard.src}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      {linkCard.src}
+                    </a>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        dispatchEvent(
+                          new CustomEvent('insertLinkCard', {
+                            detail: {
+                              src: props.linkCards[i].src,
+                              title: props.linkCards[i].title,
+                              imgSrc: props.linkCards[i].imgSrc,
+                            },
+                          })
+                        );
+                      }}
+                    >
+                      挿入
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </CustomLabel>
+        </li>
         <li className={styles['list-item']}>
           <CustomLabel>
             画像

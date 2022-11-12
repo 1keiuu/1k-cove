@@ -18,6 +18,7 @@ import CustomTitleInput from '../../components/organisms/shared/CustomTitleInput
 import Router from 'next/router';
 import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
 import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';
+import { LinkCard } from '../../@types/post';
 
 type PostIdPageProps = {
   post: string;
@@ -52,6 +53,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [ogpImageUrl, setOgpImageUrl] = useState(post.ogpUrl ?? '');
   const [imageUrls, setImageUrls] = useState(post.imageUrls ?? []);
+  const [linkCards, setLinkCards] = useState<LinkCard[]>([]);
   const defaultValues = post;
   const { handleSubmit, setValue, getValues, watch, register } = useForm<Post>({
     defaultValues,
@@ -150,6 +152,15 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
         throw new Error(e);
       });
   };
+  const onLinkCardSubmit = (src: string | null) => {
+    if (src === null) return;
+    const newLinkCard = {
+      src: src,
+      imgSrc: '',
+      title: '',
+    };
+    setLinkCards([...linkCards, newLinkCard]);
+  };
   const watchedContent = watch('content');
 
   return (
@@ -194,8 +205,10 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
           onOGPInputChange={handleOGPInputChange}
           ogpImageUrl={ogpImageUrl}
           imageUrls={imageUrls}
+          linkCards={linkCards}
           onImageInputChange={handleImageInputChange}
           onImageDeleteButtonClick={handleImageDeleteButtonClick}
+          onLinkCardSubmit={onLinkCardSubmit}
         ></EditorPalette>
       </form>
     </div>
