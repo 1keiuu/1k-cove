@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@1k-cove/md-editor": "*",
     "@1k-cove/common": "*",
+    "@1k-cove/md-editor": "*",
+    "@types/jsdom": "^20.0.1",
+    "jsdom": "^20.0.2",
     "next": "13.0.0",
     "next-transpile-modules": "^9.1.0",
     "react": "18.2.0",

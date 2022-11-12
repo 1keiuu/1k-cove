@@ -8,4 +8,9 @@ export type Post = {
   imageUrls: string[];
 };
 
-export type LinkCard = { src: string; title: string; imgSrc: string };
+export type LinkCard = {
+  src: string;
+  title: string;
+  imgSrc: string;
+  description: string;
+};

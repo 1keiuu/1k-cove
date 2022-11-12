@@ -77,7 +77,9 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
                     linkCardInputRef?.current?.value || null
                   );
                 }}
-              ></button>
+              >
+                追加
+              </button>
             </div>
             <input type="text" ref={linkCardInputRef} />
             <ul>
@@ -97,11 +99,7 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
                         e.preventDefault();
                         dispatchEvent(
                           new CustomEvent('insertLinkCard', {
-                            detail: {
-                              src: props.linkCards[i].src,
-                              title: props.linkCards[i].title,
-                              imgSrc: props.linkCards[i].imgSrc,
-                            },
+                            detail: props.linkCards[i],
                           })
                         );
                       }}
