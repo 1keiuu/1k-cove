@@ -13,6 +13,10 @@ a {
   text-decoration: none;
 }
 
+p ul {
+  line-height: 2rem;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -25,4 +29,20 @@ a {
     color: white;
     background: black;
   }
+}
+
+.ogp-card__link {
+  width: 100%;
+}
+.ogp-card {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1rem;
+  height: 140px;
+  width: 100%;
+}
+
+.ogp-card__image {
+  margin-right: 16px;
 }

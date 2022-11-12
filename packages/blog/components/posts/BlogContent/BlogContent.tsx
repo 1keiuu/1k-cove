@@ -2,7 +2,6 @@ import { Post } from '@1k-cove/common';
 import { useEffect, useRef } from 'react';
 import styles from './BlogContent.module.css';
 import 'highlightjs/styles/github.css';
-
 type BlogContentProps = {
   post: Post;
   html: string;

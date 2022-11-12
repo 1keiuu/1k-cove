@@ -1,6 +1,11 @@
+// utils
 export * from './utils/firebase';
+
+// api
 export * from './api/posts';
 export * from './api/storage';
+
+// components
 export * from './components/Pagination/Pagination';
 export * from './components/PageNavigation/PageNavigation';
 export * from './components/AnchorList/NestedAnchorList';

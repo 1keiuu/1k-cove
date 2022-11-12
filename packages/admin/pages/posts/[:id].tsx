@@ -79,13 +79,13 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
       postApiClient
         .deletePost(post.slug)
         .then(() => {
-          setIsLoading(false);
           Router.push('/');
         })
         .catch((e) => {
           throw new Error(e);
         });
     }
+    setIsLoading(false);
   };
 
   const handleOGPInputChange = (files: FileList | null) => {
