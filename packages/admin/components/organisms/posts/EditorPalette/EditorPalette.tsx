@@ -3,7 +3,7 @@ import CustomLabel from '../../shared/CustomLabel/CustomLabel';
 import styles from './EditorPalette.module.css';
 import Image from 'next/image';
 import { useRef } from 'react';
-import { LinkCard } from '../../../../@types/post';
+import type { LinkCard } from '@1k-cove/common';
 
 type EditorPaletteProps = {
   onSubmit: () => void;

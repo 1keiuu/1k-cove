@@ -1,7 +1,6 @@
-import { AnchorListItem, Post } from '@1k-cove/common';
+import { AnchorListItem, NestedAnchorList, Post } from '@1k-cove/common';
 import styles from './Detail.module.css';
 import 'highlightjs/styles/github.css';
-import { NestedAnchorList } from '@1k-cove/common';
 import { Preview } from '@1k-cove/md-editor';
 import BlogKeyVisual from '../BlogKeyVisual/BlogKeyVisual';
 

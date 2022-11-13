@@ -1,4 +1,3 @@
-import { Post } from '@1k-cove/common';
 import { useEffect, useRef } from 'react';
 import styles from './Preview.module.css';
 import 'highlightjs/styles/github.css';
@@ -8,7 +7,7 @@ type PreviewProps = {
 };
 
 const Preview: React.FC<PreviewProps> = (props) => {
-  const articleRef = useRef<HTMLDivElement>(null);
+  const articleRef = useRef<HTMLElement>(null);
   useEffect(() => {
     if (!articleRef.current) return;
     articleRef.current.innerHTML = props.html;

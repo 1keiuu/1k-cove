@@ -7,3 +7,10 @@ export type Post = {
   ogpUrl: string;
   imageUrls: string[];
 };
+
+export type LinkCard = {
+  src: string;
+  title: string;
+  imgSrc: string;
+  description: string;
+};

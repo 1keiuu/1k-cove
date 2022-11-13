@@ -12,6 +12,5 @@ export * from './components/AnchorList/NestedAnchorList';
 
 // types
 import { FirebaseConfig } from './@types/firebase';
-import { Post } from './@types/post';
-export type { FirebaseConfig };
-export type { Post };
+import { Post, LinkCard } from './@types/post';
+export type { FirebaseConfig, Post, LinkCard };

@@ -1,4 +1,3 @@
-import Router from 'next/router';
 import styles from './NestedAnchorList.module.css';
 
 export type AnchorListItem = {

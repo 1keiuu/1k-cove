@@ -14,5 +14,6 @@ blog-deploy:
 
 admin-up:
 	yarn workspace @1k-cove/admin dev
-admin-functions-deploy:
-	yarn workspace @1k-cove/admin firebase deploy --only functions
+
+functions-deploy:
+	yarn workspace @1k-cove/functions deploy

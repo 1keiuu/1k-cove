@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { LinkCard } from '../../../../admin/@types/post';
+import { LinkCard } from '@1k-cove/common';
 import './editor.css';
 
 type EditorProps = {

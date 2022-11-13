@@ -6,6 +6,7 @@ import {
   Post,
   FirebaseConfig,
   PageNavigation,
+  LinkCard,
 } from '@1k-cove/common';
 import superjson from 'superjson';
 import { SwitchTab, Editor, Preview, DomParser } from '@1k-cove/md-editor';
@@ -18,7 +19,6 @@ import CustomTitleInput from '../../components/organisms/shared/CustomTitleInput
 import Router from 'next/router';
 import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
 import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';
-import { LinkCard } from '../../@types/post';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 
 type PostIdPageProps = {

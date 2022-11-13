@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/highlightjs": "^9.12.2",
     "@types/marked": "^4.0.7",
+    "highlightjs": "^9.16.2",
     "marked": "^4.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

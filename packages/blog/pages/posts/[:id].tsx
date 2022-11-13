@@ -65,7 +65,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
   // parse md to html
   const parser = new DomParserWithSSR();
-  const html = parser.parse();
+  const html = parser.parse(post.content);
   const headings = parser.extractHeadings(html);
 
   return {
