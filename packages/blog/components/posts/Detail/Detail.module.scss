@@ -1,0 +1,25 @@
+@import 'styles/variables';
+
+.flex {
+  display: flex;
+  @include mq(md) {
+    flex-direction: column-reverse;
+  }
+}
+.content-wrapper {
+  width: 70%;
+  @include mq(md) {
+    width: 100%;
+  }
+}
+.anchor-list-wrapper {
+  width: 30%;
+  margin-left: 60px;
+  @include mq(md) {
+    width: 100%;
+    margin: 0;
+    ul {
+      margin: 0;
+    }
+  }
+}

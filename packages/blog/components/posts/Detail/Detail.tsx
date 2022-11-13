@@ -1,8 +1,7 @@
-import { AnchorListItem, Post } from '@1k-cove/common';
-import styles from './Detail.module.css';
+import { AnchorListItem, NestedAnchorList, Post } from '@1k-cove/common';
+import styles from './Detail.module.scss';
 import 'highlightjs/styles/github.css';
-import { NestedAnchorList } from '@1k-cove/common';
-import BlogContent from '../BlogContent/BlogContent';
+import { Preview } from '@1k-cove/md-editor';
 import BlogKeyVisual from '../BlogKeyVisual/BlogKeyVisual';
 
 type DetailProps = {
@@ -17,7 +16,7 @@ const Detail: React.FC<DetailProps> = (props) => {
       <BlogKeyVisual imageUrl={props.post.ogpUrl}></BlogKeyVisual>
       <div className={styles['flex']}>
         <div className={styles['content-wrapper']}>
-          <BlogContent post={props.post} html={props.html}></BlogContent>
+          <Preview html={props.html}></Preview>
         </div>
         <div className={styles['anchor-list-wrapper']}>
           <NestedAnchorList items={props.headings}></NestedAnchorList>

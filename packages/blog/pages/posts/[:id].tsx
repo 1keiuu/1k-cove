@@ -7,9 +7,10 @@ import {
   AnchorListItem,
 } from '@1k-cove/common';
 import superjson from 'superjson';
-import styles from '../../styles/pages/posts/Id.module.css';
+import styles from './Id.module.scss';
 import Detail from '../../components/posts/Detail/Detail';
-import { DomParser } from '../../utils/domParser';
+import { DomParserWithSSR } from '@1k-cove/md-editor/ssr';
+import DefaultHead from '../../components/meta/DefaultHead';
 
 type PostIdPageProps = {
   post: string;
@@ -22,14 +23,24 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const headings = superjson.parse(props.headings) as AnchorListItem[];
 
   return (
-    <div className={styles['wrapper']}>
-      <div className={styles['inner']}>
-        <div className={styles['page-navigation-wrapper']}>
-          <PageNavigation backPath="/"></PageNavigation>
+    <>
+      <DefaultHead
+        meta={{
+          title: post.title,
+          description: '',
+          imgUrl: post.ogpUrl,
+          url: `https://blog.1keiuu.com/posts/${post.slug}`,
+        }}
+      ></DefaultHead>
+      <div className={styles['wrapper']}>
+        <div className={styles['inner']}>
+          <div className={styles['page-navigation-wrapper']}>
+            <PageNavigation backPath="/"></PageNavigation>
+          </div>
+          <Detail post={post} html={props.html} headings={headings}></Detail>
         </div>
-        <Detail post={post} html={props.html} headings={headings}></Detail>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -64,8 +75,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
     };
   }
   // parse md to html
-  const parser = new DomParser(post.content);
-  const { html, headings } = parser.parse();
+  const parser = new DomParserWithSSR();
+  const html = parser.parse(post.content);
+  const headings = parser.extractHeadings(html);
+
   return {
     props: {
       post: superjson.stringify(post),

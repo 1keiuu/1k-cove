@@ -6,11 +6,12 @@ import {
   Post,
   FirebaseConfig,
   PageNavigation,
+  LinkCard,
 } from '@1k-cove/common';
 import superjson from 'superjson';
-import { SwitchTab, Editor, Preview } from '@1k-cove/md-editor';
-import { useState } from 'react';
-import styles from '../../styles/pages/posts/Id.module.css';
+import { SwitchTab, Editor, Preview, DomParser } from '@1k-cove/md-editor';
+import { useMemo, useState } from 'react';
+import styles from './Id.module.scss';
 import { useForm } from 'react-hook-form';
 import Loading from '../../components/organisms/shared/Loading/Loading';
 import EditorPalette from '../../components/organisms/posts/EditorPalette/EditorPalette';
@@ -18,6 +19,7 @@ import CustomTitleInput from '../../components/organisms/shared/CustomTitleInput
 import Router from 'next/router';
 import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
 import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';
+import { getFunctions, httpsCallable } from 'firebase/functions';
 
 type PostIdPageProps = {
   post: string;
@@ -52,10 +54,15 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [ogpImageUrl, setOgpImageUrl] = useState(post.ogpUrl ?? '');
   const [imageUrls, setImageUrls] = useState(post.imageUrls ?? []);
+  const [linkCards, setLinkCards] = useState<LinkCard[]>([]);
   const defaultValues = post;
   const { handleSubmit, setValue, getValues, watch, register } = useForm<Post>({
     defaultValues,
   });
+
+  const functions = getFunctions();
+  functions.region = 'asia-northeast1';
+  const getOgpInfo = httpsCallable(functions, 'getOgpInfo');
 
   const handleContentChange = (content: string) => {
     setValue('content', content);
@@ -79,13 +86,13 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
       postApiClient
         .deletePost(post.slug)
         .then(() => {
-          setIsLoading(false);
           Router.push('/');
         })
         .catch((e) => {
           throw new Error(e);
         });
     }
+    setIsLoading(false);
   };
 
   const handleOGPInputChange = (files: FileList | null) => {
@@ -150,7 +157,29 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
         throw new Error(e);
       });
   };
+
+  const onLinkCardSubmit = async (src: string | null) => {
+    if (src === null) {
+      return;
+    }
+    setIsLoading(true);
+    const newLinkCard = await getOgpInfo({ url: src })
+      .then((result) => {
+        return (result.data as { ogp: LinkCard }).ogp;
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+
+    setLinkCards([...linkCards, newLinkCard]);
+  };
   const watchedContent = watch('content');
+  const html = useMemo(() => {
+    // parse md to html
+    const parser = new DomParser();
+    const html = parser.parse(watchedContent);
+    return html;
+  }, [watchedContent]);
 
   return (
     <div className={styles.wrapper}>
@@ -185,7 +214,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
               onContentChange={handleContentChange}
             ></Editor>
           ) : (
-            <Preview content={watchedContent}></Preview>
+            <Preview html={html}></Preview>
           )}
         </div>
         <EditorPalette
@@ -194,10 +223,13 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
           onOGPInputChange={handleOGPInputChange}
           ogpImageUrl={ogpImageUrl}
           imageUrls={imageUrls}
+          linkCards={linkCards}
           onImageInputChange={handleImageInputChange}
           onImageDeleteButtonClick={handleImageDeleteButtonClick}
+          onLinkCardSubmit={onLinkCardSubmit}
         ></EditorPalette>
       </form>
+      <Loading loading={isLoading}></Loading>
     </div>
   );
 };

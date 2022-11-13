@@ -8,7 +8,7 @@ import {
 } from '@1k-cove/common';
 import superjson from 'superjson';
 import { useState } from 'react';
-import styles from '../../styles/pages/posts/New.module.css';
+import styles from './New.module.scss';
 import { useForm } from 'react-hook-form';
 import Loading from '../../components/organisms/shared/Loading/Loading';
 import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';

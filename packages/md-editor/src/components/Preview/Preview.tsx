@@ -1,21 +1,18 @@
 import { useEffect, useRef } from 'react';
-import './preview.css';
-import { marked } from 'marked';
+import styles from './Preview.module.css';
+import 'highlightjs/styles/github.css';
 
 type PreviewProps = {
-  content: string;
+  html: string;
 };
 
 const Preview: React.FC<PreviewProps> = (props) => {
-  const previewRef = useRef<HTMLDivElement>(null);
+  const articleRef = useRef<HTMLElement>(null);
   useEffect(() => {
-    if (!previewRef.current) return;
-    previewRef.current.innerHTML = marked(props.content, {
-      gfm: true,
-      breaks: true,
-    });
-  }, [props.content]);
-  return <div className="preview" ref={previewRef}></div>;
+    if (!articleRef.current) return;
+    articleRef.current.innerHTML = props.html;
+  }, [props.html]);
+  return <article ref={articleRef} className={styles.preview}></article>;
 };
 
 export default Preview;

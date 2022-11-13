@@ -1,7 +1,8 @@
+// FIXME: index.tsxと表示内容は同じだが分かれているので管理が面倒
 import { GetStaticProps, NextPage } from 'next';
 import { PostApiClient, initFirebase, Post, Pagination } from '@1k-cove/common';
 import superjson from 'superjson';
-import styles from '../styles/Index.module.css';
+import styles from './Index.module.scss';
 import PostList from '../components/posts/PostList/PostList';
 
 type PostIdPageProps = {

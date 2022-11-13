@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 30px;
+}
+.inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 95vw;
+  height: calc(100vh - 111px);
+}

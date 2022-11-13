@@ -2,6 +2,8 @@ import Button from '../../shared/Button/Button';
 import CustomLabel from '../../shared/CustomLabel/CustomLabel';
 import styles from './EditorPalette.module.css';
 import Image from 'next/image';
+import { useRef } from 'react';
+import type { LinkCard } from '@1k-cove/common';
 
 type EditorPaletteProps = {
   onSubmit: () => void;
@@ -9,11 +11,15 @@ type EditorPaletteProps = {
   onOGPInputChange: (files: FileList | null) => void;
   ogpImageUrl: string;
   imageUrls: string[];
+  linkCards: LinkCard[];
   onImageInputChange: (files: FileList | null) => void;
   onImageDeleteButtonClick: (url: string) => void;
+  onLinkCardSubmit: (src: string | null) => void;
 };
 
 const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
+  const linkCardInputRef = useRef<HTMLInputElement>(null);
+
   return (
     <nav>
       <ul>
@@ -42,7 +48,7 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
         </li>
         <li className={styles['list-item']}>
           <CustomLabel>
-            OGP
+            記事OGP
             <input
               type="file"
               accept="image/*"
@@ -54,13 +60,70 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
           </CustomLabel>
           <Image
             className={styles.image}
-            src={props.ogpImageUrl}
+            src={
+              props.ogpImageUrl ||
+              'https://storage.googleapis.com/portfolio21-56e7e.appspot.com/articles/placeholder/lazy_with_icon.png'
+            }
             alt="OGP image"
             width={300}
             height={300}
           />
         </li>
-
+        <li className={styles['list-item']}>
+          <CustomLabel>
+            <div>
+              Link Card
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  props.onLinkCardSubmit(
+                    linkCardInputRef?.current?.value || null
+                  );
+                }}
+                className={styles['link-card__add-button']}
+              >
+                追加
+              </button>
+            </div>
+            <input
+              type="text"
+              ref={linkCardInputRef}
+              className={styles['link-card__input']}
+            />
+            <ul className={styles['link-card__list']}>
+              {props.linkCards.map((linkCard, i) => {
+                return (
+                  <li
+                    key={`${linkCard.src}-${i}`}
+                    className={styles['link-card__list-item']}
+                  >
+                    <a
+                      href={linkCard.src}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className={styles['link-card__title']}
+                    >
+                      {linkCard.title || 'タイトル不明'}
+                    </a>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        dispatchEvent(
+                          new CustomEvent('insertLinkCard', {
+                            detail: props.linkCards[i],
+                          })
+                        );
+                      }}
+                    >
+                      挿入
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </CustomLabel>
+        </li>
         <li className={styles['list-item']}>
           <CustomLabel>
             画像

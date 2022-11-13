@@ -1,9 +1,17 @@
+@import '../../styles/variables.scss';
 .nav {
   position: sticky;
   top: 0;
   padding: 40px 8px;
   color: #333;
   width: 100%;
+  @include mq(md) {
+    border-top: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+    padding: 8px 16px;
+    margin: 32px 0;
+    position: unset;
+  }
 }
 .list {
   padding: 0;
