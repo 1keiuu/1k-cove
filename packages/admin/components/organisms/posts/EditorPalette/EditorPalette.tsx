@@ -60,7 +60,10 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
           </CustomLabel>
           <Image
             className={styles.image}
-            src={props.ogpImageUrl}
+            src={
+              props.ogpImageUrl ||
+              'https://storage.googleapis.com/portfolio21-56e7e.appspot.com/articles/placeholder/lazy_with_icon.png'
+            }
             alt="OGP image"
             width={300}
             height={300}
@@ -77,19 +80,28 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
                     linkCardInputRef?.current?.value || null
                   );
                 }}
+                className={styles['link-card__add-button']}
               >
                 追加
               </button>
             </div>
-            <input type="text" ref={linkCardInputRef} />
-            <ul>
+            <input
+              type="text"
+              ref={linkCardInputRef}
+              className={styles['link-card__input']}
+            />
+            <ul className={styles['link-card__list']}>
               {props.linkCards.map((linkCard, i) => {
                 return (
-                  <li key={`${linkCard.src}-${i}`}>
+                  <li
+                    key={`${linkCard.src}-${i}`}
+                    className={styles['link-card__list-item']}
+                  >
                     <a
                       href={linkCard.src}
                       target="_blank"
                       rel="noreferrer noopener"
+                      className={styles['link-card__title']}
                     >
                       {linkCard.title}
                     </a>

@@ -45,13 +45,15 @@ const Editor: React.FC<EditorProps> = (props) => {
     if (!target) return;
     // anchor
     const anchor = document.createElement('a');
-    console.log(e.detail);
     const src = e.detail.src;
     anchor.target = '_blank';
     anchor.rel = 'noopener';
     anchor.href = src;
+    anchor.className = 'link-card';
+
     // inner
     const inner = document.createElement('span');
+    inner.className = 'link-card__inner';
 
     // img
     const img = document.createElement('img');
@@ -59,14 +61,24 @@ const Editor: React.FC<EditorProps> = (props) => {
     img.src = imgSrc;
     img.style.width = '100%';
     img.style.height = '100%';
+    img.className = 'link-card__image';
 
-    // text
-    const title = e.detail.title;
-    const text = document.createTextNode(title);
+    // title
+    const span1 = document.createElement('span');
+    const title = document.createTextNode(e.detail.title);
+    span1.appendChild(title);
+    span1.className = 'link-card__title';
 
-    inner.appendChild(img);
-    inner.appendChild(text);
+    // description
+    const span2 = document.createElement('span');
+    const description = document.createTextNode(e.detail.description);
+    span2.appendChild(description);
+    span2.className = 'link-card__description';
 
+    inner.appendChild(span1);
+    inner.appendChild(span2);
+
+    anchor.appendChild(img);
     anchor.appendChild(inner);
     const beforeInsertTarget = target.value.slice(0, target.selectionStart);
     const afterInsertTarget = target.value.slice(target.selectionStart);

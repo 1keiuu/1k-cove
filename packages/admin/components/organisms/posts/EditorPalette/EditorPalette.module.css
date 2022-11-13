@@ -43,3 +43,23 @@
   border: var(--color-grey-deep) 1px solid;
   z-index: 2;
 }
+
+.link-card__add-button {
+  margin-left: 16px;
+  margin-bottom: 8px;
+}
+
+.link-card__list {
+  margin-top: 16px;
+  padding-left: 8px;
+}
+
+.link-card__list-item {
+  margin-top: 8px;
+  display: flex;
+}
+
+.link-card__title {
+  text-decoration: underline;
+  margin-right: 16px;
+}

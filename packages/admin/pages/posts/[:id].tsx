@@ -19,6 +19,7 @@ import Router from 'next/router';
 import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
 import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';
 import { LinkCard } from '../../@types/post';
+import { getFunctions, httpsCallable } from 'firebase/functions';
 
 type PostIdPageProps = {
   post: string;
@@ -58,6 +59,10 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const { handleSubmit, setValue, getValues, watch, register } = useForm<Post>({
     defaultValues,
   });
+
+  const functions = getFunctions();
+  functions.region = 'asia-northeast1';
+  const getOgpInfo = httpsCallable(functions, 'getOgpInfo');
 
   const handleContentChange = (content: string) => {
     setValue('content', content);
@@ -152,13 +157,19 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
         throw new Error(e);
       });
   };
-  const onLinkCardSubmit = (src: string | null) => {
-    if (src === null) return;
-    const newLinkCard = {
-      src: src,
-      imgSrc: '',
-      title: '',
-    };
+  const onLinkCardSubmit = async (src: string | null) => {
+    setIsLoading(true);
+    if (src === null) {
+      return;
+    }
+    const newLinkCard = await getOgpInfo({ url: src })
+      .then((result) => {
+        return (result.data as { ogp: LinkCard }).ogp;
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+
     setLinkCards([...linkCards, newLinkCard]);
   };
   const watchedContent = watch('content');
@@ -211,6 +222,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
           onLinkCardSubmit={onLinkCardSubmit}
         ></EditorPalette>
       </form>
+      <Loading loading={isLoading}></Loading>
     </div>
   );
 };
