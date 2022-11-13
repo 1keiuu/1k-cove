@@ -63,7 +63,7 @@ const Editor: React.FC<EditorProps> = (props) => {
 
     // title
     const span1 = document.createElement('span');
-    const title = document.createTextNode(e.detail.title ?? e.detail.src);
+    const title = document.createTextNode(e.detail.title || e.detail.src);
     span1.appendChild(title);
     span1.className = 'link-card__title';
 

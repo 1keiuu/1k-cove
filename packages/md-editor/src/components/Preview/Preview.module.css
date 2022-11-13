@@ -26,6 +26,7 @@
   margin: 0 auto;
   border: 1px solid #e3e4e7;
   overflow: hidden;
+  text-decoration: none;
 }
 .preview :global(.link-card__inner) {
   display: flex;
@@ -36,6 +37,7 @@
 .preview :global(.link-card__image) {
   width: 100%;
   height: auto;
+  max-height: 240px;
   object-fit: cover;
 }
 .preview :global(.link-card__title) {

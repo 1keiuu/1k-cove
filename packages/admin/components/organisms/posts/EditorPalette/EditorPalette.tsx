@@ -103,7 +103,7 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
                       rel="noreferrer noopener"
                       className={styles['link-card__title']}
                     >
-                      {linkCard.title}
+                      {linkCard.title || 'タイトル不明'}
                     </a>
                     <button
                       type="button"
