@@ -11,7 +11,7 @@ import {
 import superjson from 'superjson';
 import { SwitchTab, Editor, Preview, DomParser } from '@1k-cove/md-editor';
 import { useMemo, useState } from 'react';
-import styles from '../../styles/pages/posts/Id.module.css';
+import styles from './Id.module.scss';
 import { useForm } from 'react-hook-form';
 import Loading from '../../components/organisms/shared/Loading/Loading';
 import EditorPalette from '../../components/organisms/posts/EditorPalette/EditorPalette';

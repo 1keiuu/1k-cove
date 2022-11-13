@@ -7,7 +7,7 @@ import {
   AnchorListItem,
 } from '@1k-cove/common';
 import superjson from 'superjson';
-import styles from '../../styles/pages/posts/Id.module.css';
+import styles from './Id.module.scss';
 import Detail from '../../components/posts/Detail/Detail';
 import { DomParserWithSSR } from '@1k-cove/md-editor/ssr';
 import DefaultHead from '../../components/meta/DefaultHead';

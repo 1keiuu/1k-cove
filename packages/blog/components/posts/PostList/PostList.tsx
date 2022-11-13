@@ -1,6 +1,6 @@
 import { Post } from '@1k-cove/common';
 import PostListItem from '../PostListItem/PostListItem';
-import styles from './PostList.module.css';
+import styles from './PostList.module.scss';
 
 type PostListProps = {
   posts: Post[];
