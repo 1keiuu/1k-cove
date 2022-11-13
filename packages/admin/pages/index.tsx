@@ -39,6 +39,7 @@ const IndexPage: NextPage<IndexPageProps> = (props) => {
           })
         )}
       </ul>
+      <Link href={`/categories`}>カテゴリー</Link>
     </>
   );
 };

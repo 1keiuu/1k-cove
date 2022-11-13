@@ -4,6 +4,7 @@ export * from './utils/firebase';
 // api
 export * from './api/posts';
 export * from './api/storage';
+export * from './api/categories';
 
 // components
 export * from './components/Pagination/Pagination';
