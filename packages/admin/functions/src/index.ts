@@ -32,9 +32,7 @@ export const getOgpInfo = functions
             ogp.imgSrc =
               'https://storage.googleapis.com/portfolio21-56e7e.appspot.com/articles/placeholder/lazy_with_icon.png';
           }
-          ogp.description = $("meta[property='og:description']").attr(
-            'content'
-          );
+          ogp.description = $("meta[property='description']").attr('content');
 
           res.send({
             status: 200,

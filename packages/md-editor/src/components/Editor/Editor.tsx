@@ -59,19 +59,17 @@ const Editor: React.FC<EditorProps> = (props) => {
     const img = document.createElement('img');
     const imgSrc = e.detail.imgSrc;
     img.src = imgSrc;
-    img.style.width = '100%';
-    img.style.height = '100%';
     img.className = 'link-card__image';
 
     // title
     const span1 = document.createElement('span');
-    const title = document.createTextNode(e.detail.title);
+    const title = document.createTextNode(e.detail.title ?? e.detail.src);
     span1.appendChild(title);
     span1.className = 'link-card__title';
 
     // description
     const span2 = document.createElement('span');
-    const description = document.createTextNode(e.detail.description);
+    const description = document.createTextNode(e.detail.description ?? '');
     span2.appendChild(description);
     span2.className = 'link-card__description';
 

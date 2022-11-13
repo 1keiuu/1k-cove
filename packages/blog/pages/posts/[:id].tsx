@@ -9,7 +9,7 @@ import {
 import superjson from 'superjson';
 import styles from '../../styles/pages/posts/Id.module.css';
 import Detail from '../../components/posts/Detail/Detail';
-import { DomParser } from '../../utils/domParser';
+import { DomParserWithSSR } from '@1k-cove/md-editor/ssr';
 
 type PostIdPageProps = {
   post: string;
@@ -64,8 +64,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
     };
   }
   // parse md to html
-  const parser = new DomParser(post.content);
-  const { html, headings } = parser.parse();
+  const parser = new DomParserWithSSR();
+  const html = parser.parse();
+  const headings = parser.extractHeadings(html);
+
   return {
     props: {
       post: superjson.stringify(post),

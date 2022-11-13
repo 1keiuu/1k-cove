@@ -8,8 +8,8 @@ import {
   PageNavigation,
 } from '@1k-cove/common';
 import superjson from 'superjson';
-import { SwitchTab, Editor, Preview } from '@1k-cove/md-editor';
-import { useState } from 'react';
+import { SwitchTab, Editor, Preview, DomParser } from '@1k-cove/md-editor';
+import { useMemo, useState } from 'react';
 import styles from '../../styles/pages/posts/Id.module.css';
 import { useForm } from 'react-hook-form';
 import Loading from '../../components/organisms/shared/Loading/Loading';
@@ -157,11 +157,12 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
         throw new Error(e);
       });
   };
+
   const onLinkCardSubmit = async (src: string | null) => {
-    setIsLoading(true);
     if (src === null) {
       return;
     }
+    setIsLoading(true);
     const newLinkCard = await getOgpInfo({ url: src })
       .then((result) => {
         return (result.data as { ogp: LinkCard }).ogp;
@@ -173,6 +174,12 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
     setLinkCards([...linkCards, newLinkCard]);
   };
   const watchedContent = watch('content');
+  const html = useMemo(() => {
+    // parse md to html
+    const parser = new DomParser();
+    const html = parser.parse(watchedContent);
+    return html;
+  }, [watchedContent]);
 
   return (
     <div className={styles.wrapper}>
@@ -207,7 +214,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
               onContentChange={handleContentChange}
             ></Editor>
           ) : (
-            <Preview content={watchedContent}></Preview>
+            <Preview html={html}></Preview>
           )}
         </div>
         <EditorPalette
