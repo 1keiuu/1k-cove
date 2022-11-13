@@ -10,6 +10,7 @@ blog-up:
 blog-build:
 	yarn workspace @1k-cove/blog build
 blog-deploy:
+	make blog-build
 	yarn workspace @1k-cove/blog deploy
 
 admin-up:
