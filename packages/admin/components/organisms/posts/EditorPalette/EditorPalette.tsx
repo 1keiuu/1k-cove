@@ -91,7 +91,7 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
                       target="_blank"
                       rel="noreferrer noopener"
                     >
-                      {linkCard.src}
+                      {linkCard.title}
                     </a>
                     <button
                       type="button"
