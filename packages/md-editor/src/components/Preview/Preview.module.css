@@ -3,6 +3,10 @@
   object-fit: contain;
 }
 
+.preview a {
+  text-decoration: underline;
+}
+
 .preview pre {
   background: #f6f8fa;
   padding: 16px 8px;
@@ -17,14 +21,32 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 0 auto;
+  border: 1px solid #e3e4e7;
+  overflow: hidden;
 }
 .preview :global(.link-card__inner) {
   display: flex;
   flex-direction: column;
+  padding: 16px 16px 8px;
+  width: 100%;
 }
 .preview :global(.link-card__image) {
-  max-width: 500px;
   width: 100%;
   height: auto;
   object-fit: cover;
+}
+.preview :global(.link-card__title) {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.preview :global(.link-card__description) {
+  font-size: 16px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
