@@ -5,21 +5,25 @@ import {
   Post,
   PageNavigation,
   AnchorListItem,
+  PostCategoryApiClient,
 } from '@1k-cove/common';
 import superjson from 'superjson';
 import styles from './Id.module.scss';
 import Detail from '../../components/posts/Detail/Detail';
 import { DomParserWithSSR } from '@1k-cove/md-editor/ssr';
 import DefaultHead from '../../components/meta/DefaultHead';
+import { PostCategory } from '@1k-cove/common/@types/postCategory';
 
 type PostIdPageProps = {
   post: string;
+  postCategory: string;
   html: string;
   headings: string;
 };
 
 const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const post = superjson.parse(props.post) as Post;
+  const postCategory = superjson.parse(props.postCategory) as PostCategory;
   const headings = superjson.parse(props.headings) as AnchorListItem[];
 
   return (
@@ -37,7 +41,12 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
           <div className={styles['page-navigation-wrapper']}>
             <PageNavigation backPath="/"></PageNavigation>
           </div>
-          <Detail post={post} html={props.html} headings={headings}></Detail>
+          <Detail
+            post={post}
+            postCategory={postCategory}
+            html={props.html}
+            headings={headings}
+          ></Detail>
         </div>
       </div>
     </>
@@ -67,13 +76,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
     };
   }
   const { db } = initFirebase();
-  const client = new PostApiClient(db);
-  const post = await client.getPostBySlug(slug);
+  const postApiClient = new PostApiClient(db);
+  const postCategoryApiClient = new PostCategoryApiClient(db);
+
+  const post = await postApiClient.getPostBySlug(slug);
   if (post === null) {
     return {
       notFound: !post,
     };
   }
+
+  const postCategory = await postCategoryApiClient.getPostCategoriesByPostId(
+    post.docId
+  );
+
   // parse md to html
   const parser = new DomParserWithSSR();
   const html = parser.parse(post.content);
@@ -82,6 +98,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       post: superjson.stringify(post),
+      postCategory: superjson.stringify(postCategory),
       html: html,
       headings: superjson.stringify(headings),
     },

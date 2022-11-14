@@ -1,0 +1,11 @@
+.blog-info {
+  width: 100%;
+}
+
+.category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  :nth-child(n) {
+    margin-right: 8px;
+  }
+}

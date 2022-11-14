@@ -38,7 +38,7 @@ export class PostCategoryApiClient {
     return res;
   };
 
-  getPostCategoriesRefBySlug = async (postId: string) => {
+  getPostCategoriesRefByPostId = async (postId: string) => {
     let res: DocumentSnapshot | null = null;
     const q = query(this.collectionRef, where('postId', '==', postId));
     const querySnapshot = await getDocs(q);
@@ -51,7 +51,7 @@ export class PostCategoryApiClient {
     return res;
   };
 
-  getPostCategoriesBySlug = async (postId: string) => {
+  getPostCategoriesByPostId = async (postId: string) => {
     const res = await this._getDocByPostId(postId);
     if (!res) return null;
     return Object.assign({ docId: res.id }, res.data());
