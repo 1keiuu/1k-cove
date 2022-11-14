@@ -1,12 +1,14 @@
 import { GetServerSideProps, NextPage } from 'next';
 import {
   PostApiClient,
+  PostCategoryApiClient,
   StorageApiClient,
   initFirebase,
   Post,
   FirebaseConfig,
   PageNavigation,
   LinkCard,
+  CategoryApiClient,
 } from '@1k-cove/common';
 import superjson from 'superjson';
 import { SwitchTab, Editor, Preview, DomParser } from '@1k-cove/md-editor';
@@ -20,10 +22,11 @@ import Router from 'next/router';
 import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
 import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';
 import { getFunctions, httpsCallable } from 'firebase/functions';
+import { Category } from '@1k-cove/common/@types/category';
 
 type PostIdPageProps = {
   post: string;
-  apiClient: string;
+  categories: string;
   firebaseConfig: string;
 };
 
@@ -43,9 +46,11 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const firebaseConfig = superjson.parse(
     props.firebaseConfig
   ) as FirebaseConfig;
+  const categories = superjson.parse(props.categories) as Category[];
 
   const { db, storage } = initFirebase(firebaseConfig);
   const postApiClient = new PostApiClient(db);
+  const postCategoryApiClient = new PostCategoryApiClient(db);
   const storageClient = new StorageApiClient(storage);
 
   const [displayMode, setDisplayMode] = useState<'editor' | 'preview'>(
@@ -173,6 +178,11 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
 
     setLinkCards([...linkCards, newLinkCard]);
   };
+
+  const onCategoryChipClick = async (category: Category) => {
+    await postCategoryApiClient.upsertPostCategories(post.docId, category);
+  };
+
   const watchedContent = watch('content');
   const html = useMemo(() => {
     // parse md to html
@@ -224,9 +234,11 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
           ogpImageUrl={ogpImageUrl}
           imageUrls={imageUrls}
           linkCards={linkCards}
+          categories={categories}
           onImageInputChange={handleImageInputChange}
           onImageDeleteButtonClick={handleImageDeleteButtonClick}
           onLinkCardSubmit={onLinkCardSubmit}
+          onCategoryChipClick={onCategoryChipClick}
         ></EditorPalette>
       </form>
       <Loading loading={isLoading}></Loading>
@@ -243,8 +255,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
   const { db } = initFirebase();
-  const client = new PostApiClient(db);
-  const res = await client.getPostBySlug(slug);
+  const postApiClient = new PostApiClient(db);
+  const categoryApiClient = new CategoryApiClient(db);
+  const res = await postApiClient.getPostBySlug(slug);
 
   const firebaseConfig = {
     apiKey: process.env.API_KEY,
@@ -256,10 +269,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     measurementId: process.env.MEASUREMENT_ID,
   };
 
+  const categories = await categoryApiClient.listCategories();
+
   return {
     props: {
       post: superjson.stringify(res),
-      apiClient: superjson.stringify(client),
+      categories: superjson.stringify(categories),
       firebaseConfig: superjson.stringify(firebaseConfig),
     },
     notFound: !res,

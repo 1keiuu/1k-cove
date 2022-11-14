@@ -1,3 +1,7 @@
+.editor-palette {
+  max-width: 370px;
+}
+
 .list-item {
   list-style: none;
   margin-bottom: 8px;
@@ -62,4 +66,14 @@
 .link-card__title {
   text-decoration: underline;
   margin-right: 16px;
+}
+
+.category-chip__wrapper {
+  margin-bottom: 8px;
+  margin-right: 8px;
+}
+
+.category-chip__group {
+  display: flex;
+  flex-wrap: wrap;
 }

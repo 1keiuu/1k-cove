@@ -3,7 +3,8 @@ import CustomLabel from '../../shared/CustomLabel/CustomLabel';
 import styles from './EditorPalette.module.css';
 import Image from 'next/image';
 import { useRef } from 'react';
-import type { LinkCard } from '@1k-cove/common';
+import { CategoryChip, LinkCard } from '@1k-cove/common';
+import { Category } from '@1k-cove/common/@types/category';
 
 type EditorPaletteProps = {
   onSubmit: () => void;
@@ -12,16 +13,18 @@ type EditorPaletteProps = {
   ogpImageUrl: string;
   imageUrls: string[];
   linkCards: LinkCard[];
+  categories: Category[];
   onImageInputChange: (files: FileList | null) => void;
   onImageDeleteButtonClick: (url: string) => void;
   onLinkCardSubmit: (src: string | null) => void;
+  onCategoryChipClick: (category: Category) => void;
 };
 
 const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
   const linkCardInputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <nav>
+    <nav className={styles['editor-palette']}>
       <ul>
         <li className={styles['list-item']}>
           <Button
@@ -173,6 +176,26 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
               );
             })}
           </div>
+        </li>
+        <li className={styles['list-item']}>
+          <CustomLabel>
+            カテゴリー
+            <div className={styles['category-chip__group']}>
+              {props.categories.map((category, i) => {
+                return (
+                  <div
+                    key={`category-${i}`}
+                    className={styles['category-chip__wrapper']}
+                  >
+                    <CategoryChip
+                      category={category}
+                      onClick={props.onCategoryChipClick}
+                    ></CategoryChip>
+                  </div>
+                );
+              })}
+            </div>
+          </CustomLabel>
         </li>
       </ul>
     </nav>

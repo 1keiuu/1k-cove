@@ -1,18 +1,22 @@
 @import 'styles/variables';
 
-.flex {
+.inner {
   display: flex;
+  margin-top: 16px;
   @include mq(md) {
     flex-direction: column-reverse;
   }
 }
-.content-wrapper {
+.blog-info__wrapper {
+  margin: 16px 0;
+}
+.preview__wrapper {
   width: 70%;
   @include mq(md) {
     width: 100%;
   }
 }
-.anchor-list-wrapper {
+.anchor-list__wrapper {
   width: 30%;
   margin-left: 60px;
   @include mq(md) {
