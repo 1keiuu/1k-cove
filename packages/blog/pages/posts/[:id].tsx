@@ -31,7 +31,6 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
       <DefaultHead
         meta={{
           title: post.title,
-          description: '',
           imgUrl: post.ogpUrl,
           url: `https://blog.1keiuu.com/posts/${post.slug}`,
         }}
