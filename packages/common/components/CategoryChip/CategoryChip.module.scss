@@ -1,7 +1,10 @@
 .category-chip {
   padding: 8px 16px;
   border-radius: 30px;
-  background: gray;
+  background: rgb(198, 198, 198);
   color: white;
   cursor: pointer;
+  &.--active {
+    background: gray;
+  }
 }

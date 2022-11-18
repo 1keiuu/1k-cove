@@ -23,10 +23,12 @@ import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLab
 import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { Category } from '@1k-cove/common/@types/category';
+import { PostCategories } from '@1k-cove/common/@types/postCategory';
 
 type PostIdPageProps = {
   post: string;
   categories: string;
+  postCategories: string;
   firebaseConfig: string;
 };
 
@@ -64,6 +66,9 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const { handleSubmit, setValue, getValues, watch, register } = useForm<Post>({
     defaultValues,
   });
+  const [postCategories, setPostCategories] = useState<PostCategories>(
+    superjson.parse(props.postCategories) ?? null
+  );
 
   const functions = getFunctions();
   functions.region = 'asia-northeast1';
@@ -180,7 +185,15 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   };
 
   const onCategoryChipClick = async (category: Category) => {
-    await postCategoryApiClient.upsertPostCategories(post.docId, category);
+    // add
+    await postCategoryApiClient
+      .upsertPostCategories(post.docId, category)
+      .then(() => {
+        setPostCategories({
+          postId: post.docId,
+          categories: [...postCategories.categories, category],
+        });
+      });
   };
 
   const watchedContent = watch('content');
@@ -235,6 +248,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
           imageUrls={imageUrls}
           linkCards={linkCards}
           categories={categories}
+          postCategories={postCategories}
           onImageInputChange={handleImageInputChange}
           onImageDeleteButtonClick={handleImageDeleteButtonClick}
           onLinkCardSubmit={onLinkCardSubmit}
@@ -257,7 +271,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { db } = initFirebase();
   const postApiClient = new PostApiClient(db);
   const categoryApiClient = new CategoryApiClient(db);
-  const res = await postApiClient.getPostBySlug(slug);
+  const postCategoryApiClient = new PostCategoryApiClient(db);
+  const post = await postApiClient.getPostBySlug(slug);
+  if (!post) {
+    return {
+      props: {},
+      notFound: !post,
+    };
+  }
 
   const firebaseConfig = {
     apiKey: process.env.API_KEY,
@@ -270,14 +291,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 
   const categories = await categoryApiClient.listCategories();
+  const postCategories = await postCategoryApiClient.getPostCategoriesByPostId(
+    post.docId
+  );
 
   return {
     props: {
-      post: superjson.stringify(res),
+      post: superjson.stringify(post),
       categories: superjson.stringify(categories),
+      postCategories: superjson.stringify(postCategories),
       firebaseConfig: superjson.stringify(firebaseConfig),
     },
-    notFound: !res,
+    notFound: !post,
   };
 };
 

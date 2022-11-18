@@ -1,6 +1,6 @@
 import { Category } from './category';
 
-export type PostCategory = {
+export type PostCategories = {
   postId: string;
   categories: Category[];
 };

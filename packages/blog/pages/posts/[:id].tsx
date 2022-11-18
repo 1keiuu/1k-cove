@@ -12,7 +12,7 @@ import styles from './Id.module.scss';
 import Detail from '../../components/posts/Detail/Detail';
 import { DomParserWithSSR } from '@1k-cove/md-editor/ssr';
 import DefaultHead from '../../components/meta/DefaultHead';
-import { PostCategory } from '@1k-cove/common/@types/postCategory';
+import { PostCategories } from '@1k-cove/common/@types/postCategory';
 
 type PostIdPageProps = {
   post: string;
@@ -23,7 +23,7 @@ type PostIdPageProps = {
 
 const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const post = superjson.parse(props.post) as Post;
-  const postCategory = superjson.parse(props.postCategory) as PostCategory;
+  const postCategory = superjson.parse(props.postCategory) as PostCategories;
   const headings = superjson.parse(props.headings) as AnchorListItem[];
 
   return (

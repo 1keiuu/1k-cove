@@ -4,11 +4,11 @@ import 'highlightjs/styles/github.css';
 import { Preview } from '@1k-cove/md-editor';
 import BlogKeyVisual from '../BlogKeyVisual/BlogKeyVisual';
 import BlogInfo from '../BlogInfo/BlogInfo';
-import { PostCategory } from '@1k-cove/common/@types/postCategory';
+import { PostCategories } from '@1k-cove/common/@types/postCategory';
 
 type DetailProps = {
   post: Post;
-  postCategory: PostCategory;
+  postCategory: PostCategories;
   headings: AnchorListItem[];
   html: string;
 };

@@ -14,7 +14,7 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { Category } from '../@types/category';
-import { PostCategory } from '../@types/postCategory';
+import { PostCategories } from '../@types/postCategories';
 
 const POST_CATEGORIES_COLLECTION_NAME = 'post_categories';
 
@@ -57,7 +57,7 @@ export class PostCategoryApiClient {
     return Object.assign({ docId: res.id }, res.data());
   };
 
-  createPostCategories = async (postCategory: PostCategory) => {
+  createPostCategories = async (postCategory: PostCategories) => {
     const data = Object.assign(postCategory, {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -65,7 +65,7 @@ export class PostCategoryApiClient {
     return await addDoc(this.collectionRef, data);
   };
 
-  updatePostCategories = async (postCategory: PostCategory) => {
+  updatePostCategories = async (postCategory: PostCategories) => {
     const data = Object.assign(postCategory, {
       updatedAt: serverTimestamp(),
     });

@@ -1,11 +1,11 @@
 import { CategoryChip } from '@1k-cove/common';
 import { Category } from '@1k-cove/common/@types/category';
-import { PostCategory } from '@1k-cove/common/@types/postCategory';
+import { PostCategories } from '@1k-cove/common/@types/postCategory';
 import styles from './BlogInfo.module.scss';
 
 type BlogInfoProps = {
   date: string;
-  postCategory: PostCategory;
+  postCategory: PostCategories;
 };
 
 const BlogInfo: React.FC<BlogInfoProps> = (props) => {
@@ -23,6 +23,7 @@ const BlogInfo: React.FC<BlogInfoProps> = (props) => {
               onClick={() => {
                 onCategoryChipClick(category);
               }}
+              isSelected={false}
             ></CategoryChip>
           );
         })}

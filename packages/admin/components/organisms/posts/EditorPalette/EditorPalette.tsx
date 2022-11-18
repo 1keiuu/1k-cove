@@ -2,9 +2,11 @@ import Button from '../../shared/Button/Button';
 import CustomLabel from '../../shared/CustomLabel/CustomLabel';
 import styles from './EditorPalette.module.css';
 import Image from 'next/image';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { CategoryChip, LinkCard } from '@1k-cove/common';
 import { Category } from '@1k-cove/common/@types/category';
+import { PostCategories } from '@1k-cove/common/@types/postCategory';
+import { useCallback } from 'react';
 
 type EditorPaletteProps = {
   onSubmit: () => void;
@@ -14,6 +16,7 @@ type EditorPaletteProps = {
   imageUrls: string[];
   linkCards: LinkCard[];
   categories: Category[];
+  postCategories: PostCategories;
   onImageInputChange: (files: FileList | null) => void;
   onImageDeleteButtonClick: (url: string) => void;
   onLinkCardSubmit: (src: string | null) => void;
@@ -22,6 +25,15 @@ type EditorPaletteProps = {
 
 const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
   const linkCardInputRef = useRef<HTMLInputElement>(null);
+
+  const isCategorySelected = useCallback(
+    (slug: string) => {
+      return props.postCategories.categories
+        .map((p: PostCategories) => p.slug)
+        .includes(slug);
+    },
+    [props.postCategories]
+  );
 
   return (
     <nav className={styles['editor-palette']}>
@@ -190,6 +202,7 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
                     <CategoryChip
                       category={category}
                       onClick={props.onCategoryChipClick}
+                      isSelected={isCategorySelected(category.slug)}
                     ></CategoryChip>
                   </div>
                 );
