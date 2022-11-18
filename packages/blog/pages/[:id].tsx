@@ -4,6 +4,7 @@ import { PostApiClient, initFirebase, Post, Pagination } from '@1k-cove/common';
 import superjson from 'superjson';
 import styles from './Index.module.scss';
 import PostList from '../components/posts/PostList/PostList';
+import DefaultHead from '../components/meta/DefaultHead';
 
 type PostIdPageProps = {
   posts: string;
@@ -15,14 +16,17 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const posts = superjson.parse(props.posts) as Post[];
 
   return (
-    <div className={styles['page-inner']}>
-      <PostList posts={posts}></PostList>
-      <Pagination
-        page={props.page}
-        totalCount={props.totalPageCount}
-        path=""
-      ></Pagination>
-    </div>
+    <>
+      <DefaultHead meta={{}}></DefaultHead>
+      <div className={styles['page-inner']}>
+        <PostList posts={posts}></PostList>
+        <Pagination
+          page={props.page}
+          totalCount={props.totalPageCount}
+          path=""
+        ></Pagination>
+      </div>
+    </>
   );
 };
 
