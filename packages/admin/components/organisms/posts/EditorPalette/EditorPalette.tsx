@@ -28,6 +28,7 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
 
   const isCategorySelected = useCallback(
     (slug: string) => {
+      if (!props?.postCategories?.categories) return false;
       return props.postCategories.categories
         .map((p: PostCategories) => p.slug)
         .includes(slug);

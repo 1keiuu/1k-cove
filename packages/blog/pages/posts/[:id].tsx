@@ -12,7 +12,7 @@ import styles from './Id.module.scss';
 import Detail from '../../components/posts/Detail/Detail';
 import { DomParserWithSSR } from '@1k-cove/md-editor/ssr';
 import DefaultHead from '../../components/meta/DefaultHead';
-import { PostCategories } from '@1k-cove/common/@types/postCategory';
+import { PostCategories } from '@1k-cove/common';
 
 type PostIdPageProps = {
   post: string;

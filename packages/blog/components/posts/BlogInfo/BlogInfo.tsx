@@ -1,6 +1,6 @@
 import { CategoryChip } from '@1k-cove/common';
 import { Category } from '@1k-cove/common/@types/category';
-import { PostCategories } from '@1k-cove/common/@types/postCategory';
+import { PostCategories } from '@1k-cove/common';
 import styles from './BlogInfo.module.scss';
 
 type BlogInfoProps = {

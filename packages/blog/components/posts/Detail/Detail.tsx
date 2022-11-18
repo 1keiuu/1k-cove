@@ -4,7 +4,7 @@ import 'highlightjs/styles/github.css';
 import { Preview } from '@1k-cove/md-editor';
 import BlogKeyVisual from '../BlogKeyVisual/BlogKeyVisual';
 import BlogInfo from '../BlogInfo/BlogInfo';
-import { PostCategories } from '@1k-cove/common/@types/postCategory';
+import { PostCategories } from '@1k-cove/common';
 
 type DetailProps = {
   post: Post;
