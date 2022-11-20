@@ -28,7 +28,7 @@ const BlogInfo: React.FC<BlogInfoProps> = (props) => {
               onClick={() => {
                 onCategoryChipClick(category);
               }}
-              isSelected={true}
+              isOutlined={true}
             ></CategoryChip>
           );
         })}

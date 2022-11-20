@@ -7,4 +7,9 @@
   &.--active {
     background: gray;
   }
+  &.--outlined {
+    color: #333;
+    border: 1px solid #333;
+    background: #fff;
+  }
 }

@@ -1,33 +1,7 @@
-import { GetStaticProps, NextPage } from 'next';
-import { PostApiClient, initFirebase, Post, Pagination } from '@1k-cove/common';
+import { GetStaticProps } from 'next';
+import { PostApiClient, initFirebase } from '@1k-cove/common';
 import superjson from 'superjson';
-import styles from './Index.module.scss';
-import PostList from '../components/posts/PostList/PostList';
-import DefaultHead from '../components/meta/DefaultHead';
-
-type PostIndexPageProps = {
-  posts: string;
-  page: number;
-  totalPageCount: number;
-};
-
-const PostIndexPage: NextPage<PostIndexPageProps> = (props) => {
-  const posts = superjson.parse(props.posts) as Post[];
-
-  return (
-    <>
-      <DefaultHead meta={{}}></DefaultHead>
-      <div className={styles['page-inner']}>
-        <PostList posts={posts}></PostList>
-        <Pagination
-          page={props.page}
-          totalCount={props.totalPageCount}
-          path=""
-        ></Pagination>
-      </div>
-    </>
-  );
-};
+import IndexPageContent from '../components/posts/IndexPageContent/IndexPageContent';
 
 const getPostsPerPage = async () => {
   const { db } = initFirebase();
@@ -56,4 +30,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
 };
 
-export default PostIndexPage;
+export default IndexPageContent;
