@@ -25,13 +25,18 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const post = superjson.parse(props.post) as Post;
   const postCategory = superjson.parse(props.postCategory) as PostCategories;
   const headings = superjson.parse(props.headings) as AnchorListItem[];
-
+  const metaKeywords = postCategory.categories.reduce((prev, cur, i) => {
+    if (i === 0) return cur.name;
+    return prev + `,${cur.name}`;
+  }, '');
   return (
     <>
       <DefaultHead
         meta={{
           title: post.title,
+          description: post.description,
           imgUrl: post.ogpUrl,
+          keywords: metaKeywords,
           url: `https://blog.1keiuu.com/posts/${post.slug}`,
         }}
       ></DefaultHead>

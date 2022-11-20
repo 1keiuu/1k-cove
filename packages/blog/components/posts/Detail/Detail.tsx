@@ -17,6 +17,7 @@ const Detail: React.FC<DetailProps> = (props) => {
   return (
     <div className={styles['detail']}>
       <BlogKeyVisual imageUrl={props.post.ogpUrl}></BlogKeyVisual>
+      {/* <h1 className={styles['blog-title']}>{props.post.title}</h1> */}
       <div className={styles['blog-info__wrapper']}>
         <BlogInfo
           date={props.post.date}

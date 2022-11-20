@@ -14,6 +14,7 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { Post } from '../@types/post';
+import { DomParser } from '@1k-cove/md-editor';
 
 const POSTS_COLLECTION_NAME = 'posts';
 
@@ -65,7 +66,10 @@ export class PostApiClient {
   };
 
   updatePost = async (post: Post) => {
+    const parser = new DomParser();
+    const description = parser.extractString(post.content).slice(0, 120);
     const data = Object.assign(post, {
+      description: description,
       updatedAt: serverTimestamp(),
     });
     const doc = await this._getDocBySlug(data.slug);

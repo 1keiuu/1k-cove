@@ -20,4 +20,21 @@ export default class DomParser {
 
     return html;
   }
+  extractString(md: string) {
+    const htmlString = marked(md);
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
+    const walker = document.createTreeWalker(doc, NodeFilter.SHOW_TEXT);
+
+    let text = '';
+    let currentNode: Node | null = walker.currentNode;
+
+    while (currentNode) {
+      text += currentNode.textContent ? currentNode.textContent : '';
+      const nextNode = walker.nextNode();
+      currentNode = nextNode;
+    }
+
+    return text;
+  }
 }

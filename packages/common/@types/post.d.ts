@@ -3,6 +3,7 @@ export type Post = {
   title: string;
   slug: string;
   content: string;
+  description: string;
   date: string;
   ogpUrl: string;
   imageUrls: string[];

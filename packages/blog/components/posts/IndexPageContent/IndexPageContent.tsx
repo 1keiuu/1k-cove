@@ -16,7 +16,7 @@ const IndexPageContent: NextPage<IndexPageContentProps> = (props) => {
 
   return (
     <>
-      <DefaultHead meta={{}}></DefaultHead>
+      <DefaultHead></DefaultHead>
       <div className={styles['page-inner']}>
         <h1>1keiuuのブログ</h1>
         <PostList posts={posts}></PostList>
