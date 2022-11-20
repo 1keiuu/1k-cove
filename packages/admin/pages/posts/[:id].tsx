@@ -23,7 +23,7 @@ import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLab
 import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { Category } from '@1k-cove/common/@types/category';
-import { PostCategories } from '@1k-cove/common/@types/postCategory';
+import { PostCategories } from '@1k-cove/common';
 
 type PostIdPageProps = {
   post: string;
@@ -184,16 +184,35 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
     setLinkCards([...linkCards, newLinkCard]);
   };
 
-  const onCategoryChipClick = async (category: Category) => {
-    // add
-    await postCategoryApiClient
-      .upsertPostCategories(post.docId, category)
-      .then(() => {
-        setPostCategories({
-          postId: post.docId,
-          categories: [...postCategories.categories, category],
+  const onCategoryChipClick = async (
+    category: Category,
+    eventType: 'on' | 'off'
+  ) => {
+    if (eventType === 'on') {
+      const newCategories = postCategories?.categories
+        ? postCategories.categories
+        : [];
+      // add
+      await postCategoryApiClient
+        .upsertPostCategories(post.docId, category)
+        .then(() => {
+          setPostCategories({
+            postId: post.docId,
+            categories: [...newCategories, category],
+          });
         });
+    } else if (eventType === 'off') {
+      // delete
+      const newData = {
+        postId: postCategories.postId,
+        categories: postCategories.categories.filter(
+          (c: Category) => c.slug !== category.slug
+        ),
+      };
+      await postCategoryApiClient.updatePostCategories(newData).then(() => {
+        setPostCategories(newData);
       });
+    }
   };
 
   const watchedContent = watch('content');

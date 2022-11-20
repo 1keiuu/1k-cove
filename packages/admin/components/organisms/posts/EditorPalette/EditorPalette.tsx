@@ -20,7 +20,7 @@ type EditorPaletteProps = {
   onImageInputChange: (files: FileList | null) => void;
   onImageDeleteButtonClick: (url: string) => void;
   onLinkCardSubmit: (src: string | null) => void;
-  onCategoryChipClick: (category: Category) => void;
+  onCategoryChipClick: (category: Category, eventType: 'on' | 'off') => void;
 };
 
 const EditorPalette: React.FC<EditorPaletteProps> = (props) => {

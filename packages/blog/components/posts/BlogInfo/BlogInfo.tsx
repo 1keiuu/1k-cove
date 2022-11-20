@@ -9,11 +9,16 @@ type BlogInfoProps = {
 };
 
 const BlogInfo: React.FC<BlogInfoProps> = (props) => {
-  const onCategoryChipClick = (category: Category) => {
-    console.log(category);
-  };
+  const onCategoryChipClick = (category: Category) => {};
+  const year = new Date(props.date).getFullYear();
+  const day = new Date(props.date).getDate();
+  const month = new Date(props.date).toLocaleString('en-us', {
+    month: 'short',
+  });
+  const createdAt = `${month} ${day}, ${year}`;
   return (
     <div className={styles['blog-info']}>
+      <p className={styles['blog-date']}>{createdAt ?? '不明'}</p>
       <div className={styles['category-chips']}>
         {props.postCategory?.categories.map((category, i) => {
           return (
@@ -23,12 +28,11 @@ const BlogInfo: React.FC<BlogInfoProps> = (props) => {
               onClick={() => {
                 onCategoryChipClick(category);
               }}
-              isSelected={false}
+              isSelected={true}
             ></CategoryChip>
           );
         })}
       </div>
-      <p>{props.date ?? '不明'}</p>
     </div>
   );
 };

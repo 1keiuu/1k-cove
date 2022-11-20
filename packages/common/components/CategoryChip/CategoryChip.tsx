@@ -3,7 +3,7 @@ import styles from './CategoryChip.module.scss';
 
 type CategoryChipProps = {
   category: Category;
-  onClick: (cateogry: Category) => void;
+  onClick: (cateogry: Category, eventType: 'on' | 'off') => void;
   isSelected: boolean;
 };
 
@@ -16,7 +16,7 @@ export const CategoryChip: React.FC<CategoryChipProps> = (props) => {
           : styles['category-chip']
       }
       onClick={() => {
-        props.onClick(props.category);
+        props.onClick(props.category, props.isSelected ? 'off' : 'on');
       }}
     >
       {props.category.name}

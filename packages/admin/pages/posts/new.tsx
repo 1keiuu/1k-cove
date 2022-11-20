@@ -32,7 +32,7 @@ const PostsNewPage: NextPage<PostsNewPageProps> = (props) => {
   const date = new Date();
   const defaultValues = {
     content: '',
-    date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+    date: `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`,
   };
   const { handleSubmit, register } = useForm<Post>({
     defaultValues,
