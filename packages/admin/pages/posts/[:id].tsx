@@ -192,6 +192,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
       const newCategories = postCategories?.categories
         ? postCategories.categories
         : [];
+      const newSlugs = postCategories?.slugs ? postCategories.slugs : [];
       // add
       await postCategoryApiClient
         .upsertPostCategories(post.docId, category)
@@ -199,6 +200,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
           setPostCategories({
             postId: post.docId,
             categories: [...newCategories, category],
+            slugs: [...newSlugs, category.slug],
           });
         });
     } else if (eventType === 'off') {
@@ -208,6 +210,9 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
         categories: postCategories.categories.filter(
           (c: Category) => c.slug !== category.slug
         ),
+        slugs:
+          postCategories?.slugs?.filter((s: string) => s !== category.slug) ??
+          [],
       };
       await postCategoryApiClient.updatePostCategories(newData).then(() => {
         setPostCategories(newData);
