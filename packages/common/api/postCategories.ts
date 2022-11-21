@@ -52,15 +52,13 @@ export class PostCategoryApiClient {
     return res;
   };
 
-  where = async (condition: QueryConstraint) => {
-    let res: DocumentSnapshot | null = null;
+  where = async (condition: QueryConstraint): Promise<PostCategories[]> => {
+    let res: PostCategories[] = [];
     const q = query(this.collectionRef, condition);
     const querySnapshot = await getDocs(q);
-    let i = 0;
-    querySnapshot.forEach((result) => {
-      if (i > 0) return;
-      res = result;
-      i++;
+
+    querySnapshot.forEach((doc) => {
+      res.push(doc.data() as PostCategories);
     });
     return res;
   };

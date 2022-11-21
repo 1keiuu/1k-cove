@@ -17,5 +17,6 @@ export * from './components/CategoryChip/CategoryChip';
 import { FirebaseConfig } from './@types/firebase';
 import { Post, LinkCard } from './@types/post';
 import { PostCategories } from './@types/postCategories';
+import { Category } from './@types/category';
 
-export type { FirebaseConfig, Post, LinkCard, PostCategories };
+export type { FirebaseConfig, Post, LinkCard, PostCategories, Category };

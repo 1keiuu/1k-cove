@@ -26,13 +26,13 @@ export class CategoryApiClient {
     this.collectionRef = collection(db, CATEGORIES_COLLECTION_NAME);
   }
 
-  listCategories = async (): Promise<DocumentData[]> => {
-    const res: DocumentData[] = [];
+  listCategories = async (): Promise<Category[]> => {
+    const res: Category[] = [];
     const q = query(this.collectionRef);
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach((doc) => {
-      res.push(doc.data());
+      res.push(doc.data() as Category);
     });
     return res;
   };
