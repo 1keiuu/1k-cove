@@ -45,7 +45,7 @@ export class PostApiClient {
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach((result) => {
-      res.push(result as unknown as Post);
+      res.push(result.data() as Post);
     });
     return res;
   };

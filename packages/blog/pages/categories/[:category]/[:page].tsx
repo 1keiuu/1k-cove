@@ -3,31 +3,28 @@ import {
   PostApiClient,
   initFirebase,
   Post,
-  PageNavigation,
-  AnchorListItem,
   CategoryApiClient,
   PostCategoryApiClient,
   Pagination,
 } from '@1k-cove/common';
 import superjson from 'superjson';
 import styles from './Id.module.scss';
-import Detail from '../../../components/posts/Detail/Detail';
-import { DomParserWithSSR } from '@1k-cove/md-editor/ssr';
 import DefaultHead from '../../../components/meta/DefaultHead';
-import { PostCategories } from '@1k-cove/common';
 import { where } from 'firebase/firestore';
 import PostList from '../../../components/posts/PostList/PostList';
 import { Category } from '@1k-cove/common';
 type PostIdPageProps = {
   posts: string;
   category: string;
-  page: number;
-  totalPageCount: number;
+  page: string;
+  totalPageCount: string;
 };
 
 const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const posts = superjson.parse(props.posts) as Post[];
   const category = superjson.parse(props.category) as Category;
+  const page = Number(superjson.parse(props.page));
+  const totalPageCount = Number(superjson.parse(props.totalPageCount));
 
   return (
     <>
@@ -36,15 +33,16 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
         <h1>{category.name}</h1>
         <PostList posts={posts}></PostList>
         <Pagination
-          page={props.page}
-          totalCount={props.totalPageCount}
-          path=""
+          page={page}
+          totalCount={totalPageCount}
+          path={`/categories/${category.slug}`}
         ></Pagination>
       </div>
     </>
   );
 };
 
+// pageNationに応じたposts
 const getPostsPerPage = async (slug: string) => {
   const { db } = initFirebase();
   const postApiClient = new PostApiClient(db);
@@ -100,30 +98,21 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const pageIndex = context.params?.[':page'] as string;
 
   const { db } = initFirebase();
-  const postApiClient = new PostApiClient(db);
   const categoryApiClient = new CategoryApiClient(db);
-  const postCategoryApiClient = new PostCategoryApiClient(db);
 
-  // const category = await categoryApiClient.getCategoryBySlug(slug);
+  const category = await categoryApiClient.getCategoryBySlug(categorySlug);
 
-  // const postCategoriesList = await postCategoryApiClient.where(
-  //   where('slugs', 'array-contains', slug)
-  // );
-
-  // const postIdList = postCategoriesList.map((p) => {
-  //   return p.postId;
-  // });
-
-  // const posts = postApiClient.where(
-  //   where('docId', 'array-contains-any', postIdList)
-  // );
+  // TODO: pagination周り怖いからテスト書きたい
+  const postsPerPage = await getPostsPerPage(categorySlug);
+  const totalPageCount = postsPerPage.length.toString();
+  const posts = postsPerPage[Number(pageIndex) - 1];
 
   return {
     props: {
-      posts: superjson.stringify([]),
-      category: superjson.stringify({}),
-      page: '0',
-      totalPageCount: '0',
+      posts: superjson.stringify(posts),
+      category: superjson.stringify(category),
+      page: superjson.stringify(pageIndex),
+      totalPageCount: superjson.stringify(totalPageCount),
     },
   };
 };
