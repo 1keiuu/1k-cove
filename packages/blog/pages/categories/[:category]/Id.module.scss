@@ -1,16 +1,8 @@
-.wrapper {
+.page-inner {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 32px;
-}
-
-.inner {
-  max-width: 1200px;
-  width: 85vw;
-}
-
-.page-navigation-wrapper {
-  margin-bottom: 32px;
+  max-width: 1080px;
+  padding: 64px 32px;
 }

@@ -2,6 +2,7 @@ import { CategoryChip } from '@1k-cove/common';
 import { Category } from '@1k-cove/common/@types/category';
 import { PostCategories } from '@1k-cove/common';
 import styles from './BlogInfo.module.scss';
+import Link from 'next/link';
 
 type BlogInfoProps = {
   date: string;
@@ -22,14 +23,13 @@ const BlogInfo: React.FC<BlogInfoProps> = (props) => {
       <div className={styles['category-chips']}>
         {props.postCategory?.categories.map((category, i) => {
           return (
-            <CategoryChip
-              key={`category-${i}`}
-              category={category}
-              onClick={() => {
-                onCategoryChipClick(category);
-              }}
-              isOutlined={true}
-            ></CategoryChip>
+            <Link key={`category-${i}`} href={`/categories/${category.slug}/1`}>
+              <CategoryChip
+                category={category}
+                onClick={() => {}}
+                isOutlined={true}
+              ></CategoryChip>
+            </Link>
           );
         })}
       </div>

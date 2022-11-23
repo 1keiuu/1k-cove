@@ -6,6 +6,7 @@ import {
   CategoryApiClient,
   PostCategoryApiClient,
   Pagination,
+  PageNavigation,
 } from '@1k-cove/common';
 import superjson from 'superjson';
 import styles from './Id.module.scss';
@@ -30,6 +31,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
     <>
       <DefaultHead></DefaultHead>
       <div className={styles['page-inner']}>
+        <PageNavigation backPath="/"></PageNavigation>
         <h1>{category.name}</h1>
         <PostList posts={posts}></PostList>
         <Pagination
