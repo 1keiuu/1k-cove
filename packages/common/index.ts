@@ -6,6 +6,7 @@ export * from './api/posts';
 export * from './api/storage';
 export * from './api/categories';
 export * from './api/postCategories';
+export * from './api/functions';
 
 // components
 export * from './components/Pagination/Pagination';

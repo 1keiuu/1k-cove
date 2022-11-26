@@ -7,7 +7,7 @@ const _Section = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 25vw 320px;
+  padding: 0 25vw 260px;
   @media screen and (max-width: 1024px) {
     padding: 0 20vw 160px;
   }
