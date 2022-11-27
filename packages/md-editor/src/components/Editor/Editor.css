@@ -8,4 +8,6 @@
   min-height: 90vh;
   border: 1px solid grey;
   border-top: 0;
+  font-size: 1.125rem;
+  line-height: 1.5rem;
 }

@@ -51,7 +51,11 @@ const PostIdContent: React.FC<PostIdContentProps> = (props) => {
       <div className={styles['wrapper-row']}>
         <CustomLabel>
           date
-          <CustomInput register={props.register} name="date" />
+          <CustomInput
+            register={props.register}
+            name="date"
+            placeholder="YYYY/MM/DD"
+          />
         </CustomLabel>
       </div>
       <SwitchTab
