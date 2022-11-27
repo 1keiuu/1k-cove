@@ -7,6 +7,9 @@ import {
   FirebaseConfig,
   PageNavigation,
   CategoryApiClient,
+  StorageApiClient,
+  FunctionsApiClient,
+  LinkCard,
 } from '@1k-cove/common';
 import superjson from 'superjson';
 import { useState } from 'react';
@@ -14,7 +17,11 @@ import styles from './Id.module.scss';
 import Loading from '../../components/organisms/shared/Loading/Loading';
 import { Category } from '@1k-cove/common/@types/category';
 import { PostCategories } from '@1k-cove/common';
-import PostIdForm from '../../components/posts/PostIdForm/PostIdForm';
+import EditorPalette from '../../components/organisms/posts/EditorPalette/EditorPalette';
+import Router from 'next/router';
+import PostIdContent from '../../components/posts/PostIdContent/PostIdContent';
+import { useForm } from 'react-hook-form';
+import Drawer from '../../components/organisms/shared/Drawer/Drawer';
 
 type PostIdPageProps = {
   post: string;
@@ -35,16 +42,186 @@ const tabItems = [
 ];
 
 const PostIdPage: NextPage<PostIdPageProps> = (props) => {
+  // server side props
   const post = superjson.parse(props.post) as Post;
   const firebaseConfig = superjson.parse(
     props.firebaseConfig
   ) as FirebaseConfig;
   const categories = superjson.parse(props.categories) as Category[];
-  const postCategories = superjson.parse(
+  const postCategoriesProps = superjson.parse(
     props.postCategories
   ) as PostCategories;
 
+  // api client
+  const { db, storage } = initFirebase(firebaseConfig);
+  const storageClient = new StorageApiClient(storage);
+  const postApiClient = new PostApiClient(db);
+  const postCategoryApiClient = new PostCategoryApiClient(db);
+  const functionsApiClient = new FunctionsApiClient();
+  const getOgpInfo = functionsApiClient.callGetOgpInfo();
+
   const [isLoading, setIsLoading] = useState(false);
+  const [isPaletteShow, setPaletteShow] = useState(false);
+
+  // state
+  const [ogpImageUrl, setOgpImageUrl] = useState(post.ogpUrl ?? '');
+  const [imageUrls, setImageUrls] = useState(post.imageUrls ?? []);
+  const [linkCards, setLinkCards] = useState<LinkCard[]>([]);
+  const [postCategories, setPostCategories] = useState<PostCategories>(
+    postCategoriesProps ?? null
+  );
+
+  // form
+  const defaultValues = post;
+  const { handleSubmit, setValue, getValues, watch, register } = useForm<Post>({
+    defaultValues,
+  });
+
+  const onSubmit = (data: Post) => {
+    setIsLoading(true);
+    postApiClient
+      .updatePost(data)
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        throw new Error(e);
+      });
+  };
+
+  const handleDeleteButtonClick = () => {
+    setIsLoading(true);
+    if (confirm('削除しますか?')) {
+      postApiClient
+        .deletePost(post.slug)
+        .then(() => {
+          Router.push('/');
+        })
+        .catch((e) => {
+          throw new Error(e);
+        });
+    }
+    setIsLoading(false);
+  };
+
+  const onCategoryChipClick = async (
+    category: Category,
+    eventType: 'on' | 'off'
+  ) => {
+    if (eventType === 'on') {
+      const newCategories = postCategories?.categories
+        ? postCategories.categories
+        : [];
+      const newSlugs = postCategories?.slugs ? postCategories.slugs : [];
+      // add
+      await postCategoryApiClient
+        .upsertPostCategories(post.docId, category)
+        .then(() => {
+          setPostCategories({
+            postId: post.docId,
+            categories: [...newCategories, category],
+            slugs: [...newSlugs, category.slug],
+          });
+        });
+    } else if (eventType === 'off') {
+      // delete
+      const newData = {
+        postId: postCategories.postId,
+        categories: postCategories.categories.filter(
+          (c: Category) => c.slug !== category.slug
+        ),
+        slugs:
+          postCategories?.slugs?.filter((s: string) => s !== category.slug) ??
+          [],
+      };
+      await postCategoryApiClient.updatePostCategories(newData).then(() => {
+        setPostCategories(newData);
+      });
+    }
+  };
+
+  const handleContentChange = (content: string) => {
+    setValue('content', content);
+  };
+
+  const handleOGPInputChange = (files: FileList | null) => {
+    setIsLoading(true);
+    if (!files) {
+      setIsLoading(false);
+      return;
+    }
+    return storageClient
+      .upload(files[0], `_ogp/${post.docId}`)
+      .then((url) => {
+        setOgpImageUrl(url);
+        setValue('ogpUrl', url);
+        const data = getValues();
+        postApiClient.updatePost(data).catch((e) => {
+          throw new Error(e);
+        });
+      })
+      .catch((e) => {
+        throw new Error(e);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const handleImageInputChange = (files: FileList | null) => {
+    setIsLoading(true);
+    if (!files) {
+      setIsLoading(false);
+      return;
+    }
+    storageClient
+      .upload(files[0], `posts/${post.docId}/${files[0].name}`)
+      .then((url) => {
+        const urls = [...imageUrls, url];
+        setImageUrls(urls);
+        setValue('imageUrls', urls);
+        const data = getValues();
+        postApiClient.updatePost(data).catch((e) => {
+          throw new Error(e);
+        });
+      })
+      .catch((e) => {
+        throw new Error(e);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const handleImageDeleteButtonClick = (url: string) => {
+    setIsLoading(true);
+    imageUrls.splice(imageUrls.indexOf(url), 1);
+    post.imageUrls = imageUrls;
+
+    postApiClient
+      .updatePost(post)
+      .then(() => {
+        setIsLoading(false);
+        setImageUrls(post.imageUrls);
+      })
+      .catch((e) => {
+        throw new Error(e);
+      });
+  };
+
+  const onLinkCardSubmit = async (src: string | null) => {
+    if (src === null) {
+      return;
+    }
+    setIsLoading(true);
+    const newLinkCard = await getOgpInfo({ url: src })
+      .then((result) => {
+        return (result.data as { ogp: LinkCard }).ogp;
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+
+    setLinkCards([...linkCards, newLinkCard]);
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -52,14 +229,44 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
       <div className={styles['navigation-wrapper']}>
         <PageNavigation backPath="/"></PageNavigation>
       </div>
-      <PostIdForm
-        firebaseConfig={firebaseConfig}
-        setIsLoading={setIsLoading}
-        post={post}
-        postCategories={postCategories}
-        categories={categories}
-      />
-      <Loading loading={isLoading}></Loading>
+      <form className={styles.form}>
+        <div
+          className={
+            isPaletteShow
+              ? `${styles['content-wrapper']} ${styles['--palette-open']}`
+              : styles['content-wrapper']
+          }
+        >
+          <PostIdContent
+            post={post}
+            handleContentChange={handleContentChange}
+            watch={watch}
+            register={register}
+          />
+        </div>
+        <div className={styles['drawer-wrapper']}>
+          <Drawer
+            isOpen={isPaletteShow}
+            onOpenButtonClick={() => setPaletteShow(true)}
+            onCloseButtonClick={() => setPaletteShow(false)}
+          >
+            <EditorPalette
+              onSubmit={handleSubmit(onSubmit)}
+              onDeleteButtonClick={handleDeleteButtonClick}
+              onOGPInputChange={handleOGPInputChange}
+              ogpImageUrl={ogpImageUrl}
+              imageUrls={imageUrls}
+              linkCards={linkCards}
+              categories={categories}
+              postCategories={postCategories}
+              onImageInputChange={handleImageInputChange}
+              onImageDeleteButtonClick={handleImageDeleteButtonClick}
+              onLinkCardSubmit={onLinkCardSubmit}
+              onCategoryChipClick={onCategoryChipClick}
+            ></EditorPalette>
+          </Drawer>
+        </div>
+      </form>
     </div>
   );
 };

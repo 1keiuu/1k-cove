@@ -1,0 +1,12 @@
+.button {
+  background: transparent;
+  color: white;
+  padding: 8px;
+  height: 100%;
+}
+
+.--outlined {
+  background: white;
+  border: 1px solid var(--color-grey-deep);
+  color: var(--color-grey-deep);
+}

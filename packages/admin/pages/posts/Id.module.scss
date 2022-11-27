@@ -2,6 +2,23 @@
   padding: 40px;
 }
 
+.form {
+  width: 100%;
+  min-height: 90vh;
+  display: flex;
+}
+
 .navigation-wrapper {
   margin-bottom: 16px;
+}
+
+.content-wrapper {
+  width: 100%;
+  margin-right: 100px;
+  &.--palette-open {
+    margin-right: 370px;
+  }
+}
+
+.drawer-wrapper {
 }
