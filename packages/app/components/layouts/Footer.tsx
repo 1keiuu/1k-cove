@@ -13,7 +13,7 @@ const _FooterInner = styled.div`
 `;
 const _Upper = styled.div`
   display: flex;
-  padding: 60px 24px;
+  padding: 80px 24px 60px;
   border-bottom: 0.5px solid ${colors.border.grey};
 `;
 const _SNSSection = styled.div`

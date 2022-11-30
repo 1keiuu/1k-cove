@@ -50,7 +50,7 @@ const FirstView = () => {
         </Text>
       </_LeftWrapper>
       <_RightWrapper>
-        <img src="/top/1.jpg" width="300" height="522" />
+        <img src="/top/1.jpg" width="300" height="522" alt="top image" />
       </_RightWrapper>
     </_Section>
   );

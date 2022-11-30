@@ -124,11 +124,6 @@ const Header: React.FC<HeaderProps> = (props) => {
       text: 'Links',
     },
     {
-      name: 'contact',
-      selector: '#contact',
-      text: 'Contact',
-    },
-    {
       name: 'blog',
       text: 'Blog',
     },
@@ -145,7 +140,11 @@ const Header: React.FC<HeaderProps> = (props) => {
             if (item.name === 'blog') {
               return (
                 <_AnchorListItem key={`item-${i}`}>
-                  <_Anchor href="https://blog.1keiuu.com">
+                  <_Anchor
+                    href="https://blog.1keiuu.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <Text size={15} weight="bold">
                       {item.text}
                     </Text>

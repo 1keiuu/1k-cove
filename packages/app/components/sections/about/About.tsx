@@ -5,9 +5,10 @@ const _Section = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 260px;
-  padding-right: 200px;
   height: 100vh;
+  padding-left: 200px;
+  padding-right: 120px;
+
   @media screen and (max-width: 1024px) {
     padding: 0 20vw 160px;
   }
@@ -23,7 +24,7 @@ const _ImgWrapper = styled.div`
 `;
 const _Inner = styled.div`
   margin-bottom: 56px;
-  width: 40%;
+  margin-left: 200px;
   @media screen and (max-width: 599px) {
     width: 100%;
   }
@@ -36,18 +37,22 @@ const About = () => {
   return (
     <_Section id="about">
       <_ImgWrapper>
-        <img src="/top/1.jpg" width="300" />
+        <img src="/top/2.jpg" width={341} height={672} alt="top image" />
       </_ImgWrapper>
       <_Inner>
-        <_Title size={50}>About</_Title>
+        <_Title size={50} weight="normal">
+          About
+        </_Title>
         <_Text size={16}>
-          都内在住のwebフロントエンドエンジニア。
+          都内在住のwebエンジニア。
           <br />
-          学生時代にwebに出会い、独学で勉強を開始。
+          学生時代にwebに出会い、独学で勉強を開始。複数社でインターンを経験。
           <br />
-          複数社でインターンを経験した後に2022年より株式会社サイバーエージェントにて内定者アルバイトとしてコードを書いています。
+          2022年3月より株式会社サイバーエージェントにて内定者アルバイトを開始。
           <br />
-          副業のスタートアップではフロントエンドに加えてバックエンドを書くこともあります。
+          2023年4月より同社へ正社員として入社。
+          <br />
+          webフロントがメイン領域ですが、副業等でバックエンドを書くこともあります。
         </_Text>
       </_Inner>
     </_Section>
