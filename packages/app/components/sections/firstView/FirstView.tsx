@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import colors from '../../../constants/colors';
 import { Title, Text } from '../../shared/Typography';
 
 const _Section = styled.div`
@@ -8,21 +7,26 @@ const _Section = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-left: 200px;
-  padding-right: 120px;
-
-  @media screen and (max-width: 599px) {
-    padding: 0 16px;
+  padding-left: 10%;
+  padding-right: 6%;
+  @media screen and (max-width: 800px) {
+    padding: 260px 8%;
   }
 `;
 const _LeftWrapper = styled.div`
   width: 60%;
+  @media screen and (max-width: 800px) {
+    width: unset;
+  }
 `;
 const _RightWrapper = styled.div`
   width: 30%;
   display: flex;
   justify-content: center;
   margin-top: 100px;
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
 `;
 const _TitleWrapper = styled.div`
   h2 {
@@ -32,8 +36,11 @@ const _TitleWrapper = styled.div`
 const _Title = styled(Title)`
   text-align: center;
   margin-bottom: 8px;
-  @media screen and (max-width: 599px) {
+  @media screen and (max-width: 1024px) {
     font-size: 50px;
+  }
+  @media screen and (max-width: 599px) {
+    font-size: 40px;
   }
 `;
 

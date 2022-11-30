@@ -6,14 +6,11 @@ const _Section = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 100vh;
-  padding-left: 200px;
-  padding-right: 120px;
-
-  @media screen and (max-width: 1024px) {
-    padding: 0 20vw 160px;
-  }
-  @media screen and (max-width: 599px) {
-    padding: 0 46px 160px;
+  padding-left: 10%;
+  padding-right: 6%;
+  @media screen and (max-width: 800px) {
+    padding: 0 8%;
+    justify-content: center;
   }
 `;
 const _Title = styled(Title)`
@@ -21,10 +18,16 @@ const _Title = styled(Title)`
 `;
 const _ImgWrapper = styled.div`
   width: 30%;
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
 `;
 const _Inner = styled.div`
   margin-bottom: 56px;
   margin-left: 200px;
+  @media screen and (max-width: 800px) {
+    margin-left: 0;
+  }
   @media screen and (max-width: 599px) {
     width: 100%;
   }

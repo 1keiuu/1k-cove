@@ -15,6 +15,12 @@ const _Upper = styled.div`
   display: flex;
   padding: 80px 24px 60px;
   border-bottom: 0.5px solid ${colors.border.grey};
+  @media screen and (max-width: 800px) {
+    padding: 80px 56px 60px;
+  }
+  @media screen and (max-width: 599px) {
+    flex-direction: column;
+  }
 `;
 const _SNSSection = styled.div`
   margin-right: 60px;
@@ -22,11 +28,17 @@ const _SNSSection = styled.div`
 const _EmailSection = styled.div``;
 const _Bottom = styled.div`
   padding: 30px 24px;
+  @media screen and (max-width: 800px) {
+    padding: 30px 56px;
+  }
 `;
 const _List = styled.ul`
   display: flex;
   justify-content: center;
   padding: 0;
+  @media screen and (max-width: 599px) {
+    justify-content: flex-start;
+  }
 `;
 const _ListItem = styled.li`
   list-style: none;
