@@ -3,8 +3,7 @@ import Head from 'next/head';
 import styled from 'styled-components';
 import Footer from '../components/layouts/Footer';
 import Header from '../components/layouts/Header';
-import Career from '../components/sections/career/Career';
-import Contact from '../components/sections/contact/Contact';
+import About from '../components/sections/about/About';
 import FirstView from '../components/sections/firstView/FirstView';
 import Links from '../components/sections/links/Links';
 import colors from '../constants/colors';
@@ -22,7 +21,10 @@ const Home: NextPage = () => {
   /**
    * 指定したselectorに合致するElementまでscrollする
    */
-  const scrollTo = (selector: string) => {
+  const scrollTo = (selector?: string) => {
+    if (!selector) {
+      return;
+    }
     const offset =
       (document.querySelector(selector) as HTMLElement).offsetTop - 130;
     if (!offset) return;
@@ -43,9 +45,8 @@ const Home: NextPage = () => {
       <Header handleItemClick={scrollTo}></Header>
       <_Inner>
         <FirstView></FirstView>
-        <Career></Career>
+        <About></About>
         <Links></Links>
-        <Contact></Contact>
       </_Inner>
       <Footer></Footer>
     </_Main>

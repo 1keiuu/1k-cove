@@ -35,6 +35,10 @@ const _AnchorList = styled.ul`
 `;
 const _AnchorListItem = styled.li`
   list-style: none;
+  height: 46px;
+`;
+const _OuterLinkListItemIcon = styled(_AnchorListItem)`
+  margin-left: 24px;
 `;
 const _Anchor = styled.a`
   cursor: pointer;
@@ -71,9 +75,22 @@ const _OuterLinkText = styled(Text)`
     color: ${colors.text.primary};
   }
 `;
+const _IconAnchor = styled.a`
+  width: 50px;
+  height: 46px;
+  padding: 8px;
+  border-radius: 10px;
+  background: ${colors.background.deep};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const _Image = styled.img`
+  object-fit: contain;
+`;
 
 type HeaderProps = {
-  handleItemClick: (selector: string) => void;
+  handleItemClick: (selector?: string) => void;
 };
 
 const Header: React.FC<HeaderProps> = (props) => {
@@ -97,23 +114,27 @@ const Header: React.FC<HeaderProps> = (props) => {
 
   const items = [
     {
-      index: 1,
-      selector: '#career',
-      text: 'Career',
+      name: 'about',
+      selector: '#about',
+      text: 'About',
     },
     {
-      index: 2,
+      name: 'links',
       selector: '#links',
       text: 'Links',
     },
     {
-      index: 3,
+      name: 'contact',
       selector: '#contact',
       text: 'Contact',
     },
     {
-      index: null,
+      name: 'blog',
       text: 'Blog',
+    },
+    {
+      name: 'github',
+      text: '',
     },
   ];
   return (
@@ -121,19 +142,33 @@ const Header: React.FC<HeaderProps> = (props) => {
       <_Nav>
         <_AnchorList>
           {items.map((item, i) => {
-            if (item.index === null) {
+            if (item.name === 'blog') {
               return (
-                <_OuterLinkListItem key={`item-${i}`}>
-                  <_OuterLink
-                    href="https://blog.1keiuu.com"
+                <_AnchorListItem key={`item-${i}`}>
+                  <_Anchor href="https://blog.1keiuu.com">
+                    <Text size={15} weight="bold">
+                      {item.text}
+                    </Text>
+                  </_Anchor>
+                </_AnchorListItem>
+              );
+            }
+            if (item.name === 'github') {
+              return (
+                <_OuterLinkListItemIcon key={`item-${i}`}>
+                  <_IconAnchor
                     target="_blank"
                     rel="noopener noreferrer"
+                    href="https://github.com/1keiuu"
                   >
-                    <_OuterLinkText size={15} weight="bold" color="white">
-                      {item.text}
-                    </_OuterLinkText>
-                  </_OuterLink>
-                </_OuterLinkListItem>
+                    <_Image
+                      src="/icons/github.png"
+                      width={24}
+                      height={24}
+                      alt="github icon"
+                    ></_Image>
+                  </_IconAnchor>
+                </_OuterLinkListItemIcon>
               );
             }
             return (

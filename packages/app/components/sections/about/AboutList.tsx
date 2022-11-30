@@ -49,12 +49,12 @@ const items = [
   },
 ];
 
-const CareerList = () => {
+const AboutList = () => {
   return (
     <_List>
       {items.map((item, i) => {
         return (
-          <_ListItem key={`career-item-${i}`}>
+          <_ListItem key={`about-item-${i}`}>
             <Text
               color={colors.text.black}
               style={{ marginRight: '8px' }}
@@ -71,4 +71,4 @@ const CareerList = () => {
     </_List>
   );
 };
-export default CareerList;
+export default AboutList;

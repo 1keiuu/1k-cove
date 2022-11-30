@@ -26,7 +26,7 @@ const Links = () => {
   return (
     <_Section id="links">
       <_ContentWrapper>
-        <_Title size={50}>LINKS</_Title>
+        <_Title size={50}>Links</_Title>
         <LinkList></LinkList>
       </_ContentWrapper>
       <_ImageWrapper>

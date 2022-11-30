@@ -28,6 +28,7 @@ const _Anchor = styled.a`
   justify-content: center;
   align-items: center;
 `;
+
 const _Image = styled.img`
   object-fit: contain;
 `;

@@ -32,14 +32,14 @@ const _Text = styled(Text)`
   line-height: 2.5;
 `;
 
-const Career = () => {
+const About = () => {
   return (
-    <_Section id="career">
+    <_Section id="about">
       <_ImgWrapper>
         <img src="/top/1.jpg" width="300" />
       </_ImgWrapper>
       <_Inner>
-        <_Title size={50}>CAREER</_Title>
+        <_Title size={50}>About</_Title>
         <_Text size={16}>
           都内在住のwebフロントエンドエンジニア。
           <br />
@@ -53,4 +53,4 @@ const Career = () => {
     </_Section>
   );
 };
-export default Career;
+export default About;
