@@ -12,7 +12,11 @@ const Preview: React.FC<PreviewProps> = (props) => {
     if (!articleRef.current) return;
     articleRef.current.innerHTML = props.html;
   }, [props.html]);
-  return <article ref={articleRef} className={styles.preview}></article>;
+  return (
+    <div className={styles['article-wrapper']}>
+      <article ref={articleRef} className={styles.preview}></article>
+    </div>
+  );
 };
 
 export default Preview;

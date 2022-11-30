@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export",
+    "build": "next build",
+    "export": "next export",
     "deploy": "firebase deploy --only hosting:blog-1keiuu",
     "start": "next start",
     "lint": "next lint"

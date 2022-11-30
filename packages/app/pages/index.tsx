@@ -3,13 +3,16 @@ import Head from 'next/head';
 import styled from 'styled-components';
 import Footer from '../components/layouts/Footer';
 import Header from '../components/layouts/Header';
-import Career from '../components/sections/career/Career';
-import Contact from '../components/sections/contact/Contact';
+import About from '../components/sections/about/About';
 import FirstView from '../components/sections/firstView/FirstView';
 import Links from '../components/sections/links/Links';
+import colors from '../constants/colors';
 
 const Home: NextPage = () => {
-  const _Main = styled.div`
+  const _Main = styled.main`
+    background: ${colors.background.primary};
+  `;
+  const _Inner = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,14 +21,17 @@ const Home: NextPage = () => {
   /**
    * 指定したselectorに合致するElementまでscrollする
    */
-  const scrollTo = (selector: string) => {
+  const scrollTo = (selector?: string) => {
+    if (!selector) {
+      return;
+    }
     const offset =
       (document.querySelector(selector) as HTMLElement).offsetTop - 130;
     if (!offset) return;
     window.scrollTo(0, offset);
   };
   return (
-    <main>
+    <_Main>
       <Head>
         <title>Harashima Ikkei&apos;s portfolio</title>
         <meta
@@ -37,14 +43,13 @@ const Home: NextPage = () => {
         <link rel="icon" type="image/png" href="/android-chrome-192x192.png" />
       </Head>
       <Header handleItemClick={scrollTo}></Header>
-      <_Main>
+      <_Inner>
         <FirstView></FirstView>
-        <Career></Career>
+        <About></About>
         <Links></Links>
-        <Contact></Contact>
-      </_Main>
+      </_Inner>
       <Footer></Footer>
-    </main>
+    </_Main>
   );
 };
 

@@ -12,6 +12,7 @@ import {
   addDoc,
   serverTimestamp,
   deleteDoc,
+  QueryConstraint,
 } from 'firebase/firestore';
 import { Category } from '../@types/category';
 import { PostCategories } from '../@types/postCategories';
@@ -51,6 +52,17 @@ export class PostCategoryApiClient {
     return res;
   };
 
+  where = async (condition: QueryConstraint): Promise<PostCategories[]> => {
+    let res: PostCategories[] = [];
+    const q = query(this.collectionRef, condition);
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      res.push(doc.data() as PostCategories);
+    });
+    return res;
+  };
+
   getPostCategoriesByPostId = async (postId: string) => {
     const res = await this._getDocByPostId(postId);
     if (!res) return null;
@@ -81,25 +93,28 @@ export class PostCategoryApiClient {
     if (!doc) {
       await addDoc(
         this.collectionRef,
-        Object.assign({ categories: [category] }, { postId: postId })
+        Object.assign(
+          { categories: [category], slugs: [category.slug] },
+          { postId: postId }
+        )
       );
       return;
     }
-    let categories = doc?.data()?.categories;
-
-    const categoriesNames = categories?.map(
-      (category: Category) => category.name
+    let categories = doc?.data()?.categories ?? [];
+    let slugs = doc?.data()?.slugs ?? [];
+    const categorySlugs = categories?.map(
+      (category: Category) => category.slug
     );
-    if (!categories || !categoriesNames) {
-      return;
-    }
 
-    if (!categoriesNames.includes(category.name)) {
+    // 既存のslugsになければ追加
+    if (!categorySlugs.includes(category.slug)) {
       categories = [...categories, category];
+      slugs = [...slugs, category.slug];
     }
     const data = {
       postId: postId,
       categories: categories,
+      slugs: slugs,
     };
 
     return await updateDoc(doc.ref, data);

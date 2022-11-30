@@ -2,10 +2,10 @@ import Button from '../../shared/Button/Button';
 import CustomLabel from '../../shared/CustomLabel/CustomLabel';
 import styles from './EditorPalette.module.css';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { CategoryChip, LinkCard } from '@1k-cove/common';
 import { Category } from '@1k-cove/common/@types/category';
-import { PostCategories } from '@1k-cove/common/@types/postCategory';
+import { PostCategories } from '@1k-cove/common';
 import { useCallback } from 'react';
 
 type EditorPaletteProps = {

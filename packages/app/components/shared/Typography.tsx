@@ -9,7 +9,7 @@ export const Title = styled.h2<{
   font-size: ${({ size }) => (size ? `${size}px` : '80px')};
   font-family: Roboto;
   font-weight: ${({ weight }) => (weight ? weight : 'bold')};
-  color: ${({ color }) => (color ? color : colors.text.primary)};
+  color: ${({ color }) => (color ? color : colors.text.black)};
   margin: 0;
 `;
 
@@ -21,7 +21,7 @@ export const Text = styled.p<{
   font-size: ${({ size }) => (size ? `${size}px` : '20px')};
   font-family: Roboto;
   font-weight: ${({ weight }) => (weight ? weight : 'normal')};
-  color: ${({ color }) => (color ? color : colors.text.primary)};
+  color: ${({ color }) => (color ? color : colors.text.black)};
   margin: 0;
   line-height: 2;
 `;

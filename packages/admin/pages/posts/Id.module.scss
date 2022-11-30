@@ -1,9 +1,6 @@
 .wrapper {
   padding: 40px;
-}
-
-.navigation-wrapper {
-  margin-bottom: 16px;
+  width: 100%;
 }
 
 .form {
@@ -12,21 +9,17 @@
   display: flex;
 }
 
-.form-inner {
+.navigation-wrapper {
+  margin-bottom: 16px;
+}
+
+.content-wrapper {
   width: 100%;
-  height: 100%;
+  margin-right: 100px;
+  &.--palette-open {
+    margin-right: 370px;
+  }
 }
 
-.title-wrapper {
-  margin-bottom: 16px;
-}
-
-.wrapper-row {
-  display: flex;
-  margin-bottom: 16px;
-}
-
-.wrapper-row label {
-  margin-right: 16px;
-  max-width: 200px;
+.drawer-wrapper {
 }

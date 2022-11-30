@@ -3,7 +3,7 @@ import { PostApiClient, initFirebase, Post } from '@1k-cove/common';
 import superjson from 'superjson';
 import Link from 'next/link';
 import Head from 'next/head';
-import styles from '../styles/Index.module.css';
+import styles from './Index.module.scss';
 
 type IndexPageProps = {
   posts: string;
@@ -12,7 +12,7 @@ type IndexPageProps = {
 const IndexPage: NextPage<IndexPageProps> = (props) => {
   const posts = superjson.parse(props.posts) as Post[];
   return (
-    <>
+    <div className={styles['inner']}>
       <Head>
         <title>Harashima Ikkei’s Blog</title>
         <meta name="description" content="Harashima Ikkei’s Blog" />
@@ -21,7 +21,7 @@ const IndexPage: NextPage<IndexPageProps> = (props) => {
       <div className={styles['create-link-wrapper']}>
         <Link href="/posts/new">create</Link>
       </div>
-      <ul>
+      <ul className={styles['post-item__list']}>
         {posts.length === 0 ? (
           <p>postがありません</p>
         ) : (
@@ -39,8 +39,10 @@ const IndexPage: NextPage<IndexPageProps> = (props) => {
           })
         )}
       </ul>
-      <Link href={`/categories`}>カテゴリー</Link>
-    </>
+      <p className={styles['category-link']}>
+        <Link href={`/categories`}>カテゴリー</Link>
+      </p>
+    </div>
   );
 };
 

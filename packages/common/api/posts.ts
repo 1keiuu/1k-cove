@@ -12,6 +12,7 @@ import {
   addDoc,
   serverTimestamp,
   deleteDoc,
+  QueryConstraint,
 } from 'firebase/firestore';
 import { Post } from '../@types/post';
 import { DomParser } from '@1k-cove/md-editor';
@@ -34,6 +35,17 @@ export class PostApiClient {
 
     querySnapshot.forEach((doc) => {
       res.push(doc.data());
+    });
+    return res;
+  };
+
+  where = async (condition: QueryConstraint): Promise<Post[]> => {
+    let res: Post[] = [];
+    const q = query(this.collectionRef, condition);
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((result) => {
+      res.push(result.data() as Post);
     });
     return res;
   };
