@@ -36,20 +36,15 @@ const _EmailAnchor = styled.a`
 const Contact = () => {
   return (
     <_Section id="contact">
-      <_Title size={50} color={colors.text.primary}>
-        Contact Me
+      <_Title size={50} color={colors.text.black}>
+        CONTACT
       </_Title>
 
       <_Inner>
-        SNSのフォローや副業のお誘いなどご気軽にご連絡ください。
+        副業のお誘いなどご気軽にご連絡ください。
         <_ContactListWrapper>
           <ContactList></ContactList>
         </_ContactListWrapper>
-        <Text color={colors.text.primary} size={20}>
-          <_EmailAnchor href="mailto:ikkei12.inw@gmail.com">
-            ikkei12.inw@gmail.com
-          </_EmailAnchor>
-        </Text>
       </_Inner>
     </_Section>
   );

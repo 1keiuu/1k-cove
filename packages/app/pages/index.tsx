@@ -7,9 +7,13 @@ import Career from '../components/sections/career/Career';
 import Contact from '../components/sections/contact/Contact';
 import FirstView from '../components/sections/firstView/FirstView';
 import Links from '../components/sections/links/Links';
+import colors from '../constants/colors';
 
 const Home: NextPage = () => {
-  const _Main = styled.div`
+  const _Main = styled.main`
+    background: ${colors.background.primary};
+  `;
+  const _Inner = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,7 +29,7 @@ const Home: NextPage = () => {
     window.scrollTo(0, offset);
   };
   return (
-    <main>
+    <_Main>
       <Head>
         <title>Harashima Ikkei&apos;s portfolio</title>
         <meta
@@ -37,14 +41,14 @@ const Home: NextPage = () => {
         <link rel="icon" type="image/png" href="/android-chrome-192x192.png" />
       </Head>
       <Header handleItemClick={scrollTo}></Header>
-      <_Main>
+      <_Inner>
         <FirstView></FirstView>
         <Career></Career>
         <Links></Links>
         <Contact></Contact>
-      </_Main>
+      </_Inner>
       <Footer></Footer>
-    </main>
+    </_Main>
   );
 };
 

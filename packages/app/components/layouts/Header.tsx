@@ -48,7 +48,7 @@ const _Anchor = styled.a`
 `;
 const _OuterLinkListItem = styled(_AnchorListItem)`
   border-radius: 30px;
-  background: ${colors.text.primary};
+  background: ${colors.text.black};
   padding: 0;
   margin-left: 16px;
   @media screen and (max-width: 599px) {
