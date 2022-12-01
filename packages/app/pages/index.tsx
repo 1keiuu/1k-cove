@@ -28,9 +28,22 @@ const Home: NextPage = () => {
     <main>
       <Head>
         <title>Harashima Ikkei&apos;s portfolio</title>
+        <meta name="description" content="原島一桂のポートフォリオサイト" />
         <meta
-          name="description"
-          content="原島一桂のポートフォリオサイトです。"
+          name="keywords"
+          content="エンジニア,webエンジニア,フロントエンド,個人ブログ,ポートフォリオ,技術ブログ,テックブログ"
+        />
+        <meta property="og:url" content="https://1keiuu.com" />
+        <meta property="og:title" content="Harashima Ikkei's portfolio" />
+        <meta property="og:site_name" content="Harashima Ikkei's portfolio" />
+        <meta
+          property="og:description"
+          content="原島一桂のポートフォリオサイト"
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:image"
+          content="https://storage.googleapis.com/portfolio21-56e7e.appspot.com/_ogp/1.jpg"
         />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
