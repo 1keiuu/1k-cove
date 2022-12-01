@@ -30,3 +30,8 @@ p ul {
     background: black;
   }
 }
+
+.page-container {
+  display: flex;
+  justify-content: center;
+}

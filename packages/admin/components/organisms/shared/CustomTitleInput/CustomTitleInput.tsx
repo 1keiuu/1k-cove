@@ -9,7 +9,11 @@ type CustomTitleInputProps = {
 
 const CustomTitleInput: React.FC<CustomTitleInputProps> = (props) => {
   return (
-    <input {...props.register(props.name)} className={styles.input}></input>
+    <input
+      {...props.register(props.name)}
+      className={styles.input}
+      placeholder="タイトル"
+    ></input>
   );
 };
 

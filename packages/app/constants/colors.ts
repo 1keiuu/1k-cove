@@ -1,13 +1,18 @@
 const colors = {
   background: {
-    secondary: '#fffaf3',
+    secondary: '#08131A',
     white: '#fff',
-    primary: '#004737',
+    primary: '#E1DFDE',
+    deep: '#333333',
   },
   text: {
     primary: '#004737',
     black: '#333333',
-    grey: '#8e9194',
+    grey: '#E1DFDE',
+    greyLight: '#B9B9B9',
+  },
+  border: {
+    grey: '#E1DFDE',
   },
 };
 

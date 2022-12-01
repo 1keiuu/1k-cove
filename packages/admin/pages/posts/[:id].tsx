@@ -2,28 +2,26 @@ import { GetServerSideProps, NextPage } from 'next';
 import {
   PostApiClient,
   PostCategoryApiClient,
-  StorageApiClient,
   initFirebase,
   Post,
   FirebaseConfig,
   PageNavigation,
-  LinkCard,
   CategoryApiClient,
+  StorageApiClient,
+  FunctionsApiClient,
+  LinkCard,
 } from '@1k-cove/common';
 import superjson from 'superjson';
-import { SwitchTab, Editor, Preview, DomParser } from '@1k-cove/md-editor';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import styles from './Id.module.scss';
-import { useForm } from 'react-hook-form';
 import Loading from '../../components/organisms/shared/Loading/Loading';
-import EditorPalette from '../../components/organisms/posts/EditorPalette/EditorPalette';
-import CustomTitleInput from '../../components/organisms/shared/CustomTitleInput/CustomTitleInput';
-import Router from 'next/router';
-import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
-import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';
-import { getFunctions, httpsCallable } from 'firebase/functions';
 import { Category } from '@1k-cove/common/@types/category';
 import { PostCategories } from '@1k-cove/common';
+import EditorPalette from '../../components/organisms/posts/EditorPalette/EditorPalette';
+import Router from 'next/router';
+import PostIdContent from '../../components/posts/PostIdContent/PostIdContent';
+import { useForm } from 'react-hook-form';
+import Drawer from '../../components/organisms/shared/Drawer/Drawer';
 
 type PostIdPageProps = {
   post: string;
@@ -44,39 +42,40 @@ const tabItems = [
 ];
 
 const PostIdPage: NextPage<PostIdPageProps> = (props) => {
+  // server side props
   const post = superjson.parse(props.post) as Post;
   const firebaseConfig = superjson.parse(
     props.firebaseConfig
   ) as FirebaseConfig;
   const categories = superjson.parse(props.categories) as Category[];
+  const postCategoriesProps = superjson.parse(
+    props.postCategories
+  ) as PostCategories;
 
+  // api client
   const { db, storage } = initFirebase(firebaseConfig);
+  const storageClient = new StorageApiClient(storage);
   const postApiClient = new PostApiClient(db);
   const postCategoryApiClient = new PostCategoryApiClient(db);
-  const storageClient = new StorageApiClient(storage);
+  const functionsApiClient = new FunctionsApiClient();
+  const getOgpInfo = functionsApiClient.callGetOgpInfo();
 
-  const [displayMode, setDisplayMode] = useState<'editor' | 'preview'>(
-    'editor'
-  );
   const [isLoading, setIsLoading] = useState(false);
+  const [isPaletteShow, setPaletteShow] = useState(false);
+
+  // state
   const [ogpImageUrl, setOgpImageUrl] = useState(post.ogpUrl ?? '');
   const [imageUrls, setImageUrls] = useState(post.imageUrls ?? []);
   const [linkCards, setLinkCards] = useState<LinkCard[]>([]);
+  const [postCategories, setPostCategories] = useState<PostCategories>(
+    postCategoriesProps ?? null
+  );
+
+  // form
   const defaultValues = post;
   const { handleSubmit, setValue, getValues, watch, register } = useForm<Post>({
     defaultValues,
   });
-  const [postCategories, setPostCategories] = useState<PostCategories>(
-    superjson.parse(props.postCategories) ?? null
-  );
-
-  const functions = getFunctions();
-  functions.region = 'asia-northeast1';
-  const getOgpInfo = httpsCallable(functions, 'getOgpInfo');
-
-  const handleContentChange = (content: string) => {
-    setValue('content', content);
-  };
 
   const onSubmit = (data: Post) => {
     setIsLoading(true);
@@ -105,13 +104,53 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
     setIsLoading(false);
   };
 
+  const onCategoryChipClick = async (
+    category: Category,
+    eventType: 'on' | 'off'
+  ) => {
+    if (eventType === 'on') {
+      const newCategories = postCategories?.categories
+        ? postCategories.categories
+        : [];
+      const newSlugs = postCategories?.slugs ? postCategories.slugs : [];
+      // add
+      await postCategoryApiClient
+        .upsertPostCategories(post.docId, category)
+        .then(() => {
+          setPostCategories({
+            postId: post.docId,
+            categories: [...newCategories, category],
+            slugs: [...newSlugs, category.slug],
+          });
+        });
+    } else if (eventType === 'off') {
+      // delete
+      const newData = {
+        postId: postCategories.postId,
+        categories: postCategories.categories.filter(
+          (c: Category) => c.slug !== category.slug
+        ),
+        slugs:
+          postCategories?.slugs?.filter((s: string) => s !== category.slug) ??
+          [],
+      };
+      await postCategoryApiClient.updatePostCategories(newData).then(() => {
+        setPostCategories(newData);
+      });
+    }
+  };
+
+  const handleContentChange = (content: string) => {
+    setValue('content', content);
+  };
+
   const handleOGPInputChange = (files: FileList | null) => {
     setIsLoading(true);
     if (!files) {
       setIsLoading(false);
       return;
     }
-    storageClient
+    return storageClient
       .upload(files[0], `_ogp/${post.docId}`)
       .then((url) => {
         setOgpImageUrl(url);
@@ -184,45 +223,6 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
     setLinkCards([...linkCards, newLinkCard]);
   };
 
-  const onCategoryChipClick = async (
-    category: Category,
-    eventType: 'on' | 'off'
-  ) => {
-    if (eventType === 'on') {
-      const newCategories = postCategories?.categories
-        ? postCategories.categories
-        : [];
-      // add
-      await postCategoryApiClient
-        .upsertPostCategories(post.docId, category)
-        .then(() => {
-          setPostCategories({
-            postId: post.docId,
-            categories: [...newCategories, category],
-          });
-        });
-    } else if (eventType === 'off') {
-      // delete
-      const newData = {
-        postId: postCategories.postId,
-        categories: postCategories.categories.filter(
-          (c: Category) => c.slug !== category.slug
-        ),
-      };
-      await postCategoryApiClient.updatePostCategories(newData).then(() => {
-        setPostCategories(newData);
-      });
-    }
-  };
-
-  const watchedContent = watch('content');
-  const html = useMemo(() => {
-    // parse md to html
-    const parser = new DomParser();
-    const html = parser.parse(watchedContent);
-    return html;
-  }, [watchedContent]);
-
   return (
     <div className={styles.wrapper}>
       <Loading loading={isLoading}></Loading>
@@ -230,51 +230,43 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
         <PageNavigation backPath="/"></PageNavigation>
       </div>
       <form className={styles.form}>
-        <div className={styles['form-inner']}>
-          <div className={styles['title-wrapper']}>
-            <CustomLabel>
-              title
-              <CustomTitleInput register={register} name="title" />
-            </CustomLabel>
-          </div>
-          <div className={styles['wrapper-row']}>
-            <CustomLabel>
-              date
-              <CustomInput register={register} name="date" />
-            </CustomLabel>
-          </div>
-          <SwitchTab
-            items={tabItems}
-            activeItemName={displayMode}
-            onTabItemClick={(name) => {
-              setDisplayMode(name as 'editor' | 'preview');
-            }}
-          ></SwitchTab>
-          {displayMode === 'editor' ? (
-            <Editor
-              defaultContent={watchedContent}
-              onContentChange={handleContentChange}
-            ></Editor>
-          ) : (
-            <Preview html={html}></Preview>
-          )}
+        <div
+          className={
+            isPaletteShow
+              ? `${styles['content-wrapper']} ${styles['--palette-open']}`
+              : styles['content-wrapper']
+          }
+        >
+          <PostIdContent
+            post={post}
+            handleContentChange={handleContentChange}
+            watch={watch}
+            register={register}
+          />
         </div>
-        <EditorPalette
-          onSubmit={handleSubmit(onSubmit)}
-          onDeleteButtonClick={handleDeleteButtonClick}
-          onOGPInputChange={handleOGPInputChange}
-          ogpImageUrl={ogpImageUrl}
-          imageUrls={imageUrls}
-          linkCards={linkCards}
-          categories={categories}
-          postCategories={postCategories}
-          onImageInputChange={handleImageInputChange}
-          onImageDeleteButtonClick={handleImageDeleteButtonClick}
-          onLinkCardSubmit={onLinkCardSubmit}
-          onCategoryChipClick={onCategoryChipClick}
-        ></EditorPalette>
+        <div className={styles['drawer-wrapper']}>
+          <Drawer
+            isOpen={isPaletteShow}
+            onOpenButtonClick={() => setPaletteShow(true)}
+            onCloseButtonClick={() => setPaletteShow(false)}
+          >
+            <EditorPalette
+              onSubmit={handleSubmit(onSubmit)}
+              onDeleteButtonClick={handleDeleteButtonClick}
+              onOGPInputChange={handleOGPInputChange}
+              ogpImageUrl={ogpImageUrl}
+              imageUrls={imageUrls}
+              linkCards={linkCards}
+              categories={categories}
+              postCategories={postCategories}
+              onImageInputChange={handleImageInputChange}
+              onImageDeleteButtonClick={handleImageDeleteButtonClick}
+              onLinkCardSubmit={onLinkCardSubmit}
+              onCategoryChipClick={onCategoryChipClick}
+            ></EditorPalette>
+          </Drawer>
+        </div>
       </form>
-      <Loading loading={isLoading}></Loading>
     </div>
   );
 };

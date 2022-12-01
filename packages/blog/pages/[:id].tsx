@@ -15,6 +15,7 @@ const getPostsPerPage = async () => {
   }
   return postsPerPage;
 };
+
 export const getStaticPaths = async () => {
   const postsPerPage = await getPostsPerPage();
 

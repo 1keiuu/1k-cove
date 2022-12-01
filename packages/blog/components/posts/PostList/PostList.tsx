@@ -9,9 +9,13 @@ type PostListProps = {
 const PostList: React.FC<PostListProps> = (props) => {
   return (
     <ul className={styles['list']}>
-      {props.posts.map((post, i) => {
-        return <PostListItem post={post} key={`post-${i}`}></PostListItem>;
-      })}
+      {props.posts.length === 0 ? (
+        <p>投稿はありません</p>
+      ) : (
+        props.posts.map((post, i) => {
+          return <PostListItem post={post} key={`post-${i}`}></PostListItem>;
+        })
+      )}
     </ul>
   );
 };

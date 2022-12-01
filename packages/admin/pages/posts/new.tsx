@@ -55,15 +55,27 @@ const PostsNewPage: NextPage<PostsNewPageProps> = (props) => {
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <CustomLabel>
           タイトル
-          <CustomInput register={register} name="title"></CustomInput>
+          <CustomInput
+            register={register}
+            name="title"
+            placeholder="タイトル"
+          ></CustomInput>
         </CustomLabel>
         <CustomLabel>
           slug
-          <CustomInput register={register} name="slug"></CustomInput>
+          <CustomInput
+            register={register}
+            name="slug"
+            placeholder="slug"
+          ></CustomInput>
         </CustomLabel>
         <CustomLabel>
           date
-          <CustomInput register={register} name="date"></CustomInput>
+          <CustomInput
+            register={register}
+            name="date"
+            placeholder="YYYY/MM/DD"
+          ></CustomInput>
         </CustomLabel>
         <Button type="submit">作成</Button>
       </form>
