@@ -13,11 +13,11 @@ import {
   serverTimestamp,
   deleteDoc,
   QueryConstraint,
-} from 'firebase/firestore';
-import { Post } from '../@types/post';
-import { DomParser } from '@1k-cove/md-editor';
+} from "firebase/firestore";
+import { Post } from "../@types/post";
+import { DomParser } from "@1k-cove/md-editor";
 
-const POSTS_COLLECTION_NAME = 'posts';
+const POSTS_COLLECTION_NAME = "posts";
 
 export class PostApiClient {
   db: Firestore;
@@ -28,9 +28,27 @@ export class PostApiClient {
     this.collectionRef = collection(db, POSTS_COLLECTION_NAME);
   }
 
+  /**
+   * Warning: publicでない記事もfetchする. adminでのみ使うこと.
+   */
   listPosts = async (): Promise<DocumentData[]> => {
     const res: DocumentData[] = [];
-    const q = query(this.collectionRef, orderBy('date', 'desc'));
+    const q = query(this.collectionRef, orderBy("date", "desc"));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      res.push(doc.data());
+    });
+    return res;
+  };
+
+  listPublicPosts = async (): Promise<DocumentData[]> => {
+    const res: DocumentData[] = [];
+    const q = query(
+      this.collectionRef,
+      where("isPublic", "==", true),
+      orderBy("date", "desc")
+    );
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach((doc) => {
@@ -52,7 +70,7 @@ export class PostApiClient {
 
   getPostRefBySlug = async (slug: string) => {
     let res: DocumentSnapshot | null = null;
-    const q = query(this.collectionRef, where('slug', '==', slug));
+    const q = query(this.collectionRef, where("slug", "==", slug));
     const querySnapshot = await getDocs(q);
     let i = 0;
     querySnapshot.forEach((result) => {
@@ -71,6 +89,7 @@ export class PostApiClient {
 
   createPost = async (post: Post) => {
     const data = Object.assign(post, {
+      isPublic: false,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
@@ -103,7 +122,7 @@ export class PostApiClient {
     slug: string
   ): Promise<DocumentSnapshot | null> => {
     let res: DocumentSnapshot | null = null;
-    const q = query(this.collectionRef, where('slug', '==', slug));
+    const q = query(this.collectionRef, where("slug", "==", slug));
     const querySnapshot = await getDocs(q);
     let i = 0;
     querySnapshot.forEach((result) => {

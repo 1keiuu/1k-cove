@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from 'next';
+import { GetServerSideProps, NextPage } from "next";
 import {
   PostApiClient,
   PostCategoryApiClient,
@@ -10,18 +10,19 @@ import {
   StorageApiClient,
   FunctionsApiClient,
   LinkCard,
-} from '@1k-cove/common';
-import superjson from 'superjson';
-import { useState } from 'react';
-import styles from './Id.module.scss';
-import Loading from '../../components/organisms/shared/Loading/Loading';
-import { Category } from '@1k-cove/common/@types/category';
-import { PostCategories } from '@1k-cove/common';
-import EditorPalette from '../../components/organisms/posts/EditorPalette/EditorPalette';
-import Router from 'next/router';
-import PostIdContent from '../../components/posts/PostIdContent/PostIdContent';
-import { useForm } from 'react-hook-form';
-import Drawer from '../../components/organisms/shared/Drawer/Drawer';
+} from "@1k-cove/common";
+import superjson from "superjson";
+import { useState } from "react";
+import styles from "./Id.module.scss";
+import Loading from "../../components/organisms/shared/Loading/Loading";
+import { Category } from "@1k-cove/common/@types/category";
+import { PostCategories } from "@1k-cove/common";
+import EditorPalette from "../../components/organisms/posts/EditorPalette/EditorPalette";
+import Router from "next/router";
+import PostIdContent from "../../components/posts/PostIdContent/PostIdContent";
+import { useForm } from "react-hook-form";
+import Drawer from "../../components/organisms/shared/Drawer/Drawer";
+import cloudinary from "../../lib/cloudinary";
 
 type PostIdPageProps = {
   post: string;
@@ -29,17 +30,6 @@ type PostIdPageProps = {
   postCategories: string;
   firebaseConfig: string;
 };
-
-const tabItems = [
-  {
-    name: 'editor',
-    value: 'Editor',
-  },
-  {
-    name: 'preview',
-    value: 'Preview',
-  },
-];
 
 const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   // server side props
@@ -64,7 +54,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const [isPaletteShow, setPaletteShow] = useState(false);
 
   // state
-  const [ogpImageUrl, setOgpImageUrl] = useState(post.ogpUrl ?? '');
+  const [ogpImageUrl, setOgpImageUrl] = useState(post.ogpUrl ?? "");
   const [imageUrls, setImageUrls] = useState(post.imageUrls ?? []);
   const [linkCards, setLinkCards] = useState<LinkCard[]>([]);
   const [postCategories, setPostCategories] = useState<PostCategories>(
@@ -79,6 +69,35 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
 
   const onSubmit = (data: Post) => {
     setIsLoading(true);
+    const encodeText = encodeURI(data.title);
+
+    // 第一引数は画像名、第二引数はオプション
+    const image = cloudinary.url("ogp.jpg", {
+      // URLのバージョンの部分
+      version: "1598892930",
+      transformation: [
+        {
+          // 文字を重ねる設定
+          overlay: {
+            // フォントの設定(アップロードしたフォントも使えます！)
+            font_family: "Roboto",
+            // フォントのサイズ
+            font_size: 50,
+            // 文字を中央寄せ
+            text_align: "center",
+            // 表示するテキスト
+            text: encodeText,
+          },
+          // 文字の領域
+          width: "600",
+          // 文字の色
+          color: "#333",
+          // 画像を領域いっぱいに表示させる設定
+          crop: "fit",
+        },
+      ],
+    });
+    console.log(image);
     postApiClient
       .updatePost(data)
       .then(() => {
@@ -91,11 +110,11 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
 
   const handleDeleteButtonClick = () => {
     setIsLoading(true);
-    if (confirm('削除しますか?')) {
+    if (confirm("削除しますか?")) {
       postApiClient
         .deletePost(post.slug)
         .then(() => {
-          Router.push('/');
+          Router.push("/");
         })
         .catch((e) => {
           throw new Error(e);
@@ -106,9 +125,9 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
 
   const onCategoryChipClick = async (
     category: Category,
-    eventType: 'on' | 'off'
+    eventType: "on" | "off"
   ) => {
-    if (eventType === 'on') {
+    if (eventType === "on") {
       const newCategories = postCategories?.categories
         ? postCategories.categories
         : [];
@@ -123,7 +142,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
             slugs: [...newSlugs, category.slug],
           });
         });
-    } else if (eventType === 'off') {
+    } else if (eventType === "off") {
       // delete
       const newData = {
         postId: postCategories.postId,
@@ -141,7 +160,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   };
 
   const handleContentChange = (content: string) => {
-    setValue('content', content);
+    setValue("content", content);
   };
 
   const handleOGPInputChange = (files: FileList | null) => {
@@ -154,7 +173,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
       .upload(files[0], `_ogp/${post.docId}`)
       .then((url) => {
         setOgpImageUrl(url);
-        setValue('ogpUrl', url);
+        setValue("ogpUrl", url);
         const data = getValues();
         postApiClient.updatePost(data).catch((e) => {
           throw new Error(e);
@@ -178,7 +197,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
       .then((url) => {
         const urls = [...imageUrls, url];
         setImageUrls(urls);
-        setValue('imageUrls', urls);
+        setValue("imageUrls", urls);
         const data = getValues();
         postApiClient.updatePost(data).catch((e) => {
           throw new Error(e);
@@ -226,15 +245,18 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   return (
     <div className={styles.wrapper}>
       <Loading loading={isLoading}></Loading>
-      <div className={styles['navigation-wrapper']}>
+      {!post.isPublic && (
+        <div className={styles["not-public-bar"]}>非公開の記事です</div>
+      )}
+      <div className={styles["navigation-wrapper"]}>
         <PageNavigation backPath="/"></PageNavigation>
       </div>
       <form className={styles.form}>
         <div
           className={
             isPaletteShow
-              ? `${styles['content-wrapper']} ${styles['--palette-open']}`
-              : styles['content-wrapper']
+              ? `${styles["content-wrapper"]} ${styles["--palette-open"]}`
+              : styles["content-wrapper"]
           }
         >
           <PostIdContent
@@ -244,7 +266,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
             register={register}
           />
         </div>
-        <div className={styles['drawer-wrapper']}>
+        <div className={styles["drawer-wrapper"]}>
           <Drawer
             isOpen={isPaletteShow}
             onOpenButtonClick={() => setPaletteShow(true)}
@@ -263,6 +285,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
               onImageDeleteButtonClick={handleImageDeleteButtonClick}
               onLinkCardSubmit={onLinkCardSubmit}
               onCategoryChipClick={onCategoryChipClick}
+              register={register}
             ></EditorPalette>
           </Drawer>
         </div>
@@ -272,7 +295,7 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const slug = context.params?.[':id'] as string;
+  const slug = context.params?.[":id"] as string;
   if (!slug) {
     return {
       props: {},

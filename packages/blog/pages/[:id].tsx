@@ -1,12 +1,12 @@
-import { GetStaticProps } from 'next';
-import { PostApiClient, initFirebase } from '@1k-cove/common';
-import superjson from 'superjson';
-import IndexPageContent from '../components/posts/IndexPageContent/IndexPageContent';
+import { GetStaticProps } from "next";
+import { PostApiClient, initFirebase } from "@1k-cove/common";
+import superjson from "superjson";
+import IndexPageContent from "../components/posts/IndexPageContent/IndexPageContent";
 
 const getPostsPerPage = async () => {
   const { db } = initFirebase();
   const client = new PostApiClient(db);
-  const posts = await client.listPosts();
+  const posts = await client.listPublicPosts();
   const postsPerPage = [];
   const per = 10;
 
@@ -20,7 +20,7 @@ export const getStaticPaths = async () => {
   const postsPerPage = await getPostsPerPage();
 
   const paths = postsPerPage.map((_, i) => {
-    return { params: { ':id': (i + 1).toString() } };
+    return { params: { ":id": (i + 1).toString() } };
   });
   return {
     paths: paths,
@@ -29,7 +29,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const page = context.params?.[':id'] as string;
+  const page = context.params?.[":id"] as string;
   if (!page) {
     return {
       props: {},

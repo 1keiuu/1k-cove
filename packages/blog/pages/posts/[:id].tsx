@@ -1,4 +1,4 @@
-import { GetStaticProps, NextPage } from 'next';
+import { GetStaticProps, NextPage } from "next";
 import {
   PostApiClient,
   initFirebase,
@@ -6,13 +6,13 @@ import {
   PageNavigation,
   AnchorListItem,
   PostCategoryApiClient,
-} from '@1k-cove/common';
-import superjson from 'superjson';
-import styles from './Id.module.scss';
-import Detail from '../../components/posts/Detail/Detail';
-import { DomParserWithSSR } from '@1k-cove/md-editor/ssr';
-import DefaultHead from '../../components/meta/DefaultHead';
-import { PostCategories } from '@1k-cove/common';
+} from "@1k-cove/common";
+import superjson from "superjson";
+import styles from "./Id.module.scss";
+import Detail from "../../components/posts/Detail/Detail";
+import { DomParserWithSSR } from "@1k-cove/md-editor/ssr";
+import DefaultHead from "../../components/meta/DefaultHead";
+import { PostCategories } from "@1k-cove/common";
 
 type PostIdPageProps = {
   post: string;
@@ -25,10 +25,10 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
   const post = superjson.parse(props.post) as Post;
   const postCategory = superjson.parse(props.postCategory) as PostCategories;
   const headings = superjson.parse(props.headings) as AnchorListItem[];
-  const metaKeywords = postCategory.categories.reduce((prev, cur, i) => {
+  const metaKeywords = postCategory?.categories?.reduce((prev, cur, i) => {
     if (i === 0) return cur.name;
     return prev + `,${cur.name}`;
-  }, '');
+  }, "");
   return (
     <>
       <DefaultHead
@@ -40,9 +40,9 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
           url: `https://blog.1keiuu.com/posts/${post.slug}`,
         }}
       ></DefaultHead>
-      <div className={styles['wrapper']}>
-        <div className={styles['inner']}>
-          <div className={styles['page-navigation-wrapper']}>
+      <div className={styles["wrapper"]}>
+        <div className={styles["inner"]}>
+          <div className={styles["page-navigation-wrapper"]}>
             <PageNavigation backPath="/"></PageNavigation>
           </div>
           <Detail
@@ -60,10 +60,10 @@ const PostIdPage: NextPage<PostIdPageProps> = (props) => {
 export const getStaticPaths = async () => {
   const { db } = initFirebase();
   const client = new PostApiClient(db);
-  const posts = await client.listPosts();
+  const posts = (await client.listPublicPosts()) as Post[];
 
   const paths = posts.map((post) => {
-    return { params: { ':id': post.slug } };
+    return { params: { ":id": post.slug } };
   });
   return {
     paths: paths,
@@ -72,7 +72,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const slug = context.params?.[':id'] as string;
+  const slug = context.params?.[":id"] as string;
   if (!slug) {
     return {
       props: {},

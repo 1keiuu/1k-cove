@@ -7,6 +7,7 @@ export type Post = {
   date: string;
   ogpUrl: string;
   imageUrls: string[];
+  isPublic: boolean;
 };
 
 export type LinkCard = {

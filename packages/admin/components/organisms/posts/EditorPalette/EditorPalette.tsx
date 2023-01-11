@@ -1,12 +1,13 @@
-import Button from '../../shared/Button/Button';
-import CustomLabel from '../../shared/CustomLabel/CustomLabel';
-import styles from './EditorPalette.module.css';
-import Image from 'next/image';
-import { useRef } from 'react';
-import { CategoryChip, LinkCard } from '@1k-cove/common';
-import { Category } from '@1k-cove/common/@types/category';
-import { PostCategories } from '@1k-cove/common';
-import { useCallback } from 'react';
+import Button from "../../shared/Button/Button";
+import CustomLabel from "../../shared/CustomLabel/CustomLabel";
+import styles from "./EditorPalette.module.css";
+import Image from "next/image";
+import { useRef } from "react";
+import { CategoryChip, LinkCard, Post } from "@1k-cove/common";
+import { Category } from "@1k-cove/common/@types/category";
+import { PostCategories } from "@1k-cove/common";
+import { useCallback } from "react";
+import { UseFormRegister } from "react-hook-form";
 
 type EditorPaletteProps = {
   onSubmit: () => void;
@@ -20,7 +21,8 @@ type EditorPaletteProps = {
   onImageInputChange: (files: FileList | null) => void;
   onImageDeleteButtonClick: (url: string) => void;
   onLinkCardSubmit: (src: string | null) => void;
-  onCategoryChipClick: (category: Category, eventType: 'on' | 'off') => void;
+  onCategoryChipClick: (category: Category, eventType: "on" | "off") => void;
+  register: UseFormRegister<Post>;
 };
 
 const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
@@ -37,9 +39,9 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
   );
 
   return (
-    <nav className={styles['editor-palette']}>
+    <nav className={styles["editor-palette"]}>
       <ul>
-        <li className={styles['list-item']}>
+        <li className={styles["list-item"]}>
           <Button
             type="button"
             onClick={(e) => {
@@ -50,7 +52,7 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
             保存
           </Button>
         </li>
-        <li className={styles['list-item']}>
+        <li className={styles["list-item"]}>
           <Button
             type="button"
             isOutlined
@@ -62,7 +64,13 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
             削除する
           </Button>
         </li>
-        <li className={styles['list-item']}>
+        <li className={styles["list-item"]}>
+          <CustomLabel>
+            公開
+            <input type="checkbox" {...props.register("isPublic")} />
+          </CustomLabel>
+        </li>
+        <li className={styles["list-item"]}>
           <CustomLabel>
             記事OGP
             <input
@@ -78,14 +86,14 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
             className={styles.image}
             src={
               props.ogpImageUrl ||
-              'https://storage.googleapis.com/portfolio21-56e7e.appspot.com/articles/placeholder/lazy_with_icon.png'
+              "https://storage.googleapis.com/portfolio21-56e7e.appspot.com/articles/placeholder/lazy_with_icon.png"
             }
             alt="OGP image"
             width={300}
             height={300}
           />
         </li>
-        <li className={styles['list-item']}>
+        <li className={styles["list-item"]}>
           <CustomLabel>
             <div>
               Link Card
@@ -96,7 +104,7 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
                     linkCardInputRef?.current?.value || null
                   );
                 }}
-                className={styles['link-card__add-button']}
+                className={styles["link-card__add-button"]}
               >
                 追加
               </button>
@@ -104,29 +112,29 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
             <input
               type="text"
               ref={linkCardInputRef}
-              className={styles['link-card__input']}
+              className={styles["link-card__input"]}
             />
-            <ul className={styles['link-card__list']}>
+            <ul className={styles["link-card__list"]}>
               {props.linkCards.map((linkCard, i) => {
                 return (
                   <li
                     key={`${linkCard.src}-${i}`}
-                    className={styles['link-card__list-item']}
+                    className={styles["link-card__list-item"]}
                   >
                     <a
                       href={linkCard.src}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className={styles['link-card__title']}
+                      className={styles["link-card__title"]}
                     >
-                      {linkCard.title || 'タイトル不明'}
+                      {linkCard.title || "タイトル不明"}
                     </a>
                     <button
                       type="button"
                       onClick={(e) => {
                         e.preventDefault();
                         dispatchEvent(
-                          new CustomEvent('insertLinkCard', {
+                          new CustomEvent("insertLinkCard", {
                             detail: props.linkCards[i],
                           })
                         );
@@ -140,7 +148,7 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
             </ul>
           </CustomLabel>
         </li>
-        <li className={styles['list-item']}>
+        <li className={styles["list-item"]}>
           <CustomLabel>
             画像
             <input
@@ -152,17 +160,17 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
               }}
             />
           </CustomLabel>
-          <div className={styles['image-group']}>
+          <div className={styles["image-group"]}>
             {props.imageUrls.map((image, i) => {
               return (
                 <button
                   key={`image-${i}`}
                   type="button"
-                  className={styles['image-wrapper']}
+                  className={styles["image-wrapper"]}
                   onClick={(e) => {
                     e.preventDefault();
                     dispatchEvent(
-                      new CustomEvent('insertImage', {
+                      new CustomEvent("insertImage", {
                         detail: {
                           url: image,
                         },
@@ -178,7 +186,7 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
                     height={150}
                   />
                   <div
-                    className={styles['image-delete-button']}
+                    className={styles["image-delete-button"]}
                     onClick={() => {
                       props.onImageDeleteButtonClick(image);
                     }}
@@ -190,15 +198,15 @@ const EditorPalette: React.FC<EditorPaletteProps> = (props) => {
             })}
           </div>
         </li>
-        <li className={styles['list-item']}>
+        <li className={styles["list-item"]}>
           <CustomLabel>
             カテゴリー
-            <div className={styles['category-chip__group']}>
+            <div className={styles["category-chip__group"]}>
               {props.categories.map((category, i) => {
                 return (
                   <div
                     key={`category-${i}`}
-                    className={styles['category-chip__wrapper']}
+                    className={styles["category-chip__wrapper"]}
                   >
                     <CategoryChip
                       category={category}

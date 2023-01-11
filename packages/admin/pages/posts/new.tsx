@@ -1,20 +1,20 @@
-import { GetServerSideProps, NextPage } from 'next';
+import { GetServerSideProps, NextPage } from "next";
 import {
   PostApiClient,
   initFirebase,
   Post,
   FirebaseConfig,
   PageNavigation,
-} from '@1k-cove/common';
-import superjson from 'superjson';
-import { useState } from 'react';
-import styles from './New.module.scss';
-import { useForm } from 'react-hook-form';
-import Loading from '../../components/organisms/shared/Loading/Loading';
-import CustomInput from '../../components/organisms/shared/CustomInput/CustomInput';
-import CustomLabel from '../../components/organisms/shared/CustomLabel/CustomLabel';
-import Button from '../../components/organisms/shared/Button/Button';
-import Router from 'next/router';
+} from "@1k-cove/common";
+import superjson from "superjson";
+import { useState } from "react";
+import styles from "./New.module.scss";
+import { useForm } from "react-hook-form";
+import Loading from "../../components/organisms/shared/Loading/Loading";
+import CustomInput from "../../components/organisms/shared/CustomInput/CustomInput";
+import CustomLabel from "../../components/organisms/shared/CustomLabel/CustomLabel";
+import Button from "../../components/organisms/shared/Button/Button";
+import Router from "next/router";
 
 type PostsNewPageProps = {
   firebaseConfig: string;
@@ -31,10 +31,14 @@ const PostsNewPage: NextPage<PostsNewPageProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const date = new Date();
   const defaultValues = {
-    content: '',
+    content: "",
     date: `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`,
   };
-  const { handleSubmit, register } = useForm<Post>({
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<Post>({
     defaultValues,
   });
 
@@ -42,14 +46,14 @@ const PostsNewPage: NextPage<PostsNewPageProps> = (props) => {
     setIsLoading(true);
     postApiClient.createPost(data).then(() => {
       setIsLoading(false);
-      Router.push('/');
+      Router.push("/");
     });
   };
 
   return (
     <div className={styles.wrapper}>
       <Loading loading={isLoading}></Loading>
-      <div className={styles['navigation-wrapper']}>
+      <div className={styles["navigation-wrapper"]}>
         <PageNavigation backPath="/"></PageNavigation>
       </div>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -59,16 +63,20 @@ const PostsNewPage: NextPage<PostsNewPageProps> = (props) => {
             register={register}
             name="title"
             placeholder="タイトル"
+            required
           ></CustomInput>
         </CustomLabel>
+        {errors.title?.type==="required" && <p className={styles['error-message']}>必須項目です</p>}
         <CustomLabel>
           slug
           <CustomInput
             register={register}
             name="slug"
             placeholder="slug"
+            required
           ></CustomInput>
         </CustomLabel>
+        {errors.slug?.type === "required" && <p className={styles['error-message']}>必須項目です</p>}
         <CustomLabel>
           date
           <CustomInput
