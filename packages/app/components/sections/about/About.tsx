@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Title, Text } from '../../shared/Typography';
+import styled from "styled-components";
+import { Title, Text } from "../../shared/Typography";
 
 const _Section = styled.div`
   display: flex;
@@ -51,9 +51,7 @@ const About = () => {
           <br />
           学生時代にwebに出会い、独学で勉強を開始。複数社でインターンを経験。
           <br />
-          2022年3月より株式会社サイバーエージェントにて内定者アルバイトを開始。
-          <br />
-          2023年4月より同社へ正社員として入社。
+          2022年3月より株式会社サイバーエージェントに入社。
           <br />
           webフロントがメイン領域ですが、副業等でバックエンドを書くこともあります。
         </_Text>
