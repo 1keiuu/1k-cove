@@ -1,9 +1,9 @@
-import { NextPage } from 'next';
-import { Post, Pagination } from '@1k-cove/common';
-import superjson from 'superjson';
-import styles from './Index.module.scss';
-import PostList from '../../posts/PostList/PostList';
-import DefaultHead from '../../meta/DefaultHead';
+import { NextPage } from "next";
+import { Post, Pagination } from "@1k-cove/common";
+import superjson from "superjson";
+import styles from "./Index.module.scss";
+import PostList from "../../posts/PostList/PostList";
+import DefaultHead from "../../meta/DefaultHead";
 
 type IndexPageContentProps = {
   posts: string;
@@ -17,7 +17,7 @@ const IndexPageContent: NextPage<IndexPageContentProps> = (props) => {
   return (
     <>
       <DefaultHead></DefaultHead>
-      <div className={styles['page-inner']}>
+      <div className={styles["page-inner"]}>
         <h1>1keiuuのブログ</h1>
         <PostList posts={posts}></PostList>
         <Pagination

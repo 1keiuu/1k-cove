@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
-import { FirebaseConfig } from '../@types/firebase';
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+import { FirebaseConfig } from "../@types/firebase";
 
 export const initFirebase = (config?: FirebaseConfig) => {
   // TODO: Add SDKs for Firebase products that you want to use
@@ -23,7 +23,8 @@ export const initFirebase = (config?: FirebaseConfig) => {
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  const storage = getStorage(app);
+  // FIXME: Error: Service storage is not available.
+  // const storage = getStorage(app);
 
-  return { db, storage };
+  return { db };
 };

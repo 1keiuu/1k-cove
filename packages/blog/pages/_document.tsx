@@ -1,6 +1,19 @@
 import { Html, Head, Main, NextScript } from "next/document";
 import Script from "next/script";
 
+/**
+ * 指定したselectorに合致するElementまでscrollする
+ */
+const scrollTo = (selector?: string) => {
+  if (!selector) {
+    return;
+  }
+  const offset =
+    (document.querySelector(selector) as HTMLElement).offsetTop - 130;
+  if (!offset) return;
+  window.scrollTo(0, offset);
+};
+
 export default function Document() {
   const googleTagManagerId =
     process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID || "";
