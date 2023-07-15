@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import colors from '../../constants/colors';
-import { Text } from '../shared/Typography';
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import colors from "../../constants/colors";
+import { Text } from "../shared/Typography";
 
 const _Header = styled.header<{ isShow: boolean }>`
   position: fixed;
@@ -14,7 +14,7 @@ const _Header = styled.header<{ isShow: boolean }>`
   justify-content: flex-end;
   align-items: center;
   opacity: ${(props) => (props.isShow ? 1 : 0)};
-  pointer-events: ${(props) => (props.isShow ? 'unset' : 'none')};
+  pointer-events: ${(props) => (props.isShow ? "unset" : "none")};
   transition: all 0.4s ease;
   background: transparent;
   @media screen and (max-width: 599px) {
@@ -50,31 +50,6 @@ const _Anchor = styled.a`
     padding: 8px;
   }
 `;
-const _OuterLinkListItem = styled(_AnchorListItem)`
-  border-radius: 30px;
-  background: ${colors.text.black};
-  padding: 0;
-  margin-left: 16px;
-  @media screen and (max-width: 599px) {
-    background: unset;
-    margin-left: 0;
-  }
-`;
-const _OuterLink = styled(_Anchor)`
-  cursor: pointer;
-  display: block;
-  width: 100%;
-  height: 100%;
-  padding: 8px 56px;
-  @media screen and (max-width: 599px) {
-    padding: 8px;
-  }
-`;
-const _OuterLinkText = styled(Text)`
-  @media screen and (max-width: 599px) {
-    color: ${colors.text.primary};
-  }
-`;
 const _IconAnchor = styled.a`
   width: 50px;
   height: 46px;
@@ -106,30 +81,30 @@ const Header: React.FC<HeaderProps> = (props) => {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll);
     return () => {
-      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener("scroll", onScroll);
     };
   });
 
   const items = [
     {
-      name: 'about',
-      selector: '#about',
-      text: 'About',
+      name: "about",
+      selector: "#about",
+      text: "About",
     },
     {
-      name: 'links',
-      selector: '#links',
-      text: 'Links',
+      name: "links",
+      selector: "#links",
+      text: "Links",
     },
     {
-      name: 'blog',
-      text: 'Blog',
+      name: "blog",
+      text: "Blog",
     },
     {
-      name: 'github',
-      text: '',
+      name: "github",
+      text: "",
     },
   ];
   return (
@@ -137,7 +112,7 @@ const Header: React.FC<HeaderProps> = (props) => {
       <_Nav>
         <_AnchorList>
           {items.map((item, i) => {
-            if (item.name === 'blog') {
+            if (item.name === "blog") {
               return (
                 <_AnchorListItem key={`item-${i}`}>
                   <_Anchor
@@ -152,7 +127,7 @@ const Header: React.FC<HeaderProps> = (props) => {
                 </_AnchorListItem>
               );
             }
-            if (item.name === 'github') {
+            if (item.name === "github") {
               return (
                 <_OuterLinkListItemIcon key={`item-${i}`}>
                   <_IconAnchor
