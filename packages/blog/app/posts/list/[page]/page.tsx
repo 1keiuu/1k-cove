@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styles from "./page.module.css";
 import DefaultHead from "../../../_components/meta/DefaultHead";
 import { Pagination } from "@1k-cove/common";
@@ -6,6 +5,7 @@ import PostList from "../../../_components/posts/PostList/PostList";
 import { PAGE_LIMIT } from "../../../constants";
 import { allPosts } from "../../../../.contentlayer/generated";
 import { NextPage } from "next";
+import Header from "@/app/_components/layouts/Header";
 
 type Props = {
   params: {
@@ -36,6 +36,7 @@ const PostListPage: NextPage<Props> = ({ params: { page } }) => {
   return (
     <>
       <DefaultHead></DefaultHead>
+      <Header />
       <main className={styles.main}>
         <div className={styles["page-inner"]}>
           <h1>1keiuuのブログ</h1>
