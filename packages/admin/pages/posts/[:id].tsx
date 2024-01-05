@@ -22,7 +22,9 @@ import Router from "next/router";
 import PostIdContent from "../../components/posts/PostIdContent/PostIdContent";
 import { useForm } from "react-hook-form";
 import Drawer from "../../components/organisms/shared/Drawer/Drawer";
-import cloudinary from "../../lib/cloudinary";
+import { Cloudinary } from "@cloudinary/url-gen";
+
+const clouddinary = new Cloudinary({ cloud: { cloudName: "dcaiaukf4" } });
 
 type PostIdPageProps = {
   post: string;

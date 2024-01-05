@@ -1,0 +1,87 @@
+---
+title: Node.jsアプリをcloud buildからcompute engineへデプロイする
+description: Node.jsで作成したWebアプリケーションをcloud build上でビルドしてcompute engineへデプロイしたのでまとめました
+ogpUrl: https://res.cloudinary.com/dcaiaukf4/image/upload/c_fit,co_rgb:333,l_text:Sawarabi%20Gothic_53_bold_start:cloud%2520build%25E3%2581%258B%25E3%2582%2589compute%2520engine%25E3%2581%25B8%25E3%2583%2587%25E3%2583%2597%25E3%2583%25AD%25E3%2582%25A4%25E3%2581%2599%25E3%2582%258B,w_1000/v1621601547/ogp_b3ezfg.jpg
+publishedAt: '2022-02-20'
+slug: gcb-vercel
+tags: ['nodejs','gcp','compute engine','cloud build', 'secret manager',]
+---
+
+import {OgpCard} from "../../app/_components/posts/OgpCard/OgpCard"
+
+clodu buildからcompute engineへssh(scp)している例があまり無かったのでメモ。 
+## Cloud Buildの構成
+
+Cloud Build構成ファイル(cloudbuild.yaml)は以下の通り
+```yaml
+steps:
+  # ① Cloud Buildの実行環境にSSH鍵を作成
+  - name: 'bash'
+    secretEnv: ['SSH_KEY','SSH_KEY_PUB']
+    entrypoint: 'bash'
+    args:
+    - -c
+    - |
+      mkdir -p /builder/home/.ssh
+      echo "$$SSH_KEY" >>/builder/home/.ssh/google_compute_engine
+      echo "$$SSH_KEY_PUB" >>/builder/home/.ssh/google_compute_engine.pub
+      chmod 400 /builder/home/.ssh/google_compute_engine
+  # ② アプリをビルド
+  - name: node:16.14.0
+    entrypoint: npm
+    args: ['install']
+  - name: node:16.14.0
+    entrypoint: npm
+    args: ["run","build"]
+  # ③ VMインスタンスへファイルを転送
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: ['compute', 'scp', '--recurse', 'src','root@instanceName:api', '--zone', 'asia-northeast1-b']
+availableSecrets:
+  secretManager:
+  - versionName: projects/{projectName}/secrets/SSH_KEY/versions/latest
+    env: SSH_KEY
+  - versionName: projects/{projectName}/secrets/SSH_KEY_PUB/versions/latest
+    env: SSH_KEY_PUB
+options:
+  logging: CLOUD_LOGGING_ONLY
+timeout: 1200s
+```
+
+**①** Compute Engineへssh(scp)する為の鍵をCloud Buildの実行環境に作成 
+ 
+　　ssh鍵の内容はSecret Managerに保存し、ビルド時に復号する。 
+
+**②** アプリをビルド 
+
+**③** VMインスタンスへscpでファイルを送信
+
+<br/>
+
+## 作業の流れ 
+ 
+
+1. SSH鍵を作成
+
+```sh
+    ssh-keygen -t rsa -f ~/.ssh/google_compute_engine
+```
+
+2. 作成した公開鍵(google_compute_engine.pub)の中身をVMインスタンスのメタデータに追加する
+    メタデータはCompute Engine管理画面の「メタデータ」 > 「SSH 認証鍵」から編集できる
+
+3. 1で作成したSSH鍵をCloud Buildの実行環境で使う為に、Secret Managerにシークレットを追加する
+    yamlファイルでいう**SSH_KEY**と**SSH_KEY_PUB** 
+
+4. Cloud Build構成ファイル(cloudbuild.yaml)を作成
+
+5. Cloud Buildのトリガーを作成してビルドを実行
+ 
+**参考** 
+- SSH鍵の作成
+<OgpCard  url="https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/deploying_red_hat_enterprise_linux_7_on_public_cloud_platforms/creating-ssh-keys-for-google-compute-engine_uploading-the-rhel-image-to-gcp"/>
+<br/> 
+ 
+## 終わりに
+フロント側のデプロイフローも紹介してるのでこちらも是非 
+<OgpCard url="https://blog.1keiuu.com/posts/gcb-vercel/"/>

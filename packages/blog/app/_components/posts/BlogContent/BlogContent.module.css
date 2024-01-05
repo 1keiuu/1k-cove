@@ -1,0 +1,14 @@
+.content img {
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.content pre {
+  background: #f6f8fa;
+  padding: 16px 8px;
+  font-size: 16px;
+  overflow-x: scroll;
+}
+.content pre::-webkit-scrollbar {
+  display: none;
+}

@@ -1,0 +1,127 @@
+---
+title: monorepo構成のフロントエンドアプリをcloud build経由でvercelへデプロイする
+description: monorepo構成で作成したフロントエンドアプリケーションをcloud buildでビルドし、vercelへデプロイした時のまとめです
+ogpUrl: https://res.cloudinary.com/dcaiaukf4/image/upload/c_fit,co_rgb:333,l_text:Sawarabi%20Gothic_53_bold_start:monorepo%25E6%25A7%258B%25E6%2588%2590%25E3%2581%25AE%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA%25E3%2582%2592cloud%2520build%25E7%25B5%258C%25E7%2594%25B1%25E3%2581%25A7vercel%25E3%2581%25B8%25E3%2583%2587%25E3%2583%2597%25E3%2583%25AD%25E3%2582%25A4%25E3%2581%2599%25E3%2582%258B,w_1000/v1621601547/ogp_b3ezfg.jpg
+publishedAt: '2022-02-21'
+slug: gcb-gce
+tags: [ 'Next.js','gcp','vercel', 'cloud build','secret manager','monorepo', 'turborepo']
+---
+
+import {OgpCard} from "../../app/_components/posts/OgpCard/OgpCard"
+
+
+## はじめに
+turborepoを使ったmonorepo構成でアプリを作っていて、その際に複数のフロントエンドのパッケージをcloud buildからそれぞれのvercelプロジェクトへデプロイしたかった。 
+
+一つのパッケージを変更した際に、他のパッケージのデプロイまで実行されると嫌なので、vercelのGithub連携はやめて、CI/CDからデプロイするようにした。 
+
+API側でGCP(compute engine)を使っている理由から、CI/CDでCloud Buildを採用した。 
+
+**API側のデプロイの話**
+<OgpCard url="https://blog.1keiuu.com/posts/gcb-gce"/>
+
+<br/> 
+
+## アプリの構成
+```
+    apps/
+        front/
+            package.json
+            ...
+        admin/
+            package.json
+            ...
+    package.json
+```
+
+monorepoを採用して複数個のフロントエンドアプリを一つのリポジトリで管理し、それぞれ別のサーバ(今回はvercel)へデプロイしています。   
+今回のアプリではサイトのUIを扱う**front**と管理画面のUIを扱う**admin**があります。(実際には他にもapiなどのpackageがappsにある)
+ 
+<br/>
+
+## デプロイの流れ
+<img src="https://storage.cloud.google.com/portfolio21-56e7e.appspot.com/articles/10/front-architecture.jpeg"/>  
+
+1. 変更を加えてGithubのmainへpush/merge
+2. Github(Cloud Buildと連携済)がpushをCloud Buildへ通知
+3. Cloud Buildが変更されたpackageをデプロイするためのトリガーを実行
+4. トリガーからvercelへdeploy　
+
+<br/> 
+<br/> 
+ 
+## デプロイの詳細
+### 2. Github(Cloud Buildと連携済)がpushをCloud Buildへ通知
+GithubとCloud Buildを連携すればpush/mergeが通知されるようになる 
+
+**参考**
+<OgpCard url="https://medium.com/google-cloud-jp/try-github-cloudbuild-integration-5149175105fb"/>
+
+### 3. Cloud Buildが変更されたpackageをデプロイするためのトリガーを実行
+Cloud Buildのトリガーの作成を作成する。
+
+作成の際に「含まれるファイルフィルタ」にデプロイしたいパッケージのパスを追加する事で、対象のファイルに変更が加わった場合のみトリガーが実行されるようになる。　
+ 
+例) apps/frontのデプロイ用トリガーの場合
+    <img src="https://storage.googleapis.com/portfolio21-56e7e.appspot.com/articles/10/cloud-build-trigger.png"/>  
+<br/> 
+ 
+### 4. トリガーがvercelへdeploy　
+トリガーで実行するstepでvercel cliからプロジェクトへデプロイする。  
+この時に以下のVercelのsecret情報が必要になる。　
+ 
+   **secret情報**  
+   - **VERCEL_TOKEN**: アカウント毎に作成できるToken  
+   - **VERCEL_PROJECT_ID**: デプロイしたいprojecのID  
+   - **VERCEL_ORG_ID**: デプロイしたいprojectを所有しているuser或いはorganazationのID  
+
+これらはyamlに直書きしたく無いので、GCPのSecret Managerを使ってセキュアに取得する。 
+
+<OgpCard url='https://cloud.google.com/secret-manager'/> 
+ <br/> 
+
+## Cloud Buildの構成
+
+ Cloud Buildのyamlファイルは以下の通り。 
+```yaml filename='packages/ops/cloudbuild/front.yaml'
+    steps:
+    　- name: 'bash'
+        entrypoint: 'bash'
+        args: 
+        - -c
+        - |
+        mkdir -p .vercel
+        touch .vercel/project.json
+        echo '{"orgId":"'$$VERCEL_ORG_ID'", "projectId":"'$$VERCEL_PROJECT_ID_FRONT'"}' >> .vercel/project.json
+        cat .vercel/project.json
+        secretEnv: ['VERCEL_PROJECT_ID_FRONT','VERCEL_ORG_ID']
+    　- name: node:16.14.0
+        entrypoint: npx
+        args: ['npx','vercel','--prod','-t','$$VERCEL_TOKEN']
+        secretEnv: ['VERCEL_TOKEN']
+    availableSecrets:
+    　secretManager:
+    　- versionName: projects/{projectName}/secrets/VERCEL_PROJECT_ID_FRONT/versions/latest
+        env: VERCEL_PROJECT_ID_FRONT
+    　- versionName: projects/{projectName}/secrets/VERCEL_ORG_ID/versions/latest
+        env: VERCEL_ORG_ID
+      - versionName: projects/{projectName}/secrets/VERCEL_TOKEN/versions/latest
+        env: VERCEL_TOKEN
+    options:
+      logging: CLOUD_LOGGING_ONLY
+    timeout: 1200s
+``` 
+
+ まずstepの一つ目では、**.vercel/project.json** を作成し、SecretManagerから取得した **$VERCEL_ORG_ID** と **$VERCEL_PROJECT_ID** を書き込む。 
+
+ 二つ目では **$VERCEL_TOKEN** をvercel cliのオプションに渡してdeployを実行。
+  ```
+    npx vercel --prod -t $$VERCEL_TOKEN 
+  ```
+
+ vercelの管理画面でデプロイがされていることを確認
+
+<br/>
+
+## 終わりに
+かなり説明はしょったけど久しぶりに記事書けた.

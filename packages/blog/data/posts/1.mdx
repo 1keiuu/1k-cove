@@ -1,0 +1,90 @@
+---
+title: Jamstackなポートフォリオを作成しました
+description: はじめにJamstackなポートフォリオを作成しました。1keiuu's portfolioIkkei Harashima's portfolio 2021気づけば毎年ポートフォリオを作っていてこれで3つ目です。。今回はサーバー
+slug: jamstack-portfolio21
+ogpUrl: https://firebasestorage.googleapis.com/v0/b/portfolio21-56e7e.appspot.com/o/_ogp%2F2o0QITOJRcGFtC7dsq6f?alt=media&token=fe40b13c-f018-49cf-bdc7-afae3eba1fae
+publishedAt: '2021-01-17'
+tags: [Jamstack, Nuxt.js, Firebase, Cloud Functions, Cloud Storage, Github Actions]
+---
+
+import {OgpCard} from "../../app/_components/posts/OgpCard/OgpCard"
+
+## はじめに  
+Jamstack なポートフォリオを作成しました。
+
+<OgpCard  
+    url="https://portfolio21-56e7e.web.app/" 
+/>
+
+気づけば毎年ポートフォリオを作っていてこれで 3 つ目です。。  
+今回はサーバーレスで管理のし易さとパフォーマンスを意識したものになりました。  
+過去のポートフォリオはこちら  
+
+<OgpCard 
+    url="https://portfolio21-56e7e.web.app/products/1"
+/>
+
+<OgpCard 
+    url="https://portfolio21-56e7e.web.app/products/5"
+/>
+
+## 使用した技術
+**FW:** Nuxt.js (TypeScript/composition-api)  
+**コンテンツ管理:** Nuxt/content , Cloud Storage  
+**ホスティング:** Firebase hosting  
+**その他 API:** Cloud Functions  
+**CI/CD:** Github Actions  
+
+## 作った理由
+
+### ① 去年作ったポートフォリオのパフォーマンスが悪い  
+React/Go/AWS の勉強を目的とするあまり、ポートフォリオサイトとしての役割を考えずに作ってしまいました。  
+
+結果的に費用も UX も最低な魔物が生み出されてしまいました。。。  
+
+特に three.js の部分は SP で見ると safari が落ちるくらい重く、やっつけで作ったせいかチューニングも面倒になって放置状態。  
+
+これに反省して、「Jamstack でパフォーマンス最高なで管理し易いサイトに作り直そう！」と決心しました。  
+<br/>
+
+### ② 去年作ったポートフォリオは管理画面を作ってないのでコンテンツの更新が面倒  
+
+またしても 2020 年度版の欠陥なのですが、当初作る予定だった管理画面を作る気力がなくなってしまい、未だに内容を更新するには EC2 に ssh して SQL 叩く必要があるという状況のまま。。  
+冷静に考えてもポートフォリオで DB 用の EC2 インスタンス建ててたのアホすぎる。。。
+<br/>
+
+### ③ nuxt/content を使ってみたくなった  
+はじめは microCMS で Jamstack を目指して作成していたのですが、たまたま聞いていた[UIT INSIDE](https://uit-inside.linecorp.com/)のポッドキャストで nuxt/content を知り、コンテンツの管理がめちゃくちゃ便利そうで使ってみたくなりました。  
+しかもマークダウンで簡単にブログが作れる、、、！  
+② の失敗を踏まえても、Github で管理した json,マークダウンだけでコンテンツの管理ができるのだから、個人開発のポートフォリオに最適だと思いました。
+
+## 工夫した所  
+
+### OGP 画像の動的生成  
+Twitter などでシェアした時に Qiita っぽい OGP が表示されるようになります。  
+Cloud Functions × Cloud Storage で実装しました。  
+以前まで無料だった Cloud Functions(Firebase)も node v10 より有料（従量課金）との事、、  
+<br/>
+**参考にした記事**  
+- [絶対にお金を払いたくない精神での動的 OGP 生成は辛い](https://blog.ojisan.io/dynamic-ogp)  
+<br/>
+
+### 記事内で表示する OGP 情報の取得  
+Nuxt/Content で書かれた記事内で外部ページの OGP を表示する為の実装が必要だったので、URL から OGP 情報を取得する API を Cloud Functions で作成しました。  
+
+<br/> 
+
+### CI／CD を設定して記事ページの自動更新  このサイトは SSG でビルドしているので、記事などのコンテンツを更新する度にビルドをかける必要があります。  
+そこで、Github Actions × Firebase Hosting を使って CI/CD を構築しました。  この組み合わせは設定もめちゃくちゃ楽なので、短い期間での個人開発ではかなり使えると思います。  
+以前 Qiita の記事にしました。
+
+<OgpCard
+    url="https://qiita.com/ikkei12/items/0f0c2d95bdd3b54d6bac"
+/>
+
+## 最後に
+修正する点はまだまだ沢山あるのですが、なかなか管理しやすくパフォーマンスも比較的良いサイトが一旦は出来上がったのでは無いかと思います。  
+使った技術が最小限かつパワフルでとても使いやすかったと思います。  
+特に Nuxt/content が最高でした！  
+あとは相変わらず Firebase は個人開発の味方ですね。  
+これからは Qiita や zenn に加えてこのブログでちょっとした記事を書いていこうと思うのでよろしくお願いします！

@@ -1,7 +1,6 @@
 export type Post = {
-  docId: string;
+  id: string;
   title: string;
-  slug: string;
   content: string;
   description: string;
   date: string;

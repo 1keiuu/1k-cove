@@ -4,13 +4,22 @@ import superjson from "superjson";
 import Link from "next/link";
 import Head from "next/head";
 import styles from "./Index.module.scss";
+import { createClient } from "microcms-js-sdk";
+import { useEffect, useState } from "react";
 
 type IndexPageProps = {
   posts: string;
 };
 
 const IndexPage: NextPage<IndexPageProps> = (props) => {
-  const posts = superjson.parse(props.posts) as Post[];
+  const [posts, setPosts] = useState<any[]>([]);
+  useEffect(() => {
+    const { db } = initFirebase();
+    const client = new PostApiClient(db);
+    client.listPosts().then((res) => {
+      setPosts(res);
+    });
+  }, []);
   return (
     <div className={styles["inner"]}>
       <Head>
@@ -46,17 +55,25 @@ const IndexPage: NextPage<IndexPageProps> = (props) => {
   );
 };
 
-export const getServerSideProps = async () => {
-  const { db } = initFirebase();
-  const client = new PostApiClient(db);
-  const res = await client.listPosts();
-  const posts = superjson.stringify(res);
-
-  return {
-    props: {
-      posts,
-    },
-  };
-};
+// export const getServerSideProps = async () => {
+//   const client = createClient({
+//     serviceDomain: "api-portfolio.microcms",
+//     apiKey: "EIxvUldzYjZ7cc4pJopNNnhYETXRl1DGuZTl",
+//   });
+//   client
+//     .get({
+//       endpoint: "posts",
+//     })
+//     .then((res) => console.log(res));
+//   const { db } = initFirebase();
+//   const client = new PostApiClient(db);
+//   const res = await client.listPosts();
+//   const posts = superjson.stringify(res);
+//   return {
+//     props: {
+//       posts: [],
+//     },
+//   };
+// };
 
 export default IndexPage;

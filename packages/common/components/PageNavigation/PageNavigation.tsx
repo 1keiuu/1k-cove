@@ -1,24 +1,26 @@
-import Router from 'next/router';
-import styles from './PageNavigation.module.css';
+"use client";
+import { useRouter } from "next/navigation";
+import styles from "./PageNavigation.module.css";
 
 type PageNavigationProps = {
   backPath?: string;
 };
 
 export const PageNavigation: React.FC<PageNavigationProps> = (props) => {
+  const router = useRouter();
   return (
-    <nav className={styles['nav']}>
-      <ul className={styles['list']}>
-        <li className={styles['list-item']}>
+    <nav className={styles["nav"]}>
+      <ul className={styles["list"]}>
+        <li className={styles["list-item"]}>
           <button
             onClick={() => {
               if (props.backPath) {
-                Router.push(props.backPath);
+                router.push(props.backPath);
                 return;
               }
-              Router.back();
+              router.back();
             }}
-            className={styles['back-button']}
+            className={styles["back-button"]}
           >
             Back
           </button>

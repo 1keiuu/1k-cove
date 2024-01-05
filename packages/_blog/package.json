@@ -1,0 +1,25 @@
+{
+  "name": "@1k-cove/blog",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "export": "next export",
+    "deploy": "firebase deploy --only hosting:blog-1keiuu",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@1k-cove/common": "*",
+    "@1k-cove/md-editor": "*",
+    "@types/jsdom": "^20.0.0",
+    "firebase-admin": "11.11.0",
+    "firebase-tools": "^0.1.6",
+    "jsdom": "^20.0.2",
+    "next": "^14.0.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "sass": "^1.56.1"
+  }
+}
