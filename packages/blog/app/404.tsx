@@ -1,11 +1,15 @@
 import { PageNavigation } from "@1k-cove/common";
-import DefaultHead from "./_components/meta/DefaultHead";
 import styles from "./404.module.scss";
+
+export const metadata = {
+  title: "404 - Page Not Found",
+  viewport: "width=device-width,initial-scale=1.0",
+  description: "404 - Page Not Found",
+};
 
 const Custom404 = () => {
   return (
     <>
-      <DefaultHead meta={{}}></DefaultHead>
       <div className={styles["container"]}>
         <PageNavigation backPath="/"></PageNavigation>
         <div className={styles["inner"]}>

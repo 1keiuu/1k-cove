@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "contentlayer build && next build",
-    "deploy": "firebase deploy --only hosting:blog-1keiuu",
     "build:content": "contentlayer build",
+    "deploy": "firebase deploy --only hosting:blog-1keiuu",
     "start": "next start",
     "serve": "serve out -l 3001",
     "lint": "next lint"

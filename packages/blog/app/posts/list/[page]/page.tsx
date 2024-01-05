@@ -1,10 +1,9 @@
 import styles from "./page.module.css";
-import DefaultHead from "../../../_components/meta/DefaultHead";
 import { Pagination } from "@1k-cove/common";
 import PostList from "../../../_components/posts/PostList/PostList";
 import { PAGE_LIMIT } from "../../../constants";
 import { allPosts } from "../../../../.contentlayer/generated";
-import { NextPage } from "next";
+import { Metadata, NextPage } from "next";
 import Header from "@/app/_components/layouts/Header";
 
 type Props = {
@@ -21,6 +20,24 @@ export async function generateStaticParams() {
   return paths;
 }
 
+export const metadata: Metadata = {
+  title: "1keiuuのブログ",
+  viewport: "width=device-width,initial-scale=1.0",
+  description: "Ikkei Harashimaの個人ブログです。",
+  openGraph: {
+    url: "https://blog.1keiuu.com",
+    title: "1keiuuのブログ",
+    description: "Ikkei Harashimaの個人ブログです。",
+    siteName: "1keiuuのブログ",
+    images: [
+      "https://storage.googleapis.com/portfolio21-56e7e.appspot.com/_ogp/1.jpg",
+    ],
+    type: "website",
+  },
+  keywords:
+    "エンジニア,webエンジニア,フロントエンド,個人ブログ,ポートフォリオ,技術ブログ,テックブログ",
+};
+
 const PostListPage: NextPage<Props> = ({ params: { page } }) => {
   const offset = (Number(page) - 1) * PAGE_LIMIT;
   const sortedPosts = allPosts.sort((a, b) => {
@@ -35,7 +52,6 @@ const PostListPage: NextPage<Props> = ({ params: { page } }) => {
 
   return (
     <>
-      <DefaultHead></DefaultHead>
       <Header />
       <main className={styles.main}>
         <div className={styles["page-inner"]}>
