@@ -57,7 +57,7 @@ const PostIdPage: NextPage<Props> = ({ params }) => {
             <PageNavigation backPath="/"></PageNavigation>
           </div>
           <div className={styles["detail-wrapper"]}>
-            <Detail post={post} postCategory={[]}></Detail>
+            <Detail post={post}></Detail>
           </div>
         </div>
       </div>

@@ -10,6 +10,9 @@ type Props = {
   params: {
     page: string;
   };
+  searchParams: {
+    search?: string;
+  };
 };
 export async function generateStaticParams() {
   const totalPageCount = Math.ceil(allPosts.length / PAGE_LIMIT);
@@ -38,9 +41,14 @@ export const metadata: Metadata = {
     "エンジニア,webエンジニア,フロントエンド,個人ブログ,ポートフォリオ,技術ブログ,テックブログ",
 };
 
-const PostListPage: NextPage<Props> = ({ params: { page } }) => {
-  const offset = (Number(page) - 1) * PAGE_LIMIT;
-  const sortedPosts = allPosts.sort((a, b) => {
+const PostListPage: NextPage<Props> = ({ params, searchParams }) => {
+  let postList = allPosts;
+  const searchParam = searchParams?.search;
+  if (searchParam != null) {
+    postList = postList.filter((post) => post.tags.includes(searchParam));
+  }
+  const offset = (Number(params.page) - 1) * PAGE_LIMIT;
+  const sortedPosts = postList.sort((a, b) => {
     return (
       new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
     );
