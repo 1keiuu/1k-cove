@@ -4,6 +4,7 @@ import { allPosts, Post } from "../../../.contentlayer/generated";
 import Detail from "@/app/_components/posts/Detail/Detail";
 import { notFound } from "next/navigation";
 import { Metadata, NextPage } from "next";
+import { TAGS_MAP } from "@/data/tags-map";
 
 type Props = {
   params: {
@@ -44,10 +45,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const PostIdPage: NextPage<Props> = ({ params }) => {
   const post = allPosts.find((p) => p.slug === params.id);
-
   if (!post) {
     notFound();
   }
+  const tags = TAGS_MAP[post.slug];
 
   return (
     <>
@@ -57,7 +58,7 @@ const PostIdPage: NextPage<Props> = ({ params }) => {
             <PageNavigation backPath="/"></PageNavigation>
           </div>
           <div className={styles["detail-wrapper"]}>
-            <Detail post={post}></Detail>
+            <Detail post={post} tags={tags}></Detail>
           </div>
         </div>
       </div>

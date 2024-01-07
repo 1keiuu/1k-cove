@@ -10,10 +10,14 @@
   font-size: 1rem;
 }
 
-.category-chips {
+.tag-list {
   display: flex;
   flex-wrap: wrap;
   :nth-child(n) {
     margin-right: 8px;
   }
+}
+
+.tag {
+  font-size: 0.8rem;
 }

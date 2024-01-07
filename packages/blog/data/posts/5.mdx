@@ -3,12 +3,11 @@ title: monorepo構成のフロントエンドアプリをcloud build経由でver
 description: monorepo構成で作成したフロントエンドアプリケーションをcloud buildでビルドし、vercelへデプロイした時のまとめです
 ogpUrl: https://res.cloudinary.com/dcaiaukf4/image/upload/c_fit,co_rgb:333,l_text:Sawarabi%20Gothic_53_bold_start:monorepo%25E6%25A7%258B%25E6%2588%2590%25E3%2581%25AE%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA%25E3%2582%2592cloud%2520build%25E7%25B5%258C%25E7%2594%25B1%25E3%2581%25A7vercel%25E3%2581%25B8%25E3%2583%2587%25E3%2583%2597%25E3%2583%25AD%25E3%2582%25A4%25E3%2581%2599%25E3%2582%258B,w_1000/v1621601547/ogp_b3ezfg.jpg
 publishedAt: '2022-02-21'
-slug: gcb-gce
-tags: [ 'Next.js','gcp','vercel', 'cloud build','secret manager','monorepo', 'turborepo']
+slug: gcb-vercel
 ---
 
 import {OgpCard} from "../../app/_components/posts/OgpCard/OgpCard"
-
+import {PAGE_LIMIT} from "../../app/constants"
 
 ## はじめに
 turborepoを使ったmonorepo構成でアプリを作っていて、その際に複数のフロントエンドのパッケージをcloud buildからそれぞれのvercelプロジェクトへデプロイしたかった。 

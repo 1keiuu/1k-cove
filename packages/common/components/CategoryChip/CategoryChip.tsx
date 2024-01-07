@@ -2,7 +2,7 @@ import { Category } from "../../@types/category";
 import styles from "./CategoryChip.module.scss";
 
 type CategoryChipProps = {
-  category: string;
+  category: Category;
   onClick: (cateogry: Category, eventType: "on" | "off") => void;
   isSelected?: boolean;
   isOutlined?: boolean;
@@ -26,7 +26,7 @@ export const CategoryChip: React.FC<CategoryChipProps> = (props) => {
         props.onClick(props.category, props.isSelected ? "off" : "on");
       }}
     >
-      {props.category}
+      {props.category.name}
     </div>
   );
 };

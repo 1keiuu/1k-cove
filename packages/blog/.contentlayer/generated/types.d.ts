@@ -23,8 +23,6 @@ export type Post = {
   ogpUrl: string
   /** description */
   description: string
-  /** タグ */
-  tags: string[]
   /** MDX file body */
   body: MDX
 
